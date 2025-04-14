@@ -3,6 +3,7 @@
 *.out
 *.gch
 *.a
+build/
 # project specific
 minishell
 # bear output
