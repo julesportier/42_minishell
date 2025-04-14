@@ -1,0 +1,10 @@
+# compilation output
+*.o
+*.out
+*.gch
+*.a
+# project specific
+minishell
+# bear output
+compile_commands.json
+.cache/
