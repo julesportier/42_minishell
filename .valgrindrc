@@ -1,0 +1,6 @@
+--memcheck:leak-check=full
+--memcheck:show-leak-kinds=all
+--track-fds=yes
+--trace-children=yes
+--suppressions=.libreadline.so.8.supp
+--show-error-list=yes
