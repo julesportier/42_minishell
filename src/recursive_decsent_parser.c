@@ -6,7 +6,7 @@
 /*   By: ecasalin <ecasalin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 06:55:11 by ecasalin          #+#    #+#             */
-/*   Updated: 2025/04/15 14:00:01 by ecasalin         ###   ########.fr       */
+/*   Updated: 2025/04/15 15:59:09 by ecasalin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,12 +90,19 @@ int	reset_pipes(t_pipes_data *pipes)
 
 int	prepare_exec_left(t_pipes_data *pipes, t_node *curr_node, t_special_var *special_var)
 {
-	int	return_value;
+	int	child_pid;
 	
 	if (curr_node->left)
 		return (recursive_descent_parser(curr_node->left, special_var));
 	if (curr_node->prev && curr_node->prev->op == PIPE)
-		set_pipes()
+		open_pipes(pipes);
+	child_pid = fork();
+	if (child_pid == CHILD)
+	{
+		link_pipes();
+		set_redirections();
+		exec();
+	}
 	
 }
 
