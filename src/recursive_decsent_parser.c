@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   recursive_decsent_parser.c                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kura <kura@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: ecasalin <ecasalin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 06:55:11 by ecasalin          #+#    #+#             */
-/*   Updated: 2025/04/16 21:45:31 by kura             ###   ########.fr       */
+/*   Updated: 2025/04/17 15:03:01 by ecasalin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,8 @@
 #define OR 2
 #define AND 3
 #define CHILD 0
+#define READ 0
+#define WRITE 1
 
 typedef	struct s_cmd
 {
@@ -91,26 +93,24 @@ int	reset_pipes(t_pipes_data *pipes)
 
 int	prepare_exec_left(t_pipes_data *pipes, t_node *curr_node, t_var_data *vars)
 {
-	int	child_pid;
+	char	**path_array;
 
 	if (curr_node->left)
-		return (recursive_descent_parser(curr_node->left, vars));
-	if (curr_node->prev && curr_node->prev->op == PIPE)
-		open_pipes(pipes);
-	child_pid = fork();
-	if (child_pid == CHILD)
+		return (recursive_exec(curr_node->left, vars));
+	else
 	{
-		link_pipes();
-		set_redirections();
-		exec();
+		expand_args(curr_node->cmd.cmd, vars);
+		expand_redirections(curr_node->cmd.input, curr_node->cmd.output, vars);
+		path_array = set_path_array(vars);
+		set_redirections(curr_node->cmd.input, curr_node->cmd.output);
+		exec(curr_node->cmd, path_array, vars);
 	}
-
 }
 
 int	prepare_exec_right(t_pipes_data *pipes, t_node *curr_node, t_var_data *vars)
 {
 	if (curr_node->right)
-		vars->last_cmd_ext_code = recursive_descent_parser(curr_node->right, vars);
+		vars->last_cmd_ext_code = recursive_exec(curr_node->right, vars);
 	else
 		return (exec(vars->last_cmd_ext_code, &pipes, curr_node));
 }
@@ -128,14 +128,58 @@ int	check_right_cmd_conditions(t_node *curr_node, int left_cmd_return)
 	return (1);
 }
 
-int	recursive_descent_parser(t_node *curr_node, t_var_data *vars)
+int	recursive_exec(t_node *curr_node, t_var_data *vars)
+{
+	int	pip[2];
+	int	child_pid;
+	
+	if (curr_node->op == PIPE)
+	{
+		pipe(pip);
+		child_pid = fork();
+		if (child_pid == CHILD)
+		{
+			link_to_pipe_end(pip[WRITE], pip[READ]);
+			prepare_exec_left();
+		}
+		if (child_pid != CHILD)
+			child_pid = fork();
+		if (child_pid == CHILD)
+		{
+			link_to_pipe_end(pip[READ], pip[WRITE]);
+			prepare_exec_right();
+		}
+		if (child_pid != CHILD)
+		{
+			close_pipe(pip);
+			return (wait_childs(vars));
+		}
+	}
+	vars->last_cmd_ext_code = prepare_exec_left(curr_node, vars);
+	if (check_right_cmd_conditions(curr_node, vars->last_cmd_ext_code))
+		return (prepare_exec_right(curr_node, vars));
+	return (vars->last_cmd_ext_code);
+}
+
+int	recursive_exec(t_node *curr_node, t_special_var *special_var)
 {
 	static t_pipes_data	pipes;
-
+	int					pipeline_pid;
+	int					pipeline_exit;
+	
+	pipeline_pid = 0;
 	if (!pipes.is_init)
 		pipes = (t_pipes_data){{-1, -1}, {-1, -1}, 0, 1};
-	vars->last_cmd_ext_code = prepare_exec_left(&pipes, curr_node, vars);
-	if (check_right_cmd_conditions(curr_node, vars->last_cmd_ext_code))
-		return (prepare_exec_right(&pipes, curr_node, vars));
-	return (vars->last_cmd_ext_code);
+	if (curr_node->op == PIPE && !curr_node->prev || curr_node->prev->op != PIPE)
+		pipeline_pid = fork();
+	if (pipeline_pid != CHILD)
+	{
+		waitpid(pipeline_pid, &pipeline_exit, 0);
+		special_var->last_cmd_ext_code = get_exit_status(pipeline_exit);
+		return (special_var->last_cmd_ext_code);
+	}
+	special_var->last_cmd_ext_code = prepare_exec_left(&pipes, curr_node, special_var);
+	if (check_right_cmd_conditions(curr_node, special_var->last_cmd_ext_code))
+		return (prepare_exec_right(&pipes, curr_node, special_var));
+	return (special_var->last_cmd_ext_code);
 }
