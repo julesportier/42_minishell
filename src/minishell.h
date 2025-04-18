@@ -6,7 +6,7 @@
 /*   By: ecasalin <ecasalin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 07:31:33 by ecasalin          #+#    #+#             */
-/*   Updated: 2025/04/18 11:13:56 by ecasalin         ###   ########.fr       */
+/*   Updated: 2025/04/18 15:52:17 by ecasalin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,8 @@
 #include <stdio.h>
 #include <errno.h>
 #include <stdlib.h>
+#include <sys/types.h>
+#include <sys/wait.h>
 
 #define PIPE 1
 #define OR 2
@@ -67,3 +69,11 @@ char	*ft_fstrjoin(char *s1, char *s2);
 
 /*ENV UTILS*/
 char	**create_paths_array(t_var_data *vars);
+
+/*EXECUTION UTILS*/
+void	execution(t_node *curr_node, char **paths_array, t_var_data *vars);
+int	recursive_exec(t_node *curr_node, t_var_data *vars);
+
+
+/*TEST AND DEBUG*/
+t_node *hardcoded_tree(void);

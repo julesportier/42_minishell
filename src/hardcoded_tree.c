@@ -76,21 +76,21 @@ t_node *hardcoded_tree(void)
 
 	init_node(nodeA, NULL, nodeA1, nodeA2, AND);
 
-	init_node(nodeA1, NULL, nodeB, nodeC, AND);
-	init_node(nodeB, NULL, nodeB1, nodeB2, AND);
-	init_node(nodeB1, "/bin/echo B1", NULL, NULL, 0);
-	init_node(nodeB2, "/bin/echo B2", NULL, NULL, 0);
-	init_node(nodeC, NULL, nodeC1, nodeC2, AND);
-	init_node(nodeC1, "/bin/echo C1", NULL, NULL, 0);
-	init_node(nodeC2, "/bin/echo C2", NULL, NULL, 0);
+	init_node(nodeA1, NULL, nodeB, nodeC, OR);
+	init_node(nodeB, "/bin/echo B", NULL, NULL, 0);
+	// init_node(nodeB1, "/bin/echo B1", NULL, NULL, 0);
+	// init_node(nodeB2, "/bin/cat", NULL, NULL, 0);
+	init_node(nodeC, "/bin/echo C", NULL, NULL, 0);
+	// init_node(nodeC1, "/bin/echo C1", NULL, NULL, 0);
+	// init_node(nodeC2, "/bin/echo C2", NULL, NULL, 0);
 
-	init_node(nodeA2, NULL, nodeD, nodeE, AND);
-	init_node(nodeD, NULL, nodeD1, nodeD2, AND);
-	init_node(nodeD1, "/bin/echo D1", NULL, NULL, 0);
-	init_node(nodeD2, "/bin/echo D2", NULL, NULL, 0);
-	init_node(nodeE, NULL, nodeE1, nodeE2, AND);
-	init_node(nodeE1, "/bin/echo E1", NULL, NULL, 0);
-	init_node(nodeE2, "/bin/echo E2", NULL, NULL, 0);
+	init_node(nodeA2, "/bin/echo A2", NULL, NULL, 0);
+	// init_node(nodeD, NULL, nodeD1, nodeD2, AND);
+	// init_node(nodeD1, "/bin/echo D1", NULL, NULL, 0);
+	// init_node(nodeD2, "/bin/echo D2", NULL, NULL, 0);
+	// init_node(nodeE, NULL, nodeE1, nodeE2, AND);
+	// init_node(nodeE1, "/bin/echo E1", NULL, NULL, 0);
+	// init_node(nodeE2, "/bin/echo E2", NULL, NULL, 0);
 
 	// print_tree_node(nodeA);
 	// print_tree_node(nodeA1);
@@ -110,9 +110,14 @@ t_node *hardcoded_tree(void)
 	return (nodeA);
 }
 
-int	main(void)
+int	main(int ac, char **av, char **env)
 {
 	t_node	*tree;
+	t_var_data vars;
+
+	vars.env = env;
 
 	tree = hardcoded_tree();
+	return (recursive_exec(tree, &vars));
+
 }
