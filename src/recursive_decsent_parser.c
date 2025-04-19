@@ -6,7 +6,7 @@
 /*   By: kura <kura@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 06:55:11 by ecasalin          #+#    #+#             */
-/*   Updated: 2025/04/19 11:39:01 by kura             ###   ########.fr       */
+/*   Updated: 2025/04/19 14:35:20 by kura             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -160,7 +160,10 @@ int	recursive_exec(t_node *curr_node, t_var_data *vars)
 		{
 			link_pipe_to_stdout(pip);
 			if (curr_node->left)
+			{
 				vars->last_cmd_ext_code = (recursive_exec(curr_node->left, vars));
+				exit(vars->last_cmd_ext_code);
+			}
 			else
 				prepare_to_exec(curr_node, vars);
 		}
@@ -170,7 +173,10 @@ int	recursive_exec(t_node *curr_node, t_var_data *vars)
 		{
 			link_pipe_to_stdin(pip);
 			if (curr_node->right)
+			{
 				vars->last_cmd_ext_code = (recursive_exec(curr_node->right, vars));
+				exit(vars->last_cmd_ext_code);
+			}
 			else
 				prepare_to_exec(curr_node, vars);
 		}
@@ -179,22 +185,21 @@ int	recursive_exec(t_node *curr_node, t_var_data *vars)
 			close(pip[READ]);
 			close(pip[WRITE]);
 			vars->last_cmd_ext_code = wait_childs(child_pid);
-			// if (curr_node->prev)
-			exit(vars->last_cmd_ext_code);
-			// return (vars->last_cmd_ext_code);
+			return (vars->last_cmd_ext_code);
 		}
 	}
-	if (curr_node->left)
-		vars->last_cmd_ext_code = (recursive_exec(curr_node->left, vars));
-	else
-		vars->last_cmd_ext_code = prepare_to_exec(curr_node, vars);
-	if (check_right_cmd_conditions(curr_node, vars->last_cmd_ext_code))
-	{
-		if (curr_node->right)
-			vars->last_cmd_ext_code = (recursive_exec(curr_node->right, vars));
+		if (curr_node->left)
+			vars->last_cmd_ext_code = (recursive_exec(curr_node->left, vars));
 		else
 			vars->last_cmd_ext_code = prepare_to_exec(curr_node, vars);
-	}
+		if (check_right_cmd_conditions(curr_node, vars->last_cmd_ext_code))
+		{
+			if (curr_node->right)
+				vars->last_cmd_ext_code = (recursive_exec(curr_node->right, vars));
+			else
+				vars->last_cmd_ext_code = prepare_to_exec(curr_node, vars);
+		}
+
 	return (vars->last_cmd_ext_code);
 }
 

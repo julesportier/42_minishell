@@ -77,13 +77,17 @@ t_node *hardcoded_tree(void)
 
 																																																		init_node(nodeA, NULL, nodeA1, nodeA2, PIPE, "A");
 																																																																																																																										;
-																							init_node(nodeA1, NULL, nodeB, nodeC, PIPE, "A1");																																																	init_node(nodeA2, NULL, nodeD, nodeE, PIPE, "A2");
+																							init_node(nodeA1, NULL, nodeB, nodeC, AND, "A1");																																																	/*init_node(nodeA2, NULL, nodeD, nodeE, PIPE, "A2");*/
 																																																																																																																															;
-							init_node(nodeB, "/bin/echo 1", nodeB1, nodeB2, OR, "B"); 															init_node(nodeC, "/bin/cat", nodeC1, nodeC2, PIPE, "C");																	init_node(nodeD, "/bin/sleep 5", nodeD1, nodeD2, PIPE, "D");														 init_node(nodeE, "bin/grep", nodeE1, nodeE2, PIPE, "E");
+							init_node(nodeB, "/bin/echo 1", NULL, NULL, 0, "B"); 															init_node(nodeC, "/bin/echo LOL", NULL, NULL, 0, "C");																		init_node(nodeA2, "/bin/cat", NULL, NULL, 0, "D");														/* init_node(nodeE, "bin/grep", nodeE1, nodeE2, PIPE, "E");*/
 																																																																																																																											;
-	init_node(nodeB1, "/bin/grep", NULL, NULL, 0, "B1"); init_node(nodeB2, "/bin/echo EVIL", NULL, NULL, 0, "B2");			init_node(nodeC1, "/bin/cat", NULL, NULL, 0, "C1"); init_node(nodeC2, "/bin/cat", NULL, NULL, 0, "C2");					init_node(nodeD1, "/bin/cat", NULL, NULL, 0, "D1"); init_node(nodeD2, "/bin/cat", NULL, NULL, 0, "D2");				init_node(nodeE1, "/bin/cat", NULL, NULL, 0, "E1"); init_node(nodeE2, "/bin/cat", NULL, NULL, 0, "E2");
+	init_node(nodeB1, "/bin/echo 1", NULL, NULL, 0, "B1"); 						init_node(nodeB2, NULL, nodeC1, nodeC2, OR, "B2");		/*	init_node(nodeC1, "/bin/cat", NULL, NULL, 0, "C1"); init_node(nodeC2, "/bin/cat", NULL, NULL, 0, "C2");		*/
 
+										init_node(nodeC1, "/bin/grep", NULL, NULL, 0, "E1"); 												init_node(nodeC2, NULL, nodeD, nodeE, OR, "E2");
 
+																											init_node(nodeD, "/bin/cat", nodeD1, nodeD2, PIPE, "E1");						 init_node(nodeE, "/bin/echo 5", NULL, NULL, 0, "E2");
+
+																					init_node(nodeD1, "/bin/echo 3", NULL, NULL, 0, "D1"); 	init_node(nodeD2, "/bin/echo 4", NULL, NULL, 0, "D2");
 
 
 
