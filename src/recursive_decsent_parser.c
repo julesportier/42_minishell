@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   recursive_decsent_parser.c                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ecasalin <ecasalin@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kura <kura@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 06:55:11 by ecasalin          #+#    #+#             */
-/*   Updated: 2025/04/18 16:00:25 by ecasalin         ###   ########.fr       */
+/*   Updated: 2025/04/19 11:39:01 by kura             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@
 // 	// expand_args(curr_node->cmd.cmd, vars);
 // 	// expand_redirections(curr_node->cmd.input, curr_node->cmd.output, vars);
 // 	// set_redirections(curr_node->cmd.input, curr_node->cmd.output);
-	
+
 // }
 
 int	get_exit_code(int child_exit_status)
@@ -72,7 +72,7 @@ int	get_exit_code(int child_exit_status)
 int	wait_childs(int second_child_pid)
 {
 	int	child_exit_status;
-	
+
 	waitpid(second_child_pid, &child_exit_status, 0);
 	waitpid(0, NULL, 0);
 	return (get_exit_code(child_exit_status));
@@ -151,7 +151,7 @@ int	recursive_exec(t_node *curr_node, t_var_data *vars)
 {
 	int	pip[2];
 	int	child_pid;
-	
+
 	if (curr_node->op == PIPE)
 	{
 		pipe(pip);
@@ -179,7 +179,9 @@ int	recursive_exec(t_node *curr_node, t_var_data *vars)
 			close(pip[READ]);
 			close(pip[WRITE]);
 			vars->last_cmd_ext_code = wait_childs(child_pid);
-			return (vars->last_cmd_ext_code);
+			// if (curr_node->prev)
+			exit(vars->last_cmd_ext_code);
+			// return (vars->last_cmd_ext_code);
 		}
 	}
 	if (curr_node->left)
@@ -202,7 +204,7 @@ int	recursive_exec(t_node *curr_node, t_var_data *vars)
 // 	static t_pipes_data	pipes;
 // 	int					pipeline_pid;
 // 	int					pipeline_exit;
-	
+
 // 	pipeline_pid = 0;
 // 	if (!pipes.is_init)
 // 		pipes = (t_pipes_data){{-1, -1}, {-1, -1}, 0, 1};

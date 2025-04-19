@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ecasalin <ecasalin@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kura <kura@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 07:31:33 by ecasalin          #+#    #+#             */
-/*   Updated: 2025/04/18 15:52:17 by ecasalin         ###   ########.fr       */
+/*   Updated: 2025/04/19 08:47:07 by kura             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,7 @@ typedef	struct s_node
 	struct s_node	*right;
 	char			op;
 	char			**cmd;
+	char			*name;
 }				t_node;
 
 typedef	struct s_pipes_data
