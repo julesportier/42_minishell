@@ -79,15 +79,15 @@ t_node *hardcoded_tree(void)
 																																																																																																																										;
 																							init_node(nodeA1, NULL, nodeB, nodeC, AND, "A1");																																																	/*init_node(nodeA2, NULL, nodeD, nodeE, PIPE, "A2");*/
 																																																																																																																															;
-							init_node(nodeB, "/bin/echo 1", NULL, NULL, 0, "B"); 															init_node(nodeC, "/bin/echo LOL", NULL, NULL, 0, "C");																		init_node(nodeA2, "/bin/cat", NULL, NULL, 0, "D");														/* init_node(nodeE, "bin/grep", nodeE1, nodeE2, PIPE, "E");*/
-																																																																																																																											;
+							init_node(nodeB, "/bin/echo 1", NULL, NULL, 0, "B"); 															init_node(nodeC, "/bin/echo sleep", NULL, NULL, 0, "C");																		init_node(nodeA2, "/bin/cat", nodeD1, nodeD2, PIPE, "D");														/* init_node(nodeE, "bin/grep", nodeE1, nodeE2, PIPE, "E");*/
+																																																													init_node(nodeD1, "/bin/echo 3", NULL, NULL, 0, "D1"); 	init_node(nodeD2, "/bin/cat", NULL, NULL, 0, "D2");																																																		;
 	init_node(nodeB1, "/bin/echo 1", NULL, NULL, 0, "B1"); 						init_node(nodeB2, NULL, nodeC1, nodeC2, OR, "B2");		/*	init_node(nodeC1, "/bin/cat", NULL, NULL, 0, "C1"); init_node(nodeC2, "/bin/cat", NULL, NULL, 0, "C2");		*/
 
 										init_node(nodeC1, "/bin/grep", NULL, NULL, 0, "E1"); 												init_node(nodeC2, NULL, nodeD, nodeE, OR, "E2");
 
 																											init_node(nodeD, "/bin/cat", nodeD1, nodeD2, PIPE, "E1");						 init_node(nodeE, "/bin/echo 5", NULL, NULL, 0, "E2");
 
-																					init_node(nodeD1, "/bin/echo 3", NULL, NULL, 0, "D1"); 	init_node(nodeD2, "/bin/echo 4", NULL, NULL, 0, "D2");
+																					
 
 
 
@@ -121,6 +121,6 @@ int	main(int ac, char **av, char **env)
 	vars.env = env;
 
 	tree = hardcoded_tree();
-	return (recursive_exec(tree, &vars));
+	return (exec_cmd_tree(tree, &vars));
 
 }

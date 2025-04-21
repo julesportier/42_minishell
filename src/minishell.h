@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kura <kura@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: ecasalin <ecasalin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 07:31:33 by ecasalin          #+#    #+#             */
-/*   Updated: 2025/04/19 08:47:07 by kura             ###   ########.fr       */
+/*   Updated: 2025/04/21 16:36:08 by ecasalin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,8 @@
 #define SUCCESS 0
 #define LEFT 1
 #define RIGHT 2
+#define INTERNAL_ERR -1
+#define FAILURE -1
 
 typedef	struct s_cmd
 {
@@ -61,8 +63,13 @@ typedef	struct s_var_data
 	int		last_cmd_ext_code;
 }				t_var_data;
 
+/*PRINTING_ERRORS*/
+int		return_perror(char *err_msg, int return_value);
+
 /*CLEANING UTILS*/
 void	*free_array(char **array, int i);
+int		close_pipe_perror(char *err_msg, int return_value, int *pipe);
+int		close_pipe(int *pipe);
 
 /*LIBFT FUNCTIONS VARIANTS*/
 size_t	ft_nstrlen(const char *s);
@@ -73,8 +80,15 @@ char	**create_paths_array(t_var_data *vars);
 
 /*EXECUTION UTILS*/
 void	execution(t_node *curr_node, char **paths_array, t_var_data *vars);
-int	recursive_exec(t_node *curr_node, t_var_data *vars);
+int		exec_cmd_tree(t_node *curr_node, t_var_data *vars);
+int		prepare_to_exec(t_node *curr_node, t_var_data *vars);
 
+/*PIPELINE HANDLING*/
+int	fork_pipeline_sides(t_node *curr_node, t_var_data *vars);
+
+/*SUBPROCESS UTILS*/
+int	wait_childs(int second_child_pid);
+int	get_exit_code(int child_exit_status);
 
 /*TEST AND DEBUG*/
 t_node *hardcoded_tree(void);

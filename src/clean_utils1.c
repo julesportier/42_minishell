@@ -6,7 +6,7 @@
 /*   By: ecasalin <ecasalin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/24 09:30:22 by erik              #+#    #+#             */
-/*   Updated: 2025/04/18 07:39:50 by ecasalin         ###   ########.fr       */
+/*   Updated: 2025/04/21 15:08:48 by ecasalin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,26 @@ int	close_fd(int *fd)
 	}
 	*fd = -1;
 	return (1);
+}
+
+int	close_pipe(int *pipe)
+{
+	int	temp1;
+	int	temp2;
+	
+	temp1 = close(pipe[READ]);
+	temp2 = close(pipe[WRITE]);
+	if (temp1 == FAILURE || temp2 == FAILURE)
+		return (FAILURE);
+	return (SUCCESS);
+}
+
+int	close_pipe_perror(char *err_msg, int return_value, int *pipe)
+{
+	if (err_msg)
+		perror(err_msg);
+	close_pipe(pipe);
+	return (return_value);
 }
 
 // int	close_pipe_fds(int *pipe)

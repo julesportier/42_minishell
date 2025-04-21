@@ -6,11 +6,40 @@
 /*   By: ecasalin <ecasalin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/28 15:00:16 by ecasalin          #+#    #+#             */
-/*   Updated: 2025/04/18 14:49:48 by ecasalin         ###   ########.fr       */
+/*   Updated: 2025/04/21 14:37:13 by ecasalin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+// int	execution(t_node *curr_node, char **paths_array, t_var_data *vars)
+// {
+// 	// expand_args(curr_node->cmd.cmd, vars);
+// 	// expand_redirections(curr_node->cmd.input, curr_node->cmd.output, vars);
+// 	// set_redirections(curr_node->cmd.input, curr_node->cmd.output);
+// }
+
+int	prepare_to_exec(t_node *curr_node, t_var_data *vars)
+{
+	char	**paths_array;
+	int		child_pid;
+	int		child_exit_status;
+
+	paths_array = create_paths_array(vars);
+	// if (is_builtin(curr_node->cmd))
+		// return (exec_builtin(curr_node, vars));
+	if (curr_node->prev && curr_node->prev->op == PIPE)
+		execution(curr_node, paths_array, vars);
+	child_pid = fork();
+	if (child_pid == CHILD)
+		execution(curr_node, paths_array, vars);
+	else
+	{
+		waitpid(child_pid, &child_exit_status, 0);
+		return (get_exit_code(child_exit_status));
+	}
+	return (ERROR);
+}
 
 static void	exec_cmd(char **array1, char **array2, int i, t_var_data *vars)
 {
