@@ -6,7 +6,7 @@
 /*   By: ecasalin <ecasalin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 07:31:33 by ecasalin          #+#    #+#             */
-/*   Updated: 2025/04/21 16:36:08 by ecasalin         ###   ########.fr       */
+/*   Updated: 2025/04/23 09:46:52 by ecasalin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@
 #define RIGHT 2
 #define INTERNAL_ERR -1
 #define FAILURE -1
+#define FATAL -2
 
 typedef	struct s_cmd
 {

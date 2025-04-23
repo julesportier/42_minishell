@@ -6,7 +6,7 @@
 /*   By: ecasalin <ecasalin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/21 14:19:24 by ecasalin          #+#    #+#             */
-/*   Updated: 2025/04/21 17:00:37 by ecasalin         ###   ########.fr       */
+/*   Updated: 2025/04/23 07:03:12 by ecasalin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,10 @@ int	fork_pipeline_sides(t_node *curr_node, t_var_data *vars)
 	if (child_pid == CHILD)
 		continue_pipeline_right_process(curr_node, pip, vars);
 	if (close_pipe(pip) == FAILURE)
+	{
+		wait_childs(child_pid);
 		return (return_perror("INTERNAL ERROR", INTERNAL_ERR));
+	}
 	vars->last_cmd_ext_code = wait_childs(child_pid);
 	return (vars->last_cmd_ext_code);
 }
