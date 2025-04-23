@@ -6,11 +6,13 @@
 /*   By: ecasalin <ecasalin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 07:07:22 by ecasalin          #+#    #+#             */
-/*   Updated: 2025/04/23 11:26:10 by ecasalin         ###   ########.fr       */
+/*   Updated: 2025/04/23 15:54:07 by ecasalin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../minishell.h"
+#include "../exec/exec.h"
+#include "../../libft/src/libft.h"
 
 static int	is_valid_flag(char *arg)
 {
@@ -35,18 +37,18 @@ static int	fill_buffer(char **args, int i, char **buffer, int n_flag)
 	{
 		*buffer = ft_fstrjoin(*buffer, args[i]);
 		if (*buffer == NULL)
-			return (FATAL);
+			return (CRIT_ERROR);
 		if (args[i + 1])
 			*buffer = ft_fstrjoin(*buffer, " ");
 		if (*buffer == NULL)
-			return (FATAL);
+			return (CRIT_ERROR);
 		i++;
 	}
 	if (!n_flag)
 	{	
 		*buffer = ft_fstrjoin(*buffer, "\n");
 		if (*buffer == NULL)
-			return (FATAL);
+			return (CRIT_ERROR);
 	}
 	return (SUCCESS);
 }
@@ -80,16 +82,16 @@ int	ms_echo(char **args)
 		else
 			break;
 	}
-	if (fill_buffer(args, i, &buffer, n_flag) == FATAL)
-		return (return_perror("ECHO BUILTIN FATAL ERROR", FATAL));
+	if (fill_buffer(args, i, &buffer, n_flag) == CRIT_ERROR)
+		return (return_perror("ECHO BUILTIN CRIT_ERROR ERROR", CRIT_ERROR));
 	return (write_and_free_buffer(buffer));
 }
 
-// int	main(int ac, char *av[])
-// {
-// 	int	return_val;
+int	main(int ac, char *av[])
+{
+	int	return_val;
 
-// 	return_val = ms_echo(&av[1]);
-// 	printf("\n%d\n", return_val);
-// }
+	return_val = ms_echo(&av[1]);
+	printf("\n%d\n", return_val);
+}
 

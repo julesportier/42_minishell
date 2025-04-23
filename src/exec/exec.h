@@ -10,7 +10,8 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../libft/src/libft.h"
+#include "../../libft/src/libft.h"
+#include "../minishell.h"
 
 #include <unistd.h>
 #include <stdio.h>
@@ -29,9 +30,8 @@
 #define SUCCESS 0
 #define LEFT 1
 #define RIGHT 2
-#define INTERNAL_ERR -1
 #define FAILURE -1
-#define FATAL -2
+#define CRIT_ERROR 2
 
 typedef	struct s_cmd
 {
@@ -63,13 +63,6 @@ typedef	struct s_var_data
 	char	**env;
 	int		last_cmd_ext_code;
 }				t_var_data;
-
-typedef enum	e_error
-{
-	success = 0,
-	critical,
-	recoverable
-}	t_error;
 
 /*PRINTING_ERRORS*/
 int		return_perror(char *err_msg, int return_value);

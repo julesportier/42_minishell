@@ -6,11 +6,12 @@
 /*   By: ecasalin <ecasalin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/15 10:42:36 by ecasalin          #+#    #+#             */
-/*   Updated: 2025/04/23 14:14:55 by ecasalin         ###   ########.fr       */
+/*   Updated: 2025/04/23 15:46:40 by ecasalin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+#include "../libft/src/libft.h"
 
 char	*ft_fstrjoin(char *s1, char *s2)
 {
