@@ -6,11 +6,11 @@
 /*   By: ecasalin <ecasalin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 11:28:04 by ecasalin          #+#    #+#             */
-/*   Updated: 2025/04/18 07:37:36 by ecasalin         ###   ########.fr       */
+/*   Updated: 2025/04/23 14:07:33 by ecasalin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "exec.h"
 
 static char	*extract_path_var(char **envp, t_var_data *vars)
 {

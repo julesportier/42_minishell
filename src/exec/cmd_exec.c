@@ -6,11 +6,11 @@
 /*   By: ecasalin <ecasalin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/28 15:00:16 by ecasalin          #+#    #+#             */
-/*   Updated: 2025/04/21 14:37:13 by ecasalin         ###   ########.fr       */
+/*   Updated: 2025/04/23 14:14:55 by ecasalin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "exec.h"
 
 // int	execution(t_node *curr_node, char **paths_array, t_var_data *vars)
 // {
@@ -71,7 +71,7 @@ void	execution(t_node *curr_node, char **paths_array, t_var_data *vars)
 
 	i = 0;
 	if (paths_array != NULL && ft_strnstr(curr_node->cmd[0],
-			"/", ft_nstrlen(curr_node->cmd[0])) == NULL)
+			"/", ft_strlen(curr_node->cmd[0])) == NULL)
 	{
 		while (paths_array != NULL && paths_array[i] != NULL)
 		{

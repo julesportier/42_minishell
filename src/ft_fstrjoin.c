@@ -6,7 +6,7 @@
 /*   By: ecasalin <ecasalin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/15 10:42:36 by ecasalin          #+#    #+#             */
-/*   Updated: 2025/04/18 07:40:02 by ecasalin         ###   ########.fr       */
+/*   Updated: 2025/04/23 14:14:55 by ecasalin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ char	*ft_fstrjoin(char *s1, char *s2)
 	int		i;
 	int		j;
 
-	joined = malloc(ft_nstrlen(s1) + ft_nstrlen(s2) + 1);
+	joined = malloc(ft_strlen(s1) + ft_strlen(s2) + 1);
 	if (joined == NULL)
 		return (free(s1), NULL);
 	i = 0;

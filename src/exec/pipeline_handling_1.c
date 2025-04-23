@@ -6,11 +6,11 @@
 /*   By: ecasalin <ecasalin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/21 14:19:24 by ecasalin          #+#    #+#             */
-/*   Updated: 2025/04/23 07:03:12 by ecasalin         ###   ########.fr       */
+/*   Updated: 2025/04/23 14:07:33 by ecasalin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "exec.h"
 
 static int	link_pipe_to_stdout(int *pip)
 {

@@ -1,5 +1,5 @@
 
-#include "minishell.h"
+#include "exec.h"
 
 void init_node(t_node *node, char *cmd, t_node *left, t_node *right, int op, char *name)
 {

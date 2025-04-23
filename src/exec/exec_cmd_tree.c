@@ -6,11 +6,11 @@
 /*   By: ecasalin <ecasalin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 06:55:11 by ecasalin          #+#    #+#             */
-/*   Updated: 2025/04/21 16:36:24 by ecasalin         ###   ########.fr       */
+/*   Updated: 2025/04/23 14:07:33 by ecasalin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "exec.h"
 
 static int	recurse_left_side(t_node *curr_node, t_var_data *vars)
 {

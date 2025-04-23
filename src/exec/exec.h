@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.h                                        :+:      :+:    :+:   */
+/*   exec.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ecasalin <ecasalin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 07:31:33 by ecasalin          #+#    #+#             */
-/*   Updated: 2025/04/23 09:46:52 by ecasalin         ###   ########.fr       */
+/*   Updated: 2025/04/23 13:35:43 by ecasalin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,13 @@ typedef	struct s_var_data
 	int		last_cmd_ext_code;
 }				t_var_data;
 
+typedef enum	e_error
+{
+	success = 0,
+	critical,
+	recoverable
+}	t_error;
+
 /*PRINTING_ERRORS*/
 int		return_perror(char *err_msg, int return_value);
 
@@ -73,7 +80,7 @@ int		close_pipe_perror(char *err_msg, int return_value, int *pipe);
 int		close_pipe(int *pipe);
 
 /*LIBFT FUNCTIONS VARIANTS*/
-size_t	ft_nstrlen(const char *s);
+size_t	ft_strlen(const char *s);
 char	*ft_fstrjoin(char *s1, char *s2);
 
 /*ENV UTILS*/
