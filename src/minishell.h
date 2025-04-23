@@ -3,15 +3,20 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: juportie <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: ecasalin <ecasalin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 16:31:37 by juportie          #+#    #+#             */
-/*   Updated: 2025/04/22 17:51:15 by juportie         ###   ########.fr       */
+/*   Updated: 2025/04/23 14:33:01 by ecasalin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
+
+#define FAILURE -1
+#define SUCCESS 0
+#define ERROR 1
+#define CRIT_ERROR 2
 
 typedef enum	e_bool
 {
@@ -22,8 +27,14 @@ typedef enum	e_bool
 typedef enum	e_error
 {
 	success = 0,
-	critical,
-	recoverable
+	recoverable,
+	critical
 }	t_error;
+
+typedef	struct s_shell_vars
+{
+	char	**env;
+	int		last_cmd_ext_code;
+}				t_shell_vars;
 
 #endif
