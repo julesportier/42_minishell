@@ -22,19 +22,28 @@ static int	is_separator(char c)
 	return (c == ' ');
 }
 
-static void	advance_scan(int *pos)
+static int	is_meta(char *str)
 {
-	(*pos)++;
+	return (str[0] == '\''
+			|| str[0] == '"'
+			|| str[0] == '*'
+			|| (str[0] == '|' && str[1] == '|')
+			|| (str[0] == '&' && str[1] == '&')
+			|| str[0] == '|'
+			|| str[0] == '('
+			|| str[0] == ')'
+			|| str[0] == '>'
+			|| (str[0] == '>' && str[1] == '>')
+			|| str[0] == '<')
+			|| (str[0] == '<' && str[1] == '<');
 }
 
-void	extract_wildcard(t_word *token, int *pos)
-{
-	(*pos)++;
-	token->type = wildcard;
-	token->str = NULL;
-}
+//static void	advance_scan(int *pos)
+//{
+//	(*pos)++;
+//}
 
-void	extract_quotes(t_word *token, char *line, int *pos, t_error *error)
+static int	extract_quotes(t_word *token, char *line, int *pos)
 {
 	int	start;
 	char	quote;
@@ -45,23 +54,49 @@ void	extract_quotes(t_word *token, char *line, int *pos, t_error *error)
 		(*pos)++;
 	if (line[*pos] == '\0')
 	{
-		*error = recoverable;
 		printf("minishell: syntax error: unclosed '%c'\n", quote); // PUT THIS IN A SYNTAX ERROR FILE
-		return ;
+		return (ERROR);
 	}
 	if (quote == '"')
 		token->type = double_quotes;
 	else
-		token->type = literal;
+		token->type = single_quotes;
 	token->str = ft_strdup(ft_substr(line, start, *pos - start)); // Returns "\0" for "" as input.
 	if (token->str == NULL)
-	{
-		*error = critical;
-		return ;
-	}
+		return (CRIT_ERROR);
+	return (SUCCESS);
 }
 
-t_word	*extract_token(char *line, int *pos, t_error *error)
+static int	extract_plain(t_word *token, char *line, int *pos)
+{
+	int	start;
+
+	start = *pos;
+	while (!is_meta(&line[*pos]) && !is_separator(line[*pos]) && line[*pos] != '\0')
+		(*pos)++;
+	token->type = plain;
+	token->str = ft_strdup(ft_substr(line, start, *pos - start)); // Returns "\0" for "" as input.
+	if (token->str == NULL)
+		return (CRIT_ERROR);
+	return (SUCCESS);
+}
+
+static void	extract_double_meta(t_word *token, enum e_token_type type, int *pos)
+{
+	(*pos) += 2;
+	token->str = NULL;
+	token->type = type;
+}
+
+static void	extract_single_meta(t_word *token, enum e_token_type type, int *pos)
+{
+	(*pos)++;
+	token->str = NULL;
+	token->type = type;
+}
+
+// Needs error pointer to discrimine between critical and recoverable errors.
+static t_word	*extract_token(char *line, int *pos, t_error *error)
 {
 	t_word	*token;
 
@@ -78,18 +113,43 @@ t_word	*extract_token(char *line, int *pos, t_error *error)
 		pos++;
 	}
 	if (line[*pos] == '"' || line[*pos] == '\'')
-		extract_quotes(token, line, pos, error);
+		*error = extract_quotes(token, line, pos);
 	else if (line[*pos] == '*')
-		extract_wildcard(token, pos);
+		extract_single_meta(token, wildcard, pos);
+	else if (line[*pos] == '|')
+	{
+		if (line[*pos + 1] == '|')
+			extract_double_meta(token, or, pos);
+		else
+			extract_single_meta(token, pipeline, pos);
+	}
+	else if (line[*pos] == '&' && line[*pos + 1] == '&')
+		extract_double_meta(token, and, pos);
 	else if (line[*pos] == '(')
-		extract_left_parenthesis(token, pos);
-
+		extract_single_meta(token, left_parenthesis, pos);
+	else if (line[*pos] == ')')
+		extract_single_meta(token, right_parenthesis, pos);
+	else if (line[*pos] == '<')
+	{
+		if (line[*pos + 1] == '<')
+			extract_double_meta(token, heredoc, pos);
+		else
+			extract_single_meta(token, redir_input, pos);
+	}
+	else if (line[*pos] == '>')
+	{
+		if (line[*pos + 1] == '>')
+			extract_double_meta(token, append_output, pos);
+		else
+			extract_single_meta(token, redir_output, pos);
+	}
+	else
+		*error = extract_plain(token, line, pos);
 	if (error)
 	{
 		free (token);
 		token = NULL;
 	}
-
 	return (token);
 }
 

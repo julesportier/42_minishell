@@ -17,18 +17,19 @@
 
 enum	e_token_type
 {
-	literal,
+	plain,
+	single_quotes,
 	double_quotes,
-	variable,
+	//variable,
 	wildcard,
 	or,
 	and,
 	pipeline,
 	left_parenthesis,
 	right_parenthesis,
-	redir_input,
 	redir_output,
 	append_output,
+	redir_input,
 	heredoc
 };
 
