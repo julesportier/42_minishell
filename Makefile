@@ -20,7 +20,8 @@ vpath %.c $(SRC_DIR):$(SRC_PARSING_DIR)
 # Replace the 2 lines above by sources files names for release
 SRC := $(wildcard $(SRC_DIR)/*.c)
 SRC := $(patsubst $(SRC_DIR)/%.c, %.c, $(SRC))
-SRC += lexer.c
+SRC += lexer.c \
+	   lexer_utils.c
 
 BUILD_DIR := build
 OBJ := $(addprefix $(BUILD_DIR)/, $(SRC:.c=.o))

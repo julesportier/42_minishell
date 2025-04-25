@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parser.h                                           :+:      :+:    :+:   */
+/*   parsing.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: juportie <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 10:24:06 by juportie          #+#    #+#             */
-/*   Updated: 2025/04/22 10:24:30 by juportie         ###   ########.fr       */
+/*   Updated: 2025/04/25 13:50:52 by juportie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,12 +15,15 @@
 
 # include "../minishell.h"
 
+# define DEBUG 1
+
 enum	e_token_type
 {
+	literal,
 	plain,
 	single_quotes,
 	double_quotes,
-	//variable,
+	variable,
 	wildcard,
 	or,
 	and,
