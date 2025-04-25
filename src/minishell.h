@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ecasalin <ecasalin@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kura <kura@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 16:31:37 by juportie          #+#    #+#             */
-/*   Updated: 2025/04/23 14:33:01 by ecasalin         ###   ########.fr       */
+/*   Updated: 2025/04/25 18:25:47 by kura             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@
 #define SUCCESS 0
 #define ERROR 1
 #define CRIT_ERROR 2
+#define READ 0
+#define WRITE 1
 
 typedef enum	e_bool
 {
