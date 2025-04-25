@@ -3,34 +3,28 @@
 /*                                                        :::      ::::::::   */
 /*   init_env_array.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ecasalin <ecasalin@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kura <kura@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 08:01:52 by ecasalin          #+#    #+#             */
-/*   Updated: 2025/04/24 11:19:59 by ecasalin         ###   ########.fr       */
+/*   Updated: 2025/04/25 17:12:13 by kura             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <unistd.h>
 #include "../../libft/src/libft.h"
+#include "../error_handling/errors.h"
+#include "../general_utils/utils.h"
 #include "../minishell.h"
 
-static void *set_err_return_null(t_error *error, t_error err_value)
-{
-	*error = err_value;
-	return (NULL);
-}
-
-char	**malloc_env_array(char **envp, t_error *error)
+char	**init_env_array(char **env, t_error *error)
 {
 	char	**env_array;
 	int		i;
-	
+
 	*error = success;
-	i = 0;
-	if (envp == NULL)
+	i = count_array_len(env);
+	if (env == NULL)
 		return (NULL);
-	while (envp[i])
-		i++;
 	env_array = malloc((i + 1) * sizeof(char *));
 	if (env_array == NULL)
 		return (set_err_return_null(error, critical));
@@ -38,7 +32,7 @@ char	**malloc_env_array(char **envp, t_error *error)
 	i--;
 	while (i >= 0)
 	{
-		env_array[i] = ft_strdup(envp[i]);
+		env_array[i] = ft_strdup(env[i]);
 		if (env_array[i] == NULL)
 		{
 			free_array(env_array);
@@ -49,10 +43,6 @@ char	**malloc_env_array(char **envp, t_error *error)
 	return (env_array);
 }
 
-char	**add_var_to_env(t_shell_vars *vars)
-{
-	
-}
 // #include <stdio.h>
 // int	main(int ac, char *av[], char *envp[])
 // {
@@ -61,7 +51,7 @@ char	**add_var_to_env(t_shell_vars *vars)
 // 	int		i;
 
 // 	i = 0;
-// 	env_array = malloc_env_array(envp, &error);
+// 	env_array = init_env_array(envp, &error);
 // 	if (env_array == NULL)
 // 		return (printf("ENV = NULL"), 0);
 // 	printf("ENVP:\n\n");
@@ -70,6 +60,10 @@ char	**add_var_to_env(t_shell_vars *vars)
 // 		printf("%s\n", envp[i]);
 // 		i++;
 // 	}
+// 	// env_array = add_var_to_env(env_array, "VAR=TEST");
+// 	// env_array = add_var_to_env(env_array, "VAR2=TEST2");
+// 	// if (env_array == NULL)
+// 	// 	return (printf("VAR_ADD: FAIL\n"));
 // 	printf("\n\nENV_ARRAY:\n\n");
 // 	i = 0;
 // 	while (env_array[i])
