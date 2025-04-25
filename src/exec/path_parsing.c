@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   path_parsing.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ecasalin <ecasalin@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kura <kura@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 11:28:04 by ecasalin          #+#    #+#             */
-/*   Updated: 2025/04/23 14:07:33 by ecasalin         ###   ########.fr       */
+/*   Updated: 2025/04/25 18:11:59 by kura             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,17 +46,19 @@ static char	**parse_path_to_array(char *path_var)
 
 static int	add_slash_to_paths(char **paths_array)
 {
-	int	i;
+	int		i;
+	char	*slashed_line;
 
 	i = 0;
 	while (paths_array[i] != NULL)
 	{
-		paths_array[i] = ft_fstrjoin(paths_array[i], "/");
-		if (paths_array[i] == NULL)
+		slashed_line = ft_fstrjoin(paths_array[i], "/");
+		if (slashed_line == NULL)
 		{
-			free_array(paths_array, i);
+			free_array(paths_array);
 			return (ERROR);
 		}
+		paths_array[i] = slashed_line;
 		i++;
 	}
 	return (SUCCESS);

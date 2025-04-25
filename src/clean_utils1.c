@@ -3,42 +3,29 @@
 /*                                                        :::      ::::::::   */
 /*   clean_utils1.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ecasalin <ecasalin@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kura <kura@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/24 09:30:22 by erik              #+#    #+#             */
-/*   Updated: 2025/04/21 15:08:48 by ecasalin         ###   ########.fr       */
+/*   Updated: 2025/04/25 18:17:48 by kura             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <unistd.h>
 #include "minishell.h"
 
-void	*free_array(char **array, int i)
+void	*free_array(char **array)
 {
-	int	temp_index;
+	int	i;
 
+	i = 0;
 	if (array == NULL)
 		return (NULL);
-	if (array[i] != NULL)
-		free(array[i]);
-	temp_index = i;
-	if (i != 0)
-	{
-		temp_index--;
-		while (temp_index >= 0 && array[temp_index] != NULL)
-		{
-			free(array[temp_index]);
-			temp_index--;
-		}
-	}
-	i++;
-	while (array[i] != NULL)
+	while (array[i])
 	{
 		free(array[i]);
 		i++;
 	}
 	free(array);
-	array = NULL;
-	return (NULL);
 }
 
 int	close_fd(int *fd)
@@ -56,7 +43,7 @@ int	close_pipe(int *pipe)
 {
 	int	temp1;
 	int	temp2;
-	
+
 	temp1 = close(pipe[READ]);
 	temp2 = close(pipe[WRITE]);
 	if (temp1 == FAILURE || temp2 == FAILURE)
