@@ -6,13 +6,21 @@
 /*   By: kura <kura@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 11:28:04 by ecasalin          #+#    #+#             */
-/*   Updated: 2025/04/25 18:11:59 by kura             ###   ########.fr       */
+/*   Updated: 2025/04/26 11:58:02 by kura             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "../../libft/src/libft.h"
+#include <stdlib.h>
+#include <unistd.h>
+#include "../general_utils/utils.h"
+#include "../error_handling/errors.h"
+#include "../cleaning_utils/cleaning.h"
+#include "exec.h"
+#include "../minishell.h"
 #include "exec.h"
 
-static char	*extract_path_var(char **envp, t_var_data *vars)
+static char	*extract_path_var(char **envp, t_shell_vars *vars)
 {
 	int		i;
 	char	*path_var;
@@ -52,7 +60,7 @@ static int	add_slash_to_paths(char **paths_array)
 	i = 0;
 	while (paths_array[i] != NULL)
 	{
-		slashed_line = ft_fstrjoin(paths_array[i], "/");
+		slashed_line = free_strjoin(paths_array[i], "/");
 		if (slashed_line == NULL)
 		{
 			free_array(paths_array);
@@ -64,7 +72,7 @@ static int	add_slash_to_paths(char **paths_array)
 	return (SUCCESS);
 }
 
-char	**create_paths_array(t_var_data *vars)
+char	**create_paths_array(t_shell_vars *vars)
 {
 	char	**paths_array;
 	char	*path_var;

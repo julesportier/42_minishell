@@ -1,5 +1,13 @@
 
+#include "../../libft/src/libft.h"
+#include <unistd.h>
+#include <stdio.h>
+#include <sys/wait.h>
+#include "../general_utils/utils.h"
+#include "../error_handling/errors.h"
+#include "../cleaning_utils/cleaning.h"
 #include "exec.h"
+#include "../minishell.h"
 
 void init_node(t_node *node, char *cmd, t_node *left, t_node *right, int op, char *name)
 {
@@ -80,14 +88,14 @@ t_node *hardcoded_tree(void)
 																							init_node(nodeA1, NULL, nodeB, nodeC, AND, "A1");																																																	/*init_node(nodeA2, NULL, nodeD, nodeE, PIPE, "A2");*/
 																																																																																																																															;
 							init_node(nodeB, "/bin/echo 1", NULL, NULL, 0, "B"); 															init_node(nodeC, "/bin/echo sleep", NULL, NULL, 0, "C");																		init_node(nodeA2, "/bin/cat", nodeD1, nodeD2, PIPE, "D");														/* init_node(nodeE, "bin/grep", nodeE1, nodeE2, PIPE, "E");*/
-																																																													init_node(nodeD1, "/bin/echo 3", NULL, NULL, 0, "D1"); 	init_node(nodeD2, "/bin/cat", NULL, NULL, 0, "D2");																																																		;
+																																																													init_node(nodeD1, "/bin/cat", NULL, NULL, 0, "D1"); 	init_node(nodeD2, "/bin/cat", NULL, NULL, 0, "D2");																																																		;
 	init_node(nodeB1, "/bin/echo 1", NULL, NULL, 0, "B1"); 						init_node(nodeB2, NULL, nodeC1, nodeC2, OR, "B2");		/*	init_node(nodeC1, "/bin/cat", NULL, NULL, 0, "C1"); init_node(nodeC2, "/bin/cat", NULL, NULL, 0, "C2");		*/
 
 										init_node(nodeC1, "/bin/grep", NULL, NULL, 0, "E1"); 												init_node(nodeC2, NULL, nodeD, nodeE, OR, "E2");
 
 																											init_node(nodeD, "/bin/cat", nodeD1, nodeD2, PIPE, "E1");						 init_node(nodeE, "/bin/echo 5", NULL, NULL, 0, "E2");
 
-																					
+
 
 
 
@@ -116,7 +124,7 @@ t_node *hardcoded_tree(void)
 int	main(int ac, char **av, char **env)
 {
 	t_node	*tree;
-	t_var_data vars;
+	t_shell_vars vars;
 
 	vars.env = env;
 

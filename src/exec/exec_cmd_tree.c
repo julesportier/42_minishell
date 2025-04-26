@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   exec_cmd_tree.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ecasalin <ecasalin@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kura <kura@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 06:55:11 by ecasalin          #+#    #+#             */
-/*   Updated: 2025/04/23 14:07:33 by ecasalin         ###   ########.fr       */
+/*   Updated: 2025/04/26 11:58:02 by kura             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "exec.h"
 
-static int	recurse_left_side(t_node *curr_node, t_var_data *vars)
+static int	recurse_left_side(t_node *curr_node, t_shell_vars *vars)
 {
 	if (curr_node->left)
 		return (exec_cmd_tree(curr_node->left, vars));
@@ -20,7 +20,7 @@ static int	recurse_left_side(t_node *curr_node, t_var_data *vars)
 		return (prepare_to_exec(curr_node, vars));
 }
 
-static int	recurse_right_side(t_node *curr_node, t_var_data *vars)
+static int	recurse_right_side(t_node *curr_node, t_shell_vars *vars)
 {
 	if (curr_node->right)
 		return (exec_cmd_tree(curr_node->right, vars));
@@ -41,7 +41,7 @@ static int	check_right_cmd_conditions(t_node *curr_node, int left_cmd_return)
 	return (1);
 }
 
-int	exec_cmd_tree(t_node *curr_node, t_var_data *vars)
+int	exec_cmd_tree(t_node *curr_node, t_shell_vars *vars)
 {
 	if (curr_node->op == PIPE)
 		return (fork_pipeline_sides(curr_node, vars));

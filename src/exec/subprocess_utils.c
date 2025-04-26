@@ -3,13 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   subprocess_utils.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ecasalin <ecasalin@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kura <kura@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/21 14:20:47 by ecasalin          #+#    #+#             */
-/*   Updated: 2025/04/23 14:07:02 by ecasalin         ###   ########.fr       */
+/*   Updated: 2025/04/26 11:49:05 by kura             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <unistd.h>
+#include <sys/wait.h>
 #include "exec.h"
 
 int	get_exit_code(int child_exit_status)

@@ -1,32 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   clean_utils1.c                                     :+:      :+:    :+:   */
+/*   exec_clean_utils.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: kura <kura@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/24 09:30:22 by erik              #+#    #+#             */
-/*   Updated: 2025/04/25 18:17:48 by kura             ###   ########.fr       */
+/*   Updated: 2025/04/26 12:05:27 by kura             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <stdlib.h>
+#include <stdio.h>
 #include <unistd.h>
-#include "minishell.h"
-
-void	*free_array(char **array)
-{
-	int	i;
-
-	i = 0;
-	if (array == NULL)
-		return (NULL);
-	while (array[i])
-	{
-		free(array[i]);
-		i++;
-	}
-	free(array);
-}
+#include "exec.h"
+#include "../minishell.h"
 
 int	close_fd(int *fd)
 {
