@@ -1,42 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.h                                        :+:      :+:    :+:   */
+/*   general_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: kura <kura@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/22 16:31:37 by juportie          #+#    #+#             */
-/*   Updated: 2025/04/26 11:04:56 by kura             ###   ########.fr       */
+/*   Created: 2025/04/25 16:24:38 by kura              #+#    #+#             */
+/*   Updated: 2025/04/25 17:05:49 by kura             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINISHELL_H
-# define MINISHELL_H
+#include <unistd.h>
+// #include "../libft/src/libft.h"
+#include "../minishell.h"
 
-#define FAILURE -1
-#define SUCCESS 0
-#define ERROR 1
-#define CRIT_ERROR 2
-#define READ 0
-#define WRITE 1
-
-typedef enum	e_bool
+int	count_array_len(char **array)
 {
-	false = 0,
-	true = 1
-}	t_bool;
+	int	i;
 
-typedef enum	e_error
-{
-	success = 0,
-	recoverable,
-	critical
-}	t_error;
-
-typedef	struct s_shell_vars
-{
-	char	**env;
-	int		last_cmd_ext_code;
-}				t_shell_vars;
-
-#endif
+	i = 0;
+	if (array == NULL)
+		return (0);
+	while (array[i])
+		i++;
+	return (i);
+}

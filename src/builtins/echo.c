@@ -3,21 +3,21 @@
 /*                                                        :::      ::::::::   */
 /*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ecasalin <ecasalin@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kura <kura@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 07:07:22 by ecasalin          #+#    #+#             */
-/*   Updated: 2025/04/23 15:54:07 by ecasalin         ###   ########.fr       */
+/*   Updated: 2025/04/26 11:03:15 by kura             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../minishell.h"
-#include "../exec/exec.h"
+#include <unistd.h>
 #include "../../libft/src/libft.h"
+#include "../minishell.h"
 
 static int	is_valid_flag(char *arg)
 {
 	int	i;
-	
+
 	i = 1;
 	if (arg[0] != '-' || !arg[1])
 		return (0);
@@ -45,7 +45,7 @@ static int	fill_buffer(char **args, int i, char **buffer, int n_flag)
 		i++;
 	}
 	if (!n_flag)
-	{	
+	{
 		*buffer = ft_fstrjoin(*buffer, "\n");
 		if (*buffer == NULL)
 			return (CRIT_ERROR);
@@ -60,7 +60,7 @@ static int	write_and_free_buffer(char *buffer)
 	temp = write(1, buffer, ft_strlen(buffer));
 	free(buffer);
 	if (temp == FAILURE)
-		return (return_perror("ECHO BUILTIN FAILURE", ERROR));
+		return (return_perror("bash: echo", ERROR));
 	return (SUCCESS);
 }
 
@@ -69,7 +69,7 @@ int	ms_echo(char **args)
 	int		n_flag;
 	int		i;
 	char	*buffer;
-	
+
 	i = 1;
 	n_flag = 0;
 	while (args[i])
@@ -83,7 +83,7 @@ int	ms_echo(char **args)
 			break;
 	}
 	if (fill_buffer(args, i, &buffer, n_flag) == CRIT_ERROR)
-		return (return_perror("ECHO BUILTIN CRIT_ERROR ERROR", CRIT_ERROR));
+		return (return_perror("bash: echo", CRIT_ERROR));
 	return (write_and_free_buffer(buffer));
 }
 
