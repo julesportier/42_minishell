@@ -3,13 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ecasalin <ecasalin@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kura <kura@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 07:07:22 by ecasalin          #+#    #+#             */
-/*   Updated: 2025/04/24 06:15:20 by ecasalin         ###   ########.fr       */
+/*   Updated: 2025/04/26 12:16:58 by kura             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "../error_handling/errors.h"
+#include "../general_utils/utils.h"
 #include <unistd.h>
 #include "../../libft/src/libft.h"
 #include "../minishell.h"
@@ -17,7 +19,7 @@
 static int	is_valid_flag(char *arg)
 {
 	int	i;
-	
+
 	i = 1;
 	if (arg[0] != '-' || !arg[1])
 		return (0);
@@ -35,18 +37,18 @@ static int	fill_buffer(char **args, int i, char **buffer, int n_flag)
 	*buffer = NULL;
 	while (args[i])
 	{
-		*buffer = ft_fstrjoin(*buffer, args[i]);
+		*buffer = free_strjoin(*buffer, args[i]);
 		if (*buffer == NULL)
 			return (CRIT_ERROR);
 		if (args[i + 1])
-			*buffer = ft_fstrjoin(*buffer, " ");
+			*buffer = free_strjoin(*buffer, " ");
 		if (*buffer == NULL)
 			return (CRIT_ERROR);
 		i++;
 	}
 	if (!n_flag)
-	{	
-		*buffer = ft_fstrjoin(*buffer, "\n");
+	{
+		*buffer = free_strjoin(*buffer, "\n");
 		if (*buffer == NULL)
 			return (CRIT_ERROR);
 	}
@@ -69,7 +71,7 @@ int	ms_echo(char **args)
 	int		n_flag;
 	int		i;
 	char	*buffer;
-	
+
 	i = 1;
 	n_flag = 0;
 	while (args[i])
@@ -87,6 +89,7 @@ int	ms_echo(char **args)
 	return (write_and_free_buffer(buffer));
 }
 
+// #include <stdio.h>
 // int	main(int ac, char *av[])
 // {
 // 	int	return_val;
@@ -94,4 +97,3 @@ int	ms_echo(char **args)
 // 	return_val = ms_echo(&av[1]);
 // 	printf("\n%d\n", return_val);
 // }
-
