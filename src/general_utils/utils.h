@@ -6,13 +6,14 @@
 /*   By: kura <kura@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/25 17:00:23 by kura              #+#    #+#             */
-/*   Updated: 2025/04/25 17:02:41 by kura             ###   ########.fr       */
+/*   Updated: 2025/04/26 11:14:08 by kura             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef UTILS_H
 # define UTILS_H
 
-int	count_array_len(char **array);
+int		count_array_len(char **array);
+char	*free_strjoin(char *s1, char *s2);
 
 #endif
