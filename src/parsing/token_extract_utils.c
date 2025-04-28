@@ -1,37 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   lexer_utils.c                                      :+:      :+:    :+:   */
+/*   token_extract_utils.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: juportie <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/25 09:45:55 by juportie          #+#    #+#             */
-/*   Updated: 2025/04/28 16:56:10 by juportie         ###   ########.fr       */
+/*   Created: 2025/04/28 16:14:05 by juportie          #+#    #+#             */
+/*   Updated: 2025/04/28 16:20:34 by juportie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../minishell.h"
+#include <stdlib.h>
+#include "parsing.h"
 #include "lexer.h"
 
-void	advance(int i, int *pos)
+void	extract_two_char(t_word *token, enum e_token_type type, int *pos)
 {
-	(*pos) += i;
+	advance(2, pos);
+	token->str = NULL;
+	token->type = type;
 }
 
-t_bool	match(char *str, char match)
+void	extract_one_char(t_word *token, enum e_token_type type, int *pos)
 {
-	return (str[0] == match && str[1] == match);
-}
-
-t_bool	skip_spaces(char *line, int *pos)
-{
-	t_bool	skipped;
-
-	skipped = false;
-	while (is_blank(line[*pos]) && line[*pos] != '\0')
-	{
-		skipped = true;
-		advance(1, pos);
-	}
-	return (skipped);
+	advance(1, pos);
+	token->str = NULL;
+	token->type = type;
 }

@@ -6,13 +6,14 @@
 /*   By: juportie <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 10:24:06 by juportie          #+#    #+#             */
-/*   Updated: 2025/04/25 13:50:52 by juportie         ###   ########.fr       */
+/*   Updated: 2025/04/28 16:29:53 by juportie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PARSING_H
 # define PARSING_H
 
+# include "../../libft/src/libft.h"
 # include "../minishell.h"
 
 # define DEBUG 1
@@ -20,8 +21,6 @@
 enum	e_token_type
 {
 	literal,
-	plain,
-	single_quotes,
 	double_quotes,
 	variable,
 	wildcard,
@@ -38,7 +37,7 @@ enum	e_token_type
 
 typedef struct	s_word
 {
-	// 0 or 1, to know if the word is separated by spaces. `echo $HOME"text"1` is
+	// To know if the word is separated by spaces. `echo $HOME"text"1` is
 	// four tokens but expands to two words `echo /home/juportietext1`.
 	t_bool	cat_prev;
 	enum e_token_type	type;
@@ -69,5 +68,6 @@ typedef struct	s_bin_tree
     t_node_content	*content;
 }	t_bin_tree;
 
+t_dlst	*scan_line(char *line, t_error *error);
 
 #endif
