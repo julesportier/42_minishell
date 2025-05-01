@@ -6,17 +6,35 @@
 /*   By: ecasalin <ecasalin@42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/25 15:41:16 by ecasalin          #+#    #+#             */
-/*   Updated: 2025/05/01 19:09:18 by ecasalin         ###   ########.fr       */
+/*   Updated: 2025/05/01 21:38:50 by ecasalin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <stdlib.h>
 #include <unistd.h>
 #include "../../libft/src/libft.h"
 #include "../error_handling/errors.h"
 #include "../general_utils/utils.h"
 #include "../shell_init/init.h"
 #include "../cleaning_utils/cleaning.h"
+#include "builtins.h"
 #include "../minishell.h"
+
+static int	is_valid_var_name(char *var)
+{
+	int	i;
+
+	if (!ft_isalpha(var[0]) && var[0] != '_')
+		return (write_var_name_error(var));
+	i = 1;
+	while (var[i] && var[i] != '=')
+	{
+		if (!ft_isalnum(var[i]) && var[i] != '_')
+			return (write_var_name_error(var));
+		i++;
+	}
+	return (SUCCESS);
+}
 
 // /*POUR RAJOUTER DU PIQUANT, SI VAR = NULL CA SEGFAULT*/
 static char	**add_var_to_env(char *var, char **env)
@@ -45,7 +63,7 @@ static char	**add_var_to_env(char *var, char **env)
 	return (new_env_array);
 }
 
-int	update_var(char *var, char *new_var_value, char **env)
+static int	update_var(char *var, char *new_var_value, char **env)
 {
 	int	i;
 
@@ -61,7 +79,7 @@ int	update_var(char *var, char *new_var_value, char **env)
 	return (SUCCESS);
 }
 
-int	add_or_update_var(char *var, t_shell_vars *vars)
+static int	add_or_update_var(char *var, t_shell_vars *vars)
 {
 	int		return_value;
 	char	*temp_var;
@@ -83,22 +101,6 @@ int	add_or_update_var(char *var, t_shell_vars *vars)
 				return (return_perror("minishell: export critical error", CRIT_ERROR));
 	}
 	return (return_value);
-}
-
-int	is_valid_var_name(char *var)
-{
-	int	i;
-
-	if (!ft_isalpha(var[0]) && var[0] != '_')
-		return (write_var_name_error(var));
-	i = 1;
-	while (var[i] && var[i] != '=')
-	{
-		if (!ft_isalnum(var[i]) && var[i] != '_')
-			return (write_var_name_error(var));
-		i++;
-	}
-	return (SUCCESS);
 }
 
 int	ms_export(char **args, t_shell_vars *vars)

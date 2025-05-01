@@ -6,14 +6,14 @@
 /*   By: ecasalin <ecasalin@42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 18:52:27 by ecasalin          #+#    #+#             */
-/*   Updated: 2025/05/01 18:56:57 by ecasalin         ###   ########.fr       */
+/*   Updated: 2025/05/01 21:31:22 by ecasalin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <unistd.h>
 #include "../minishell.h"
 
-static int	is_var_value_present(char *var)
+int	is_var_value_present(char *var)
 {
 	int	i;
 

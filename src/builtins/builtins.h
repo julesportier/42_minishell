@@ -6,7 +6,7 @@
 /*   By: ecasalin <ecasalin@42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/25 18:41:28 by kura              #+#    #+#             */
-/*   Updated: 2025/05/01 17:44:09 by ecasalin         ###   ########.fr       */
+/*   Updated: 2025/05/01 21:25:47 by ecasalin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,12 @@
 int	ms_echo(char **args);
 int	ms_export(char **args, t_shell_vars *vars);
 
-/*BUILTINS UTILS*/
-char	*get_env_var(char *var_name, char **env);
-char	*get_env_var_value(char *var_name, char **env);
+/*EXPORT UTILS*/
+char	*find_biggest_env_var(char **env);
+char	*found_next_smallest_var(char *smaller_var, char **env);
+int		print_no_value_var(char *var);
+int		print_quoted_env_var(char *var);
+int		print_sorted_env(char **env);
+int		write_var_name_error(char *var);
 
 #endif
