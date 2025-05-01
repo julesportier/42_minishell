@@ -1,0 +1,6 @@
+#!/bin/bash
+
+TEST_DIR=test
+
+(cd "${TEST_DIR}"/parsing && ./runparsing)
+

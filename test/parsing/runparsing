@@ -1,0 +1,11 @@
+#!/bin/bash
+
+COMPILER=clang
+FLAGS=-g3
+ROOT_DIR="../.."
+UNITY_DIR="${ROOT_DIR}"/unity
+
+for SOURCE in *.c ; do
+	"${COMPILER}" "${FLAGS}" "${SOURCE}" "${ROOT_DIR}"/src/parsing/*.c "${UNITY_DIR}"/src/unity.c -L"${ROOT_DIR}"/libft -lft -I"${ROOT_DIR}"/libft/src/libft.h -I"${UNITY_DIR}"/src/unity.h
+	./a.out
+done
