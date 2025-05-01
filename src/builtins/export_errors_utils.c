@@ -6,16 +6,17 @@
 /*   By: ecasalin <ecasalin@42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 19:04:53 by ecasalin          #+#    #+#             */
-/*   Updated: 2025/05/01 19:13:10 by ecasalin         ###   ########.fr       */
+/*   Updated: 2025/05/01 23:41:58 by ecasalin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <unistd.h>
 #include "../../libft/src/libft.h"
+#include "../error_handling/errors.h"
 #include "../general_utils/utils.h"
 #include "../minishell.h"
 
-int	write_var_name_error(char *var)
+int	print_var_name_error(char *var)
 {
 	int		var_name_len;
 	char	*var_name;
@@ -37,4 +38,12 @@ int	write_var_name_error(char *var)
 	write(2, error_msg, ft_strlen(error_msg));
 	free(error_msg);
 	return (ERROR);
+}
+
+int	print_export_failure(int return_value)
+{
+	if (return_value == CRIT_ERROR)
+		return (return_perror("minishell: export critical error", CRIT_ERROR));
+	else
+		return (return_perror("minishell: export", ERROR));
 }

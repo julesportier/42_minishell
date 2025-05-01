@@ -6,7 +6,7 @@
 /*   By: ecasalin <ecasalin@42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/25 15:41:16 by ecasalin          #+#    #+#             */
-/*   Updated: 2025/05/01 21:38:50 by ecasalin         ###   ########.fr       */
+/*   Updated: 2025/05/01 23:44:49 by ecasalin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,13 +24,13 @@ static int	is_valid_var_name(char *var)
 {
 	int	i;
 
-	if (!ft_isalpha(var[0]) && var[0] != '_')
-		return (write_var_name_error(var));
+	if (var == NULL || (!ft_isalpha(var[0]) && var[0] != '_'))
+		return (print_var_name_error(var));
 	i = 1;
 	while (var[i] && var[i] != '=')
 	{
 		if (!ft_isalnum(var[i]) && var[i] != '_')
-			return (write_var_name_error(var));
+			return (print_var_name_error(var));
 		i++;
 	}
 	return (SUCCESS);
@@ -86,7 +86,7 @@ static int	add_or_update_var(char *var, t_shell_vars *vars)
 
 	return_value = is_valid_var_name(var);
 	if (return_value == CRIT_ERROR)
-		return (return_perror("minishell: export critical error", CRIT_ERROR));
+		return (CRIT_ERROR);
 	else if (return_value == SUCCESS)
 	{
 		temp_var = get_env_var(var, vars->env);
@@ -94,11 +94,11 @@ static int	add_or_update_var(char *var, t_shell_vars *vars)
 		{
 			vars->env = add_var_to_env(var, vars->env);
 			if (vars->env == NULL)
-				return (return_perror("minishell: export critical error", CRIT_ERROR));
+				return (CRIT_ERROR);
 		}
 		else
 			if (update_var(temp_var, var, vars->env) == CRIT_ERROR)
-				return (return_perror("minishell: export critical error", CRIT_ERROR));
+				return (CRIT_ERROR);
 	}
 	return (return_value);
 }
@@ -113,16 +113,18 @@ int	ms_export(char **args, t_shell_vars *vars)
 	if (args[0] == NULL)
 	{
 		return_value = print_sorted_env(vars->env);
-		if (return_value == CRIT_ERROR)
-			return (return_perror("minishell: export critical error", CRIT_ERROR));
-		if (return_value == ERROR)
-			return (return_perror("minishell: export", ERROR));
+		if (return_value != SUCCESS)
+			return (print_export_failure(return_value));
 		return (SUCCESS);
 	}
 	i = 0;
 	while (args[i])
 	{
-		is_error = add_or_update_var(args[i], vars);
+		return_value = add_or_update_var(args[i], vars);
+		if (return_value == CRIT_ERROR)
+			return (print_export_failure(return_value));
+		else if (return_value == ERROR)
+			is_error = ERROR;
 		i++;
 	}
 	if (is_error)

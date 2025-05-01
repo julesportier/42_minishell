@@ -6,7 +6,7 @@
 /*   By: ecasalin <ecasalin@42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 19:03:09 by ecasalin          #+#    #+#             */
-/*   Updated: 2025/05/01 19:14:43 by ecasalin         ###   ########.fr       */
+/*   Updated: 2025/05/01 23:47:53 by ecasalin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,8 @@ char	*find_biggest_env_var(char **env)
 	biggest_var = env[0];
 	while (env[i])
 	{
-		if (compare_env_var_names(env[i], biggest_var, get_var_name_len(env[i])) > 0)
+		if (compare_env_var_names(env[i],
+				biggest_var, get_var_name_len(env[i])) > 0)
 			biggest_var = env[i];
 		i++;
 	}
@@ -46,7 +47,7 @@ char	*found_next_smallest_var(char *smaller_var, char **env)
 	{
 		var_name_len = get_var_name_len(env[i]);
 		if (compare_env_var_names(env[i], smaller_var, var_name_len) > 0
-		&& compare_env_var_names(env[i], var_to_print, var_name_len) < 0)
+			&& compare_env_var_names(env[i], var_to_print, var_name_len) < 0)
 			var_to_print = env[i];
 		i++;
 	}

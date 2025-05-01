@@ -6,7 +6,7 @@
 /*   By: ecasalin <ecasalin@42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/25 18:41:28 by kura              #+#    #+#             */
-/*   Updated: 2025/05/01 21:25:47 by ecasalin         ###   ########.fr       */
+/*   Updated: 2025/05/01 23:36:57 by ecasalin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ char	*found_next_smallest_var(char *smaller_var, char **env);
 int		print_no_value_var(char *var);
 int		print_quoted_env_var(char *var);
 int		print_sorted_env(char **env);
-int		write_var_name_error(char *var);
+int		print_var_name_error(char *var);
+int		print_export_failure(int return_value);
 
 #endif
