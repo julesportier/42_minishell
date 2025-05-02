@@ -2,5 +2,5 @@
 
 TEST_DIR=test
 
-(cd "${TEST_DIR}"/parsing && ./runparsing)
+(cd ${TEST_DIR} && ./test_runner parsing)
 

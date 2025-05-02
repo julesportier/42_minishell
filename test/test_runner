@@ -1,5 +1,11 @@
 #!/bin/bash
 
+if [[ $# -eq 0 ]]; then
+	echo "You must give the tests 'subdirectory' as first argument"
+	# echo "You can give the project dependencies as next arguments"
+	exit 1
+fi
+	
 # Colors
 COL_RESET='\033[0m'
 COL_CYAN='\033[0;36m'
@@ -12,19 +18,15 @@ COMPILER=clang
 FLAGS=-g3
 
 # Relative paths
-TEST_DIR=..
-ROOT_DIR=${TEST_DIR}/..
+ROOT_DIR=..
 
-###################
-# Project sources #
-###################
-PARSING_SRC=${ROOT_DIR}/src/parsing/*.c
+PROJECT_SRC=${ROOT_DIR}/src/${1}/*.c
 
 # The values below are constant if relative paths are set correcty
 #############################
 # Unity sources and headers #
 #############################
-UNITY_DIR=${TEST_DIR}/unity
+UNITY_DIR=unity
 UNITY_SRC=${UNITY_DIR}/unity.c
 UNITY_HEADER=${UNITY_DIR}/unity.h
 #############################
@@ -34,9 +36,9 @@ LIBFT_DIR=${ROOT_DIR}/libft
 LIBFT_HEADER=${LIBFT_DIR}/src/libft.h
 
 # Compile and run tests in a row
-for SOURCE in *.c ; do
+for SOURCE in ${1}/*.c ; do
 	${COMPILER} ${FLAGS} \
-	${SOURCE} ${PARSING_SRC} \
+	${SOURCE} ${PROJECT_SRC} \
 	${UNITY_SRC} -I${UNITY_HEADER} \
 	-L${LIBFT_DIR} -lft -I${LIBFT_HEADER} \
 	-o ${SOURCE/%.c/.out}
