@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_env_array.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kura <kura@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: ecasalin <ecasalin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 08:01:52 by ecasalin          #+#    #+#             */
-/*   Updated: 2025/04/25 17:12:13 by kura             ###   ########.fr       */
+/*   Updated: 2025/04/28 11:32:51 by ecasalin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,10 @@
 #include "../../libft/src/libft.h"
 #include "../error_handling/errors.h"
 #include "../general_utils/utils.h"
+#include "../cleaning_utils/cleaning.h"
 #include "../minishell.h"
+#include "../builtins/builtins.h"
+
 
 char	**init_env_array(char **env, t_error *error)
 {
@@ -71,6 +74,8 @@ char	**init_env_array(char **env, t_error *error)
 // 		printf("%s\n", env_array[i]);
 // 		i++;
 // 	}
+// 	printf("\n%s\n", get_env_var("GJS_DEBUG_TOPICS=", env_array));
+// 	printf("%s\n", get_env_var_value("CDPATH=", env_array));
 // 	return (0);
 // }
 

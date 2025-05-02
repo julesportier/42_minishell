@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kura <kura@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: ecasalin <ecasalin@42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 07:07:22 by ecasalin          #+#    #+#             */
-/*   Updated: 2025/04/26 12:16:58 by kura             ###   ########.fr       */
+/*   Updated: 2025/04/30 20:19:23 by ecasalin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ static int	write_and_free_buffer(char *buffer)
 	temp = write(1, buffer, ft_strlen(buffer));
 	free(buffer);
 	if (temp == FAILURE)
-		return (return_perror("bash: echo", ERROR));
+		return (return_perror("minishell: echo", ERROR));
 	return (SUCCESS);
 }
 
@@ -85,7 +85,7 @@ int	ms_echo(char **args)
 			break;
 	}
 	if (fill_buffer(args, i, &buffer, n_flag) == CRIT_ERROR)
-		return (return_perror("bash: echo", CRIT_ERROR));
+		return (return_perror("minishell: echo", CRIT_ERROR));
 	return (write_and_free_buffer(buffer));
 }
 

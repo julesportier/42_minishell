@@ -121,14 +121,14 @@ t_node *hardcoded_tree(void)
 	return (nodeA);
 }
 
-int	main(int ac, char **av, char **env)
-{
-	t_node	*tree;
-	t_shell_vars vars;
+// int	main(int ac, char **av, char **env)
+// {
+// 	t_node	*tree;
+// 	t_shell_vars vars;
 
-	vars.env = env;
+// 	vars.env = env;
 
-	tree = hardcoded_tree();
-	return (exec_cmd_tree(tree, &vars));
+// 	tree = hardcoded_tree();
+// 	return (exec_cmd_tree(tree, &vars));
 
-}
+// }
