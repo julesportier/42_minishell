@@ -15,10 +15,13 @@ LIBS_FLAGS := -lft -L$(LIBFT_DIR) -lreadline
 NAME := minishell
 
 SRC_DIR := src
-vpath %.c $(SRC_DIR)
-# Replace the 2 lines above by sources files names for release
-SRC := $(wildcard $(SRC_DIR)/*.c)
-SRC := $(patsubst $(SRC_DIR)/%.c, %.c, $(SRC))
+SRC_PARSING_DIR := $(SRC_DIR)/parsing
+vpath %.c $(SRC_DIR):$(SRC_PARSING_DIR)
+SRC := lexer.c \
+	   char_identity_check.c \
+	   lexer_utils.c \
+	   token_extract.c \
+	   token_extract_utils.c
 
 BUILD_DIR := build
 OBJ := $(addprefix $(BUILD_DIR)/, $(SRC:.c=.o))
