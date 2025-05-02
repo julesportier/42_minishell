@@ -1,11 +1,45 @@
 #!/bin/bash
 
+# Colors
+COL_RESET='\033[0m'
+COL_CYAN='\033[0;36m'
+COL_ICYAN='\033[0;96m'
+COL_YELL='\033[0;33m'
+COL_IYELL='\033[0;93m'
+
+# Compiler
 COMPILER=clang
 FLAGS=-g3
-ROOT_DIR="../.."
-UNITY_DIR="${ROOT_DIR}"/unity
 
+# Relative paths
+TEST_DIR=..
+ROOT_DIR=${TEST_DIR}/..
+
+###################
+# Project sources #
+###################
+PARSING_SRC=${ROOT_DIR}/src/parsing/*.c
+
+# The values below are constant if relative paths are set correcty
+#############################
+# Unity sources and headers #
+#############################
+UNITY_DIR=${TEST_DIR}/unity
+UNITY_SRC=${UNITY_DIR}/unity.c
+UNITY_HEADER=${UNITY_DIR}/unity.h
+#############################
+# libft sources and headers #
+#############################
+LIBFT_DIR=${ROOT_DIR}/libft
+LIBFT_HEADER=${LIBFT_DIR}/src/libft.h
+
+# Compile and run tests in a row
 for SOURCE in *.c ; do
-	"${COMPILER}" "${FLAGS}" "${SOURCE}" "${ROOT_DIR}"/src/parsing/*.c "${UNITY_DIR}"/src/unity.c -L"${ROOT_DIR}"/libft -lft -I"${ROOT_DIR}"/libft/src/libft.h -I"${UNITY_DIR}"/src/unity.h
-	./a.out
+	${COMPILER} ${FLAGS} \
+	${SOURCE} ${PARSING_SRC} \
+	${UNITY_SRC} -I${UNITY_HEADER} \
+	-L${LIBFT_DIR} -lft -I${LIBFT_HEADER} \
+	-o ${SOURCE/%.c/.out}
+	echo -e ${COL_YELL}"Running ${SOURCE/%.c/.out}:"${COL_RESET}
+	./${SOURCE/%.c/.out}
 done

@@ -1,5 +1,5 @@
-#include "../../unity/src/unity.h"
-#include "../../src/parsing/lexer.h"
+#include "../unity/unity.h"
+#include "../../src/parsing/parsing.h"
 
 void	setUp(void) {
 }
@@ -7,32 +7,6 @@ void	setUp(void) {
 void	tearDown(void) {
 }
 
-//void	test_scan_line_firstStringLiteralShouldPass(void)
-//{
-//	char *lines[] = {
-//		"test",
-//		"test  ",
-//		"  test",
-//		"   test  ",
-//		"test hello",
-//		NULL
-//	};
-//	char *assert_str = "test";
-//	t_dlst	*tokens_list = NULL;
-//	t_error	error = success;
-//	int	i = 0;
-//	while (lines[i] != NULL)
-//	{
-//		tokens_list = scan_line(lines[i], &error);
-//		TEST_ASSERT_EQUAL_INT(success, error);
-//		TEST_ASSERT_EQUAL_INT(literal, ((t_word *)(tokens_list->content))->type);
-//		TEST_ASSERT_EQUAL_STRING_MESSAGE(
-//			assert_str, ((t_word *)(tokens_list->content))->str, ft_itoa(i));
-//		tokens_list = NULL;
-//		error = success;
-//		++i;
-//	}
-//}
 void	wrap_test_scan_line_firstTokenShouldPass(
 		enum e_token_type type,
 		char *lines[],
@@ -125,7 +99,6 @@ void	test_scan_line_firstVariableShouldPass(void)
 
 int	main(void)
 {
-	//printf("%s\n", extract_token("test", (int *){0}, false, (t_error *){0})->str);
 	UNITY_BEGIN();
 	RUN_TEST(test_scan_line_firstDollarLiteralShouldPass);
 	RUN_TEST(test_scan_line_firstStringLiteralShouldPass);
