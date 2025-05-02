@@ -6,7 +6,7 @@
 /*   By: ecasalin <ecasalin@42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/25 18:41:28 by kura              #+#    #+#             */
-/*   Updated: 2025/05/01 23:36:57 by ecasalin         ###   ########.fr       */
+/*   Updated: 2025/05/02 08:37:18 by ecasalin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 /*BUILTINS*/
 int	ms_echo(char **args);
 int	ms_export(char **args, t_shell_vars *vars);
+int	ms_pwd(void);
 
 /*EXPORT UTILS*/
 char	*find_biggest_env_var(char **env);
