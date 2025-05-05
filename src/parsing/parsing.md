@@ -78,45 +78,27 @@ typedef struct  s_node_content
     t_word  *words_lst; // Command followed by args (or operator)
 } t_node_content;
 ```
-OLD VERSION
-``` c
-// For parsing -> tokenization & expansion
-# define OP = 0x1;
-# define SEP = 0x2;
-# define CMD = 0x4;
-# define S_QUOTES = 0x8;
-# define D_QUOTES = 0xF;
-// For binary tree node's operator number
-# define PIPE = 0x1;
-# define OR = 0x2;
-# define AND = 0x4;
 
-typedef struct  s_word
-{
-    int type; // a macro. pour le parsing pour savoir ou splitter et éviter de redéfinir le rôle des tokens.
-    char    *word;
-    t_word  *next;
-} t_word;
+# context free grammar (for parsing)
 
-// After expansions set redirections in t_block
-// transform t_word into string array (char **) and put it into words member
+expression -> literal
+            | expanding
+            | binary
+            | grouping
+            | quotes
 
-// Structures to give to exec.
-typedef struct  s_bin_tree
-{
-    int    operator; // a macro
-    t_node *parent_node;
-    t_node *node_left;
-    t_node *node_right;
-} t_bin_tree;
+binary -> expression operator expression ;
 
-typedef struct  s_node
-{
-    //int is_subshell; // start from zero (no subshell) to N nested subshells
-    char    *input; // NULL if no redirection
-    char    *output; // NULL if no redirection
-    t_word  *words_lst; // Command followed by args (or operator)
-    t_node  *prev; //?? REMOVE THIS TWO POINTERS AND JUST STORE THE LIST IN WORD TYPE. NEED TO PERFORM REDIRECTIONS WHEN CREATING TREE ???
-    t_node  *next;
-} t_node;
-```
+operator -> "||" | "&&" ;
+
+pipeline -> expression "|" expression ;
+
+redirection -> expression? (">" | ">>" | "<" | "<<") (literal | variable) ;
+
+grouping -> "(" expression ")" ;
+
+expanding -> variable | "*" ;
+
+quotes -> ("'" | '"') expression ("'" | '"') ;
+
+primary -> literal | grouping ;
