@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pwd.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ecasalin <ecasalin@42.fr>                  +#+  +:+       +#+        */
+/*   By: ecasalin <ecasalin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 07:50:53 by ecasalin          #+#    #+#             */
-/*   Updated: 2025/05/02 08:35:58 by ecasalin         ###   ########.fr       */
+/*   Updated: 2025/05/05 11:14:33 by ecasalin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,10 @@
 #include "../general_utils/utils.h"
 #include "../../libft/src/libft.h"
 
-int	ms_pwd(void)
+
+#include <stdio.h>
+
+int	main(int ac, char *av[])
 {
 	char	*cwd;
 	int		temp;
@@ -24,6 +27,9 @@ int	ms_pwd(void)
 	cwd = getcwd(NULL, 0);
 	if (cwd == NULL)
 		return (return_perror("minishell: pwd critical error", CRIT_ERROR));
+	// chdir(av[2]);
+	// printf("%s\n", getcwd(NULL, 0));
+	// exit(0);
 	cwd = free_strjoin(cwd, "\n");
 	if (cwd == NULL)
 		return (return_perror("minishell: pwd critical error", CRIT_ERROR));
