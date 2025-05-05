@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd_exec.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kura <kura@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: ecasalin <ecasalin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/28 15:00:16 by ecasalin          #+#    #+#             */
-/*   Updated: 2025/04/26 11:58:02 by kura             ###   ########.fr       */
+/*   Updated: 2025/05/05 13:45:22 by ecasalin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,7 @@ void	execution(t_node *curr_node, char **paths_array, t_shell_vars *vars)
 		while (paths_array != NULL && paths_array[i] != NULL)
 		{
 			paths_array[i] = free_strjoin(paths_array[i],
-					curr_node->cmd[0]);
+					curr_node->cmd[0], true, false);
 			// if (paths_array[i] == NULL)
 			// 	exit_free_close("check_cmd_path, malloc error", 1, data);
 			if (access(paths_array[i], F_OK) == 0)

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   general_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kura <kura@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: ecasalin <ecasalin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/25 16:24:38 by kura              #+#    #+#             */
-/*   Updated: 2025/04/26 11:49:30 by kura             ###   ########.fr       */
+/*   Updated: 2025/05/05 13:41:20 by ecasalin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,11 +26,14 @@ int	count_array_len(char **array)
 	return (i);
 }
 
-char	*free_strjoin(char *s1, char *s2)
+char	*free_strjoin(char *s1, char *s2, t_bool free_s1, t_bool free_s2)
 {
 	char *joined_str;
 
 	joined_str = ft_strjoin(s1, s2);
-	free(s1);
+	if (free_s1)
+		free(s1);
+	if (free_s2)
+		free(s2);
 	return (joined_str);
 }

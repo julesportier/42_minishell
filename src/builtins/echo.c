@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ecasalin <ecasalin@42.fr>                  +#+  +:+       +#+        */
+/*   By: ecasalin <ecasalin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 07:07:22 by ecasalin          #+#    #+#             */
-/*   Updated: 2025/04/30 20:19:23 by ecasalin         ###   ########.fr       */
+/*   Updated: 2025/05/05 13:41:44 by ecasalin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,18 +37,18 @@ static int	fill_buffer(char **args, int i, char **buffer, int n_flag)
 	*buffer = NULL;
 	while (args[i])
 	{
-		*buffer = free_strjoin(*buffer, args[i]);
+		*buffer = free_strjoin(*buffer, args[i], true, false);
 		if (*buffer == NULL)
 			return (CRIT_ERROR);
 		if (args[i + 1])
-			*buffer = free_strjoin(*buffer, " ");
+			*buffer = free_strjoin(*buffer, " ", true, false);
 		if (*buffer == NULL)
 			return (CRIT_ERROR);
 		i++;
 	}
 	if (!n_flag)
 	{
-		*buffer = free_strjoin(*buffer, "\n");
+		*buffer = free_strjoin(*buffer, "\n", true, false);
 		if (*buffer == NULL)
 			return (CRIT_ERROR);
 	}
