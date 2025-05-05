@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export_errors_utils.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ecasalin <ecasalin@42.fr>                  +#+  +:+       +#+        */
+/*   By: ecasalin <ecasalin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 19:04:53 by ecasalin          #+#    #+#             */
-/*   Updated: 2025/05/01 23:41:58 by ecasalin         ###   ########.fr       */
+/*   Updated: 2025/05/05 13:43:27 by ecasalin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,11 +28,10 @@ int	print_var_name_error(char *var)
 	if (var_name == NULL || error_msg == NULL)
 		return (CRIT_ERROR);
 	ft_memcpy(var_name, var, var_name_len);
-	error_msg = free_strjoin(error_msg, var_name);
-	free(var_name);
+	error_msg = free_strjoin(error_msg, var_name, true, true);
 	if (error_msg == NULL)
 		return (CRIT_ERROR);
-	error_msg = free_strjoin(error_msg, "': not a valid identifier\n");
+	error_msg = free_strjoin(error_msg, "': not a valid identifier\n", true, false);
 	if (error_msg == NULL)
 		return (CRIT_ERROR);
 	write(2, error_msg, ft_strlen(error_msg));
