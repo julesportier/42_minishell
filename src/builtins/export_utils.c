@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ecasalin <ecasalin@42.fr>                  +#+  +:+       +#+        */
+/*   By: ecasalin <ecasalin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 19:03:09 by ecasalin          #+#    #+#             */
-/*   Updated: 2025/05/01 23:47:53 by ecasalin         ###   ########.fr       */
+/*   Updated: 2025/05/05 13:44:20 by ecasalin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,13 +84,13 @@ int	print_quoted_env_var(char *var)
 	if (var_to_print == NULL)
 		return (CRIT_ERROR);
 	ft_memcpy(var_to_print, var, var_name_len + 1);
-	var_to_print = free_strjoin(var_to_print, "\"");
+	var_to_print = free_strjoin(var_to_print, "\"", true, false);
 	if (var_to_print == NULL)
 		return (CRIT_ERROR);
-	var_to_print = free_strjoin(var_to_print, &var[var_name_len + 1]);
+	var_to_print = free_strjoin(var_to_print, &var[var_name_len + 1], true, false);
 	if (var_to_print == NULL)
 		return (CRIT_ERROR);
-	var_to_print = free_strjoin(var_to_print, "\"\n");
+	var_to_print = free_strjoin(var_to_print, "\"\n", true, false);
 	if (var_to_print == NULL)
 		return (CRIT_ERROR);
 	temp = write(1, var_to_print, ft_strlen(var_to_print));

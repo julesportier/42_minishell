@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ecasalin <ecasalin@42.fr>                  +#+  +:+       +#+        */
+/*   By: ecasalin <ecasalin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/25 17:00:23 by kura              #+#    #+#             */
-/*   Updated: 2025/05/01 19:01:15 by ecasalin         ###   ########.fr       */
+/*   Updated: 2025/05/05 13:41:11 by ecasalin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 
 /*GENERAL UTILS*/
 int		count_array_len(char **array);
-char	*free_strjoin(char *s1, char *s2);
+char	*free_strjoin(char *s1, char *s2, t_bool free_s1, t_bool free_s2);
 
 /*ENV UTILS*/
 int		is_var_value_present(char *var);
