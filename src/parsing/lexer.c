@@ -6,7 +6,7 @@
 /*   By: juportie <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 10:22:36 by juportie          #+#    #+#             */
-/*   Updated: 2025/04/28 16:57:31 by juportie         ###   ########.fr       */
+/*   Updated: 2025/05/06 15:24:30 by juportie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,11 +18,11 @@
 #include "lexer.h"
 
 // Needs error pointer to discrimine between critical and recoverable errors.
-static t_word	*extract_token(char *line, int *pos, t_bool cat_prev, t_error *error)
+static t_token	*extract_token(char *line, int *pos, t_bool cat_prev, t_error *error)
 {
-	t_word	*token;
+	t_token	*token;
 
-	token = malloc(sizeof(t_word));
+	token = malloc(sizeof(t_token));
 	if (token == NULL)
 	{
 		*error = critical;
@@ -45,7 +45,7 @@ static t_word	*extract_token(char *line, int *pos, t_bool cat_prev, t_error *err
 	return (token);
 }
 
-static int	append_token_to_list(t_dlst **tokens_list, t_word *token)
+static int	append_token_to_list(t_dlst **tokens_list, t_token *token)
 {
 	t_dlst	*new_node;
 
@@ -59,7 +59,7 @@ static int	append_token_to_list(t_dlst **tokens_list, t_word *token)
 t_dlst	*scan_line(char *line, t_error *error)
 {
 	int	pos;
-	t_word	*token;
+	t_token	*token;
 	t_dlst	*tokens_list;
 	t_bool	cat_prev;
 
@@ -101,8 +101,8 @@ t_dlst	*scan_line(char *line, t_error *error)
 //	int	i = 0;
 //	while (tokens_list)
 //	{
-//		printf("token%d == '%s' ; ", i, ((t_word *)tokens_list->content)->str);
-//		printf("type == %d\n", ((t_word *)tokens_list->content)->type);
+//		printf("token%d == '%s' ; ", i, ((t_token *)tokens_list->content)->str);
+//		printf("type == %d\n", ((t_token *)tokens_list->content)->type);
 //		tokens_list = tokens_list->next;
 //		i++;
 //	}

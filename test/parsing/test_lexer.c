@@ -21,9 +21,9 @@ void	wrap_test_scan_line_firstTokenShouldPass(
 		sprintf(message, "  Input%d: '%s'", i, lines[i]);
 		tokens_list = scan_line(lines[i], &error);
 		TEST_ASSERT_EQUAL_INT(success, error);
-		TEST_ASSERT_EQUAL_INT_MESSAGE(type, ((t_word *)(tokens_list->content))->type, message);
+		TEST_ASSERT_EQUAL_INT_MESSAGE(type, ((t_token *)(tokens_list->content))->type, message);
 		TEST_ASSERT_EQUAL_STRING_MESSAGE(
-			assert_str, ((t_word *)(tokens_list->content))->str, message);
+			assert_str, ((t_token *)(tokens_list->content))->str, message);
 		tokens_list = NULL;
 		error = success;
 		++i;

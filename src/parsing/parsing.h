@@ -6,7 +6,7 @@
 /*   By: juportie <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 10:24:06 by juportie          #+#    #+#             */
-/*   Updated: 2025/05/06 12:06:11 by juportie         ###   ########.fr       */
+/*   Updated: 2025/05/06 15:23:47 by juportie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,14 +35,14 @@ enum	e_token_type
 	heredoc
 };
 
-typedef struct	s_word
+typedef struct	s_token
 {
-	// To know if the word is separated by spaces. `echo $HOME"text"1` is
+	// To know if the word will be separated by spaces. `echo $HOME"text"1` is
 	// four tokens but expands to two words `echo /home/juportietext1`.
 	t_bool	cat_prev;
 	enum e_token_type	type;
 	char	*str;
-}	t_word;
+}	t_token;
 
 // After expansions set redirections in t_block
 // transform t_word into string array (char **) and put it into words member
@@ -56,7 +56,7 @@ typedef struct	s_node_content
 	int	heredoc_flags;
 	char	*input; // NULL if no redirection
 	char	*output; // NULL if no redirection
-	t_word	*words_lst; // Command followed by args (or operator)
+	t_dlst	*tokens_list; // Tokens list
 }	t_node_content;
 
 typedef struct	s_bin_tree
