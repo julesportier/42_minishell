@@ -16,15 +16,15 @@
 // that the tokens list is not NULL.
 enum e_token_type	get_toklist_type(t_dlst *list)
 {
-	return (((t_word *)(list->content))->type);
+	return (((t_token *)(list->content))->type);
 }
 
 char	*get_toklist_str(t_dlst *list)
 {
-	return (((t_word *)(list->content))->str);
+	return (((t_token *)(list->content))->str);
 }
 
 t_bool	get_toklist_cat_prev(t_dlst *list)
 {
-	return (((t_word *)(list->content))->cat_prev);
+	return (((t_token *)(list->content))->cat_prev);
 }
