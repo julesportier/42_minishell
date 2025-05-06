@@ -21,7 +21,9 @@ SRC := lexer.c \
 	   char_identity_check.c \
 	   lexer_utils.c \
 	   token_extract.c \
-	   token_extract_utils.c
+	   token_extract_utils.c \
+	   tokens_list_get.c \
+	   tokens_list_print.c
 
 BUILD_DIR := build
 OBJ := $(addprefix $(BUILD_DIR)/, $(SRC:.c=.o))

@@ -6,7 +6,7 @@
 /*   By: juportie <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 10:24:06 by juportie          #+#    #+#             */
-/*   Updated: 2025/04/28 16:29:53 by juportie         ###   ########.fr       */
+/*   Updated: 2025/05/06 12:06:11 by juportie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,5 +69,10 @@ typedef struct	s_bin_tree
 }	t_bin_tree;
 
 t_dlst	*scan_line(char *line, t_error *error);
+// Tokens list utils (files: tokens_list_get.c, tokens_list_print.c)
+enum e_token_type	get_toklist_type(t_dlst *list);
+char	*get_toklist_str(t_dlst *list);
+t_bool	get_toklist_cat_prev(t_dlst *list);
+void	print_toklist(t_dlst *list);
 
 #endif
