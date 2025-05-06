@@ -26,5 +26,7 @@ int		print_quoted_env_var(char *var);
 int		print_sorted_env(char **env);
 int		print_var_name_error(char *var);
 int		print_export_failure(int return_value);
+int		update_var(char *var, char *new_var_value, char **env);
+char	**add_var_to_env(char *var, char **env);
 
 #endif

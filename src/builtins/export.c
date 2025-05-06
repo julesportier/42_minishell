@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ecasalin <ecasalin@42.fr>                  +#+  +:+       +#+        */
+/*   By: ecasalin <ecasalin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/25 15:41:16 by ecasalin          #+#    #+#             */
-/*   Updated: 2025/05/01 23:44:49 by ecasalin         ###   ########.fr       */
+/*   Updated: 2025/05/06 10:59:32 by ecasalin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ static int	is_valid_var_name(char *var)
 }
 
 // /*POUR RAJOUTER DU PIQUANT, SI VAR = NULL CA SEGFAULT*/
-static char	**add_var_to_env(char *var, char **env)
+char	**add_var_to_env(char *var, char **env)
 {
 	int		i;
 	char	**new_env_array;
@@ -63,7 +63,7 @@ static char	**add_var_to_env(char *var, char **env)
 	return (new_env_array);
 }
 
-static int	update_var(char *var, char *new_var_value, char **env)
+int	update_var(char *var, char *new_var_value, char **env)
 {
 	int	i;
 
