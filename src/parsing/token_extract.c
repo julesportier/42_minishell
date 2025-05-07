@@ -36,7 +36,7 @@ int	extract_quotes(t_token *token, char *line, int *pos)
 		token->type = double_quotes;
 	else
 		token->type = literal;
-	token->str = ft_strdup(ft_substr(line, start, *pos - start)); // Returns "\0" for "" as input.
+	token->str = ft_substr(line, start, *pos - start); // Returns "\0" for "" as input.
 	if (token->str == NULL)
 		return (CRIT_ERROR);
 	advance(1, pos);
@@ -55,7 +55,7 @@ int	extract_literal(t_token *token, char *line, int *pos)
 		&& line[*pos] != '\0')
 		advance(1, pos);
 	token->type = literal;
-	token->str = ft_strdup(ft_substr(line, start, *pos - start)); // Returns "\0" for "" as input.
+	token->str = ft_substr(line, start, *pos - start); // Returns "\0" for "" as input.
 	if (token->str == NULL)
 		return (CRIT_ERROR);
 	return (SUCCESS);
@@ -76,7 +76,7 @@ int	extract_variable_identifier(t_token *token, char *line, int *pos)
 	if (*pos - start > 0)
 	{
 		token->type = variable;
-		token->str = ft_strdup(ft_substr(line, start, *pos - start)); // Returns "\0" for "" as input.
+		token->str = ft_substr(line, start, *pos - start); // Returns "\0" for "" as input.
 	}
 	else
 	{
