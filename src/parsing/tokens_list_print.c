@@ -13,26 +13,38 @@
 #include <stdio.h>
 #include "parsing.h"
 
-static const char	*tokens_types_str[] = {
-	"literal",
-	"double_quotes",
-	"variable",
-	"wildcard",
-	"or",
-	"and",
-	"pipeline",
-	"left_parenthesis",
-	"right_parenthesis",
-	"redir_output",
-	"append_output",
-	"redir_input",
-	"heredoc"
-};
+const char	*token_type_to_str(enum e_token_type type)
+{
+	const char	*token_types_lookup[14] = {
+		"null",
+		"literal",
+		"double_quotes",
+		"variable",
+		"wildcard",
+		"or",
+		"and",
+		"pipeline",
+		"left_parenthesis",
+		"right_parenthesis",
+		"redir_output",
+		"append_output",
+		"redir_input",
+		"heredoc"
+	};
 
-static const char	*t_bool_str[] = {
-	"false",
-	"true"
-};
+	if (type >= 0 && type <= 14)
+		return (token_types_lookup[type]);
+	else
+		return ("non identified");
+}
+
+static const char	*bool_to_str(t_bool bool)
+{
+	if (bool == 0)
+		return ("false");
+	else
+		return ("true");
+}
 
 void	print_toklist(t_dlst *list)
 {
@@ -45,9 +57,9 @@ void	print_toklist(t_dlst *list)
 		{
 			printf("token %d: %s, '%s', cat_prev: %s\n",
 				i,
-				tokens_types_str[get_toklist_type(list)],
+				token_type_to_str(get_toklist_type(list)),
 				get_toklist_str(list),
-				t_bool_str[get_toklist_cat_prev(list)]);
+				bool_to_str(get_toklist_cat_prev(list)));
 		}
 		else
 			printf("token %d: content == NULL\n", i);

@@ -6,7 +6,7 @@
 /*   By: juportie <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 10:24:06 by juportie          #+#    #+#             */
-/*   Updated: 2025/05/06 15:23:47 by juportie         ###   ########.fr       */
+/*   Updated: 2025/05/09 17:06:24 by juportie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@
 
 enum	e_token_type
 {
+	null,
 	literal,
 	double_quotes,
 	variable,
@@ -44,8 +45,7 @@ typedef struct	s_token
 	char	*str;
 }	t_token;
 
-// After expansions set redirections in t_block
-// transform t_word into string array (char **) and put it into words member
+// After expansions set redirections in t_node_content
 
 // Structures to give to exec.
 typedef struct	s_node_content
@@ -73,6 +73,10 @@ t_dlst	*scan_line(char *line, t_error *error);
 enum e_token_type	get_toklist_type(t_dlst *list);
 char	*get_toklist_str(t_dlst *list);
 t_bool	get_toklist_cat_prev(t_dlst *list);
+const char	*token_type_to_str(enum e_token_type type);
 void	print_toklist(t_dlst *list);
+// Error handling
+int	print_syntax_error(char *message, enum e_token_type type, int errnum);
+void	free_token_content(void *content);
 
 #endif
