@@ -6,7 +6,7 @@
 /*   By: ecasalin <ecasalin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/25 15:41:16 by ecasalin          #+#    #+#             */
-/*   Updated: 2025/05/06 10:59:32 by ecasalin         ###   ########.fr       */
+/*   Updated: 2025/05/09 13:52:08 by ecasalin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -146,3 +146,4 @@ int	ms_export(char **args, t_shell_vars *vars)
 // 	free_array(vars.env);
 // 	return (temp);
 // }
+	
