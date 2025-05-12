@@ -6,7 +6,7 @@
 /*   By: ecasalin <ecasalin@42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/25 16:35:53 by ecasalin          #+#    #+#             */
-/*   Updated: 2025/05/02 14:25:20 by ecasalin         ###   ########.fr       */
+/*   Updated: 2025/05/12 21:58:38 by ecasalin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,4 +31,10 @@ int	return_error(char *err_msg, int return_value)
 {
 	write(2, err_msg, ft_strlen(err_msg));
 	return (return_value);
+}
+
+int	exit_perror(char *err_msg, int exit_value)
+{
+	perror(err_msg);
+	exit(exit_value);
 }

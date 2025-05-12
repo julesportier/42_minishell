@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_env_array.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ecasalin <ecasalin@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ecasalin <ecasalin@42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 08:01:52 by ecasalin          #+#    #+#             */
-/*   Updated: 2025/04/28 11:32:51 by ecasalin         ###   ########.fr       */
+/*   Updated: 2025/05/12 22:04:59 by ecasalin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 #include "../cleaning_utils/cleaning.h"
 #include "../minishell.h"
 #include "../builtins/builtins.h"
-
+#include <errno.h>
 
 char	**init_env_array(char **env, t_error *error)
 {
@@ -44,6 +44,19 @@ char	**init_env_array(char **env, t_error *error)
 		i--;
 	}
 	return (env_array);
+}
+
+/*Dans le main faudra bien free env et se barrer si ca return NULL*/
+char	*init_cwd_backup(char **env)
+{
+	char	*cwd;
+
+	cwd = getcwd(NULL, 0);
+	if (errno == ENOMEM)
+		return (NULL);
+	if (cwd == NULL)
+		cwd = ft_strdup("/");
+	return (cwd);
 }
 
 // #include <stdio.h>

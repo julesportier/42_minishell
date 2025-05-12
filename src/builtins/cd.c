@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ecasalin <ecasalin@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ecasalin <ecasalin@42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 07:21:49 by ecasalin          #+#    #+#             */
-/*   Updated: 2025/05/12 16:02:44 by ecasalin         ###   ########.fr       */
+/*   Updated: 2025/05/12 22:23:09 by ecasalin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ int	set_wd_var(char *var_key, char *var_value, t_shell_vars *vars)
 	char	**temp_env;
 	char	*temp_env_var;
 	int		return_value;
-	
+
 	var_value = join_pwds_key_value(var_key, var_value);
 	if (var_value == NULL)
 		return (CRIT_ERROR);
@@ -76,12 +76,22 @@ int	set_wd_var(char *var_key, char *var_value, t_shell_vars *vars)
 	return (return_value);
 }
 
+int	update_cwd_backup(char *new_path, t_shell_vars *vars)
+{
+	free(vars->cwd_backup);
+	vars->cwd_backup = ft_strdup(new_path);
+	if (vars->cwd_backup == NULL)
+		return (CRIT_ERROR);
+	return (SUCCESS);
+}
+
 int	chdir_set_wd_var(char *path, t_shell_vars *vars)
 {
 	int		return_value;
 	char	*temp_wd;
-	
-	temp_wd = ft_strdup(get_env_var_value("PWD", vars->env));
+
+	temp_wd = getcwd(NULL, 0);
+	return_value = set_wd_var("PWD", vars);
 	if (errno == ENOMEM)
 		return (CRIT_ERROR);
 	return_value = ERROR;
@@ -94,6 +104,7 @@ int	chdir_set_wd_var(char *path, t_shell_vars *vars)
 		if (temp_wd == NULL)
 			return (CRIT_ERROR);
 		return_value = set_wd_var("PWD", temp_wd, vars);
+		return_value = update_cwd_backup(path, vars);
 	}
 	else
 		free(temp_wd);
@@ -121,7 +132,7 @@ int	cd_to_oldpwd(t_shell_vars *vars)
 	char	*path;
 	char	*temp_path;
 	int		return_value;
-	
+
 	path = get_env_var_value("OLDPWD", vars->env);
 	if (path == NULL)
 		return (return_error("minishell: cd: OLDPWD not set\n", ERROR));
@@ -188,7 +199,7 @@ int	test_possible_paths(char *path, t_shell_vars *vars)
 	char	*cdpath;
 	char	*temp_path;
 	int		return_value;
-	
+
 	return_value = ERROR;
 	temp_path = NULL;
 	cdpath = get_env_var_value("CDPATH", vars->env);
@@ -220,7 +231,7 @@ int	ms_cd(char **args, t_shell_vars *vars)
 	int		args_number;
 	char	*path;
 	int		return_value;
-	
+
 	args_number = count_array_len(args);
 	if (args_number > 1)
 		return (return_error("minishell: cd: to many arguments", ERROR));
@@ -245,7 +256,7 @@ int	main(int ac, char *av[], char *envp[])
 	t_shell_vars	vars;
 	t_error	error;
 	// int		i = 0;
-	
+
 	// while (envp[i])
 	// {
 	// 	printf("%s   %d\n", envp[i], i);
