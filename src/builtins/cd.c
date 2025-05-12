@@ -6,12 +6,13 @@
 /*   By: ecasalin <ecasalin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 07:21:49 by ecasalin          #+#    #+#             */
-/*   Updated: 2025/05/09 16:11:09 by ecasalin         ###   ########.fr       */
+/*   Updated: 2025/05/12 16:02:44 by ecasalin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <unistd.h>
 #include <stdio.h>
+#include <errno.h>
 #include "../../libft/src/libft.h"
 #include "../minishell.h"
 #include "../general_utils/utils.h"
@@ -80,8 +81,8 @@ int	chdir_set_wd_var(char *path, t_shell_vars *vars)
 	int		return_value;
 	char	*temp_wd;
 	
-	temp_wd = getcwd(NULL, 0);
-	if (temp_wd == NULL)
+	temp_wd = ft_strdup(get_env_var_value("PWD", vars->env));
+	if (errno == ENOMEM)
 		return (CRIT_ERROR);
 	return_value = ERROR;
 	if (chdir(path) == SUCCESS)
@@ -204,6 +205,16 @@ int	test_possible_paths(char *path, t_shell_vars *vars)
 	return (return_value);
 }
 
+static int	is_path_syntax_valid(char *path)
+{
+	if (ft_strncmp(path, "./", 2) == SUCCESS ||
+		ft_strncmp(path, "../", 3) == SUCCESS ||
+		ft_strncmp(path, "..", 3) == SUCCESS ||
+		ft_strncmp(path, "/", 1) == SUCCESS)
+		return (SUCCESS);
+	return (ERROR);
+}
+
 int	ms_cd(char **args, t_shell_vars *vars)
 {
 	int		args_number;
@@ -217,7 +228,7 @@ int	ms_cd(char **args, t_shell_vars *vars)
 		return (cd_to_home(vars));
 	else if (ft_strncmp(args[0], "-", 2) == SUCCESS)
 		return (cd_to_oldpwd(vars));
-	if (ft_strncmp(args[0], "./", 2) == SUCCESS || ft_strncmp(args[0], "../", 3) == SUCCESS || ft_strncmp(args[0], "/", 1) == SUCCESS)
+	if (is_path_syntax_valid(args[0]) == SUCCESS)
 		return_value = chdir_set_wd_var(args[0], vars);
 	else
 		return_value = test_possible_paths(args[0], vars);
@@ -228,23 +239,23 @@ int	ms_cd(char **args, t_shell_vars *vars)
 	return (SUCCESS);
 }
 
-// #include "../shell_init/init.h"
-// int	main(int ac, char *av[], char *envp[])
-// {
-// 	t_shell_vars	vars;
-// 	t_error	error;
-// 	// int		i = 0;
+#include "../shell_init/init.h"
+int	main(int ac, char *av[], char *envp[])
+{
+	t_shell_vars	vars;
+	t_error	error;
+	// int		i = 0;
 	
-// 	// while (envp[i])
-// 	// {
-// 	// 	printf("%s   %d\n", envp[i], i);
-// 	// 	i++;
-// 	// }
-// 	vars.env = init_env_array(envp, &error);
-// 	printf("Initial PWD var value : %s\n", get_env_var_value("PWD", vars.env));
-// 	printf("Initial OLDPWD var value : %s\n------------------------------------------------------------------\n", get_env_var_value("OLDPWD", vars.env));
-// 	ms_cd(&av[2], &vars);
-// 	printf("Updated PWD var value : %s\n", get_env_var_value("PWD", vars.env));
-// 	printf("Updated OLDPWD var value : %s\nGG !\n", get_env_var_value("OLDPWD", vars.env));
-// 	free_array(vars.env);
-// }
+	// while (envp[i])
+	// {
+	// 	printf("%s   %d\n", envp[i], i);
+	// 	i++;
+	// }
+	vars.env = init_env_array(envp, &error);
+	printf("Initial PWD var value : %s\n", get_env_var_value("PWD", vars.env));
+	printf("Initial OLDPWD var value : %s\n------------------------------------------------------------------\n", get_env_var_value("OLDPWD", vars.env));
+	ms_cd(&av[2], &vars);
+	printf("Updated PWD var value : %s\n", get_env_var_value("PWD", vars.env));
+	printf("Updated OLDPWD var value : %s\nGG !\n", get_env_var_value("OLDPWD", vars.env));
+	free_array(vars.env);
+}
