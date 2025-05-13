@@ -6,51 +6,67 @@
 /*   By: juportie <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 10:59:37 by juportie          #+#    #+#             */
-/*   Updated: 2025/05/06 12:25:47 by juportie         ###   ########.fr       */
+/*   Updated: 2025/05/13 11:31:56 by juportie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdio.h>
 #include "parsing.h"
 
-static const char	*tokens_types_str[] = {
-	"literal",
-	"double_quotes",
-	"variable",
-	"wildcard",
-	"or",
-	"and",
-	"pipeline",
-	"left_parenthesis",
-	"right_parenthesis",
-	"redir_output",
-	"append_output",
-	"redir_input",
-	"heredoc"
-};
+const char	*token_type_to_str(enum e_token_type type)
+{
+	const char	*token_types_lookup[14] = {
+		"null",
+		"literal",
+		"double_quotes",
+		"variable",
+		"wildcard",
+		"or",
+		"and",
+		"pipeline",
+		"left_parenthesis",
+		"right_parenthesis",
+		"redir_output",
+		"append_output",
+		"redir_input",
+		"heredoc"
+	};
 
-static const char	*t_bool_str[] = {
-	"false",
-	"true"
-};
+	if (type >= 0 && type <= 14)
+		return (token_types_lookup[type]);
+	else
+		return ("non identified");
+}
 
-void	print_toklist(t_dlst *list)
+static const char	*bool_to_str(t_bool bool)
+{
+	if (bool == 0)
+		return ("false");
+	else
+		return ("true");
+}
+
+void	print_toklist(t_dlst *list, int indent)
 {
 	int	i;
 
 	i = 0;
-	while (list != NULL)
+	while (list)
 	{
-		if (list->content != NULL)
+		if (list->content)
 		{
+			print_indent(indent);
 			printf("token %d: %s, '%s', cat_prev: %s\n",
 				i,
-				tokens_types_str[get_toklist_type(list)],
+				token_type_to_str(get_toklist_type(list)),
 				get_toklist_str(list),
-				t_bool_str[get_toklist_cat_prev(list)]);
+				bool_to_str(get_toklist_cat_prev(list)));
 		}
 		else
+		{
+			print_indent(indent);
 			printf("token %d: content == NULL\n", i);
+		}
 		list = list->next;
 		++i;
 	}
@@ -62,6 +78,6 @@ void	print_toklist(t_dlst *list)
 //	t_error	error;
 //
 //	tokens_list = scan_line("echo $var | \"cat\" \'", &error);
-//	print_toklist(tokens_list);
+//	print_toklist(tokens_list, 1);
 //	return (SUCCESS);
 //}
