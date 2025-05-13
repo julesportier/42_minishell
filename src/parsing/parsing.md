@@ -81,24 +81,38 @@ typedef struct  s_node_content
 
 # context free grammar (for parsing)
 
+expression -> binary
+
+binary -> pipeline* (("||" | "&&") expression)* ;
+
+pipeline -> redirection ("|" redirection)* ;
+
+redirection -> primary? ((">" | ">>" | "<" | "<<") primary* ;
+
+primary -> (literal | double_quotes | variable | wildcards | subshell)* ;
+
+
+
+
+
 expression -> literal
             | expanding
             | binary
             | grouping
             | quotes
 
-binary -> expression operator expression ;
-
-operator -> "||" | "&&" ;
+binary -> expression ("||" | "&&") expression ;
+        | pipeline
 
 pipeline -> expression "|" expression ;
+        | redirection
 
 redirection -> expression? (">" | ">>" | "<" | "<<") (literal | variable) ;
+        | grouping
 
 grouping -> "(" expression ")" ;
+        | (expanding | quotes | literal)
 
 expanding -> variable | "*" ;
-
 quotes -> ("'" | '"') expression ("'" | '"') ;
-
-primary -> literal | grouping ;
+literal ;

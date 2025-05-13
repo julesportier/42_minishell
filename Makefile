@@ -16,14 +16,25 @@ NAME := minishell
 
 SRC_DIR := src
 SRC_PARSING_DIR := $(SRC_DIR)/parsing
-vpath %.c $(SRC_DIR):$(SRC_PARSING_DIR)
-SRC := lexer.c \
+SRC_GENERAL_UTILS_DIR := $(SRC_DIR)/general_utils
+vpath %.c $(SRC_DIR):$(SRC_PARSING_DIR):$(SRC_GENERAL_UTILS_DIR)
+SRC_PARSING := lexer.c \
 	   char_identity_check.c \
 	   lexer_utils.c \
 	   token_extract.c \
 	   token_extract_utils.c \
 	   tokens_list_get.c \
-	   tokens_list_print.c
+	   print_utils.c \
+	   tokens_list_print.c \
+	   tokens_list_free.c \
+	   str_list_print.c \
+	   tree_print.c \
+	   tree_free.c \
+	   tree_utils.c \
+	   build_tree.c \
+	   error_print.c
+SRC_GENERAL_UTILS := general_utils.c
+SRC += $(SRC_PARSING) $(SRC_GENERAL_UTILS)
 
 BUILD_DIR := build
 OBJ := $(addprefix $(BUILD_DIR)/, $(SRC:.c=.o))

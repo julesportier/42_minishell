@@ -6,7 +6,7 @@
 /*   By: juportie <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 10:24:06 by juportie          #+#    #+#             */
-/*   Updated: 2025/05/06 15:23:47 by juportie         ###   ########.fr       */
+/*   Updated: 2025/05/13 17:42:19 by juportie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@
 
 enum	e_token_type
 {
+	null,
 	literal,
 	double_quotes,
 	variable,
@@ -44,9 +45,6 @@ typedef struct	s_token
 	char	*str;
 }	t_token;
 
-// After expansions set redirections in t_block
-// transform t_word into string array (char **) and put it into words member
-
 // Structures to give to exec.
 typedef struct	s_node_content
 {
@@ -54,25 +52,60 @@ typedef struct	s_node_content
 	// 01b heredoc, 00b standard file
 	// 00b no expansions on input (if delimiter inside quotes or double quotes), 10b expands. Delimiter is never expanded.
 	int	heredoc_flags;
-	char	*input; // NULL if no redirection
-	char	*output; // NULL if no redirection
+	t_dlst	*inputs; // NULL if no redirection
+	t_dlst	*outputs; // NULL if no redirection
 	t_dlst	*tokens_list; // Tokens list
 }	t_node_content;
 
 typedef struct	s_bin_tree
 {
     enum e_token_type	operator;
-    struct s_bin_tree	*parent_node;
-    struct s_bin_tree	*node_left;
-    struct s_bin_tree	*node_right;
+    struct s_bin_tree	*parent;
+    struct s_bin_tree	*left;
+    struct s_bin_tree	*right;
     t_node_content	*content;
 }	t_bin_tree;
 
+/**********
+ * LEXING *
+ * ********/
+// lexer.c
 t_dlst	*scan_line(char *line, t_error *error);
-// Tokens list utils (files: tokens_list_get.c, tokens_list_print.c)
+
+/********
+ * FREE *
+ * ******/
+// tokens_list_free.c
+void	free_token_content(void *content);
+void	free_toklist(t_dlst **toklist);
+// tree_free.c
+void	free_tree(t_bin_tree *tree);
+
+/******************
+ * ERROR HANDLING *
+ * ****************/
+// error_print.c
+int	print_syntax_error(char *message, enum e_token_type type, int errnum);
+
+/************
+ * PRINTING *
+ * **********/
+// print_utils.c
+void	print_indent(int indent_level);
+// tokens_list_print.c
+const char	*token_type_to_str(enum e_token_type type);
+void	print_toklist(t_dlst *list, int indent);
+// tree_print.c
+void	print_tree(t_bin_tree *tree, int level);
+
+/*********
+ * UTILS *
+ * *******/
+// tokens_list_get.c
 enum e_token_type	get_toklist_type(t_dlst *list);
 char	*get_toklist_str(t_dlst *list);
 t_bool	get_toklist_cat_prev(t_dlst *list);
-void	print_toklist(t_dlst *list);
+// tree_utils.c
+t_bin_tree	*tree_root(t_bin_tree *node);
 
 #endif
