@@ -15,15 +15,19 @@
 
 static void	print_tree_node(t_bin_tree *node, int indent)
 {
+	const char 	*yellow = "\e[0;33m";
+	const char	*green = "\e[0;32m";
+	const char 	*reset = "\e[0m";
+
 	if (node->operator)
 	{
 		print_indent(indent);
-		printf("%s\n", token_type_to_str(node->operator));
+		printf("%s%s%s\n", yellow, token_type_to_str(node->operator), reset);
 	}
 	else
 	{
 		print_indent(indent);
-		printf("leaf\n");
+		printf("%sleaf%s\n", green, reset);
 		print_indent(indent + 1);
 		printf("inputs:\n");
 		print_toklist(node->content->inputs, indent + 2);
