@@ -6,7 +6,7 @@
 /*   By: juportie <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 10:22:36 by juportie          #+#    #+#             */
-/*   Updated: 2025/05/06 15:24:30 by juportie         ###   ########.fr       */
+/*   Updated: 2025/05/14 12:56:24 by juportie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ static t_token	*extract_token(char *line, int *pos, t_bool cat_prev, t_error *er
 	if (is_quote(line[*pos]))
 		*error = extract_quotes(token, line, pos);
 	else if (is_operator(&line[*pos]))
-		extract_operator(token, line, pos);
+		*error = extract_operator(token, line, pos);
 	else if (is_expanding(line[*pos]))
 		*error = extract_expanding(token, line, pos);
 	else
@@ -45,13 +45,16 @@ static t_token	*extract_token(char *line, int *pos, t_bool cat_prev, t_error *er
 	return (token);
 }
 
-static int	append_token_to_list(t_dlst **tokens_list, t_token *token)
+static int	append_token_to_list(t_dlst **tokens_list, t_token *token, t_error *error)
 {
 	t_dlst	*new_node;
 
 	new_node = ft_dlstnew(token);
 	if (new_node == NULL)
+	{
+		*error = critical;
 		return (CRIT_ERROR); // ERROR MESSAGE + FREE;
+	}
 	ft_dlstadd_back(tokens_list, new_node);
 	return (SUCCESS);
 }
@@ -76,10 +79,10 @@ t_dlst	*scan_line(char *line, t_error *error)
 		if (line[pos] == '\0')
 			break ;
 		token = extract_token(line, &pos, cat_prev, error);
-		if (*error == critical)
+		if (token == NULL)
 			return (NULL); // CRITICAL FAILURE. FREE EVERYTHING AND EXIT.
-		if (append_token_to_list(&tokens_list, token) == -1)
-			return (NULL); // CRITICAL FAILURE. FREE EVERYTHING AND EXIT.
+		if (append_token_to_list(&tokens_list, token, error) != SUCCESS)
+			return (NULL); // CRITICAL OR RECOVERABLE FAILURE (IN ERROR VAR). FREE EVERYTHING AND EXIT.
 	}
 	return (tokens_list);
 }
@@ -98,13 +101,6 @@ t_dlst	*scan_line(char *line, t_error *error)
 //	else if (error == recoverable)
 //		return (EXIT_FAILURE); // HANDLE ERROR CORRECTLY
 //	printf("tokens_list size == %d\n", ft_dlstsize(tokens_list));
-//	int	i = 0;
-//	while (tokens_list)
-//	{
-//		printf("token%d == '%s' ; ", i, ((t_token *)tokens_list->content)->str);
-//		printf("type == %d\n", ((t_token *)tokens_list->content)->type);
-//		tokens_list = tokens_list->next;
-//		i++;
-//	}
+//	print_toklist(tokens_list, 0);
 //	return (EXIT_SUCCESS);
 //}

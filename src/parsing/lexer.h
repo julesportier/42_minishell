@@ -6,7 +6,7 @@
 /*   By: juportie <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/25 09:47:43 by juportie          #+#    #+#             */
-/*   Updated: 2025/05/06 15:24:47 by juportie         ###   ########.fr       */
+/*   Updated: 2025/05/14 12:57:21 by juportie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,8 @@ void	extract_one_char(t_token *token, enum e_token_type type, int *pos);
 int	extract_quotes(t_token *token, char *line, int *pos);
 int	extract_literal(t_token *token, char *line, int *pos);
 int	extract_variable_identifier(t_token *token, char *line, int *pos);
-void	extract_operator(t_token *token, char *line, int *pos);
+int	extract_operator(t_token *token, char *line, int *pos);
 int	extract_expanding(t_token *token, char *line, int *pos);
+int	extract_grouping(t_token *token, char *line, int *pos);
 
 #endif
