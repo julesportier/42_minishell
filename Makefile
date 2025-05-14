@@ -32,7 +32,8 @@ SRC_PARSING := lexer.c \
 	   tree_utils.c \
 	   build_tree.c \
 	   error_print.c \
-	   parenthesis_handling_utils.c
+	   parenthesis_handling_utils.c \
+	   token_extract_grouping.c
 SRC_GENERAL_UTILS := general_utils.c
 SRC += $(SRC_PARSING) $(SRC_GENERAL_UTILS)
 

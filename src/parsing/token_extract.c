@@ -6,7 +6,7 @@
 /*   By: juportie <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/28 16:21:32 by juportie          #+#    #+#             */
-/*   Updated: 2025/05/06 15:24:54 by juportie         ###   ########.fr       */
+/*   Updated: 2025/05/14 11:31:45 by juportie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,7 @@ int	extract_variable_identifier(t_token *token, char *line, int *pos)
 	return (SUCCESS);
 }
 
-void	extract_operator(t_token *token, char *line, int *pos)
+int	extract_operator(t_token *token, char *line, int *pos)
 {
 	if (match(&line[*pos], '|'))
 		extract_two_char(token, or, pos);
@@ -96,10 +96,8 @@ void	extract_operator(t_token *token, char *line, int *pos)
 		extract_one_char(token, pipeline, pos);
 	else if (match(&line[*pos], '&'))
 		extract_two_char(token, and, pos);
-	else if (line[*pos] == '(')
-		extract_one_char(token, left_parenthesis, pos);
-	else if (line[*pos] == ')')
-		extract_one_char(token, right_parenthesis, pos);
+	else if (line[*pos] == '(' || line[*pos] == ')')
+		return (extract_grouping(token, line, pos));
 	else if (match(&line[*pos], '<'))
 		extract_two_char(token, heredoc, pos);
 	else if (line[*pos] == '<')
@@ -108,6 +106,7 @@ void	extract_operator(t_token *token, char *line, int *pos)
 		extract_two_char(token, append_output, pos);
 	else if (line[*pos] == '>')
 		extract_one_char(token, redir_output, pos);
+	return (SUCCESS);
 }
 
 int	extract_expanding(t_token *token, char *line, int *pos)

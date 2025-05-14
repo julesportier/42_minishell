@@ -6,7 +6,7 @@
 /*   By: juportie <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 09:44:07 by juportie          #+#    #+#             */
-/*   Updated: 2025/05/14 10:23:19 by juportie         ###   ########.fr       */
+/*   Updated: 2025/05/14 12:58:44 by juportie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -267,34 +267,12 @@ static int	populate_parse_tree(t_bin_tree **tree_node, t_dlst **toklist, t_error
 	return (SUCCESS);
 }
 
-static int	check_parenthesis_structure(t_dlst *toklist)
-{
-	static int	nesting_level;
-
-	if (toklist->prev == NULL)
-		nesting_level = 0;
-	while (toklist)
-	{
-		nesting_level = update_parenthesis_nesting_level(toklist, nesting_level);
-		if (check_nesting_level(nesting_level, toklist) == ERROR)
-		{
-			print_syntax_error("unexpected ", get_toklist_type(toklist), ERROR);
-			return (ERROR);
-		}
-		toklist = toklist->next;
-	}
-	return (SUCCESS);
-}
-
-
 
 // TOKLIST MUST NOT BE EMPTY
 t_bin_tree	*build_parse_tree(t_dlst *toklist, t_error *error)
 {
 	t_bin_tree	*parse_tree;
 
-	if (check_parenthesis_structure(toklist) == ERROR)
-		return (NULL);
 	parse_tree = alloc_tree_node();
 	if (parse_tree == NULL)
 	{
