@@ -149,16 +149,18 @@ static t_dlst	*find_binary_op(
 //	t_error *error)
 {
 	int	nesting_level;
+	t_dlst	*operator;
 
 	nesting_level = 0;
+	operator = NULL;
 	while (toklist)
 	{
 		nesting_level = update_parenthesis_nesting_level(toklist, nesting_level);
 		if (fptr_is_operator(get_toklist_type(toklist)) && nesting_level == 0)
-			return (toklist);
+			operator = toklist;
 		toklist = toklist->next;
 	}
-	return (NULL);
+	return (operator);
 }
 
 // KEEP IT TO HANDLE PARENTHESIS
