@@ -6,7 +6,7 @@
 /*   By: juportie <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 09:44:07 by juportie          #+#    #+#             */
-/*   Updated: 2025/05/13 17:24:37 by juportie         ###   ########.fr       */
+/*   Updated: 2025/05/14 10:23:19 by juportie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,23 +125,6 @@ FUNCTIONS TO SEARCH OPERATORS
 //		return (search_redir_op(ft_dlsthead(toklist), error));
 //	return (NULL);
 //}
-static int	update_parenthesis_nesting_level(t_dlst *token, int nesting_level)
-{
-	if (get_toklist_type(token) == right_parenthesis)
-		return (--nesting_level);
-	else if (get_toklist_type(token) == left_parenthesis)
-		return (++nesting_level);
-	else
-		return (nesting_level);
-}
-
-static int	check_nesting_level(int nesting_level, t_dlst *toklist)
-{
-	if (nesting_level < 0 || (toklist->next == NULL && nesting_level > 0))
-		return (ERROR);
-	else
-		return (SUCCESS);
-}
 
 static t_dlst	*find_binary_op(
 	t_dlst *toklist,
