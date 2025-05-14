@@ -6,7 +6,7 @@
 /*   By: juportie <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 10:24:06 by juportie          #+#    #+#             */
-/*   Updated: 2025/05/13 17:42:19 by juportie         ###   ########.fr       */
+/*   Updated: 2025/05/14 10:24:13 by juportie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,5 +107,8 @@ char	*get_toklist_str(t_dlst *list);
 t_bool	get_toklist_cat_prev(t_dlst *list);
 // tree_utils.c
 t_bin_tree	*tree_root(t_bin_tree *node);
+// parenthesis_handling_utils.c
+int	update_parenthesis_nesting_level(t_dlst *token, int nesting_level);
+int	check_nesting_level(int nesting_level, t_dlst *toklist);
 
 #endif
