@@ -27,7 +27,6 @@ SRC_PARSING := lexer.c \
 	   print_utils.c \
 	   tokens_list_print.c \
 	   tokens_list_free.c \
-	   str_list_print.c \
 	   tree_print.c \
 	   tree_free.c \
 	   tree_utils.c \
