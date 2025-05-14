@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ecasalin <ecasalin@42.fr>                  +#+  +:+       +#+        */
+/*   By: ecasalin <ecasalin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 07:21:49 by ecasalin          #+#    #+#             */
-/*   Updated: 2025/05/12 22:23:09 by ecasalin         ###   ########.fr       */
+/*   Updated: 2025/05/14 15:57:59 by ecasalin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,34 +45,35 @@ static char	*join_pwds_key_value(char *pwd_key, char *pwd_value)
 	pwd = ft_strjoin(pwd_key, "=");
 	if (pwd == NULL)
 		return (NULL);
-	pwd = free_strjoin(pwd, pwd_value, true, true);
+	pwd = free_strjoin(pwd, pwd_value, true, false);
 	return (pwd);
 }
 
 int	set_wd_var(char *var_key, char *var_value, t_shell_vars *vars)
 {
+	char	*var_key_value;
 	char	**temp_env;
 	char	*temp_env_var;
 	int		return_value;
 
-	var_value = join_pwds_key_value(var_key, var_value);
-	if (var_value == NULL)
+	var_key_value = join_pwds_key_value(var_key, var_value);
+	if (var_key_value == NULL)
 		return (CRIT_ERROR);
 	return_value = SUCCESS;
 	temp_env_var = get_env_var(var_key, vars->env);
 	if (temp_env_var == NULL)
 	{
-		temp_env = add_var_to_env(var_value, vars->env);
+		temp_env = add_var_to_env(var_key_value, vars->env);
 		if (temp_env == NULL)
 		{
-			free(var_value);
+			free(var_key_value);
 			return (CRIT_ERROR);
 		}
 		vars->env = temp_env;
 	}
 	else
-		return_value = update_var(temp_env_var, var_value, vars->env);
-	free(var_value);
+		return_value = update_var(temp_env_var, var_key_value, vars->env);
+	free(var_key_value);
 	return (return_value);
 }
 
@@ -85,31 +86,137 @@ int	update_cwd_backup(char *new_path, t_shell_vars *vars)
 	return (SUCCESS);
 }
 
-int	chdir_set_wd_var(char *path, t_shell_vars *vars)
+static int	is_path_syntax_valid(char *path)
+{
+	if (ft_strncmp(path, "./", 2) == SUCCESS ||
+		ft_strncmp(path, "../", 3) == SUCCESS ||
+		ft_strncmp(path, "..", 3) == SUCCESS ||
+		ft_strncmp(path, ".", 2) == SUCCESS ||
+		ft_strncmp(path, "/", 1) == SUCCESS)
+		return (SUCCESS);
+	return (ERROR);
+}
+
+/*cwd_backup will never be NULL or empty*/
+char	*concat_path_and_cwd_backup(char *cwd_backup, char *path)
+{
+	char	*formatted_path;
+	
+	formatted_path = ft_strdup(cwd_backup);
+	if (formatted_path == NULL)
+		return (NULL);
+	if (formatted_path[ft_strlen(formatted_path)] != '/')
+		formatted_path = free_strjoin(formatted_path, "/", true, false);
+	if (formatted_path == NULL)
+		return (NULL);
+	formatted_path = free_strjoin(formatted_path, path, true, false);
+	return (formatted_path);
+}
+
+int	is_valid_relative_path(char *path)
+{
+	int	i;
+
+	i = 0;
+	if (path[i] != '.')
+		return (ERROR);
+	while (path[i])
+	{
+		if (is_path_syntax_valid(&path[i]) == ERROR)
+			return (ERROR);
+		i++;
+	}
+	return (SUCCESS);
+}
+
+int	update_wd_vars(t_shell_vars *vars)
+{
+	char	*temp_wd;
+	int		return_value;
+	
+	return_value = SUCCESS;
+	temp_wd = getcwd(NULL, 0);
+	if (errno == ENOMEM)
+		return (CRIT_ERROR);
+	// if (temp_wd == NULL)
+	// 	perror("minishell: cd: getcwd error");
+	if (set_wd_var("OLDPWD", get_env_var_value("PWD", vars->env), vars) == CRIT_ERROR ||
+		set_wd_var("PWD", temp_wd, vars) == CRIT_ERROR ||
+		update_cwd_backup(temp_wd, vars) == CRIT_ERROR)
+		return_value = CRIT_ERROR;
+	free(temp_wd);
+	return (return_value);
+}
+
+/*Path is not a mallocked var --> no leaks*/
+int	chdir_unlinked_cwd(char *path, t_shell_vars *vars)
 {
 	int		return_value;
 	char	*temp_wd;
-
-	temp_wd = getcwd(NULL, 0);
-	return_value = set_wd_var("PWD", vars);
-	if (errno == ENOMEM)
-		return (CRIT_ERROR);
+	
 	return_value = ERROR;
-	if (chdir(path) == SUCCESS)
+	if (is_valid_relative_path(path))
 	{
-		return_value = set_wd_var("OLDPWD", temp_wd, vars);
-		if (return_value == CRIT_ERROR)
+		path = concat_path_and_cwd_backup(vars->cwd_backup, path);
+		if (path == NULL)
 			return (CRIT_ERROR);
-		temp_wd = getcwd(NULL, 0);
-		if (temp_wd == NULL)
-			return (CRIT_ERROR);
-		return_value = set_wd_var("PWD", temp_wd, vars);
-		return_value = update_cwd_backup(path, vars);
+		if (chdir(path) == SUCCESS)
+			return_value = update_wd_vars(vars);
+		else
+		{
+			if (set_wd_var("PWD", path, vars) == CRIT_ERROR ||
+				update_cwd_backup(path, vars) == CRIT_ERROR)
+				return_value = CRIT_ERROR;
+			else
+				return_value = ERROR;
+		}
+		free(path);
 	}
-	else
-		free(temp_wd);
+	else if (chdir(path) == SUCCESS)
+		return_value = update_wd_vars(vars);
 	return (return_value);
 }
+
+int	chdir_update_wd_vars(char *path, t_shell_vars *vars)
+{
+	char	*temp_wd;
+	
+	temp_wd = getcwd(NULL, 0);
+	if (errno == ENOMEM)
+		return (CRIT_ERROR);
+	if (errno == ENOENT)
+		return (chdir_unlinked_cwd(path, vars));
+	free(temp_wd);
+	if (chdir(path) == SUCCESS)
+		return (update_wd_vars(vars));
+	else
+		return (ERROR);
+}
+
+// int	chdir_update_wd_vars(char *path, t_shell_vars *vars)
+// {
+// 	int		return_value;
+// 	char	*temp_wd;
+
+// 	temp_wd = getcwd(NULL, 0);
+// 	if (errno == ENOMEM)
+// 		return (CRIT_ERROR);
+// 	return_value = ERROR;
+// 	if (chdir(path) == SUCCESS)
+// 	{
+// 		return_value = set_wd_var("OLDPWD", temp_wd, vars);
+// 		if (return_value == CRIT_ERROR)
+// 			return (CRIT_ERROR);
+// 		temp_wd = getcwd(NULL, 0);
+// 		if (temp_wd == NULL)
+// 			return (CRIT_ERROR);
+// 		return_value = set_wd_var("PWD", temp_wd, vars);
+// 		return_value = update_cwd_backup(path, vars);
+// 	}
+// 	else
+// 		free(temp_wd);
+// 	return (return_value);
+// }
 
 int	cd_to_home(t_shell_vars *vars)
 {
@@ -119,7 +226,7 @@ int	cd_to_home(t_shell_vars *vars)
 	path = get_env_var_value("HOME", vars->env);
 	if (path == NULL)
 		return (return_error("minishell: cd: HOME not set\n", ERROR));
-	return_value = chdir_set_wd_var(path, vars);
+	return_value = chdir_update_wd_vars(path, vars);
 	if (return_value == CRIT_ERROR)
 		return (return_perror("minishell: cd critical error", CRIT_ERROR));
 	if (return_value == ERROR)
@@ -139,7 +246,7 @@ int	cd_to_oldpwd(t_shell_vars *vars)
 	temp_path = ft_strdup(path);
 	if (temp_path == NULL)
 		return (return_perror("minishell: cd critical error", CRIT_ERROR));
-	return_value = chdir_set_wd_var(path, vars);
+	return_value = chdir_update_wd_vars(path, vars);
 	if (return_value == CRIT_ERROR)
 		return (return_perror("minishell: cd critical error", CRIT_ERROR));
 	if (return_value == ERROR)
@@ -182,7 +289,7 @@ int	iter_cdpath(char *path, char *cdpath, t_shell_vars *vars)
 		temp_path = ft_strjoin(cdpath_array[i], path);
 		if (temp_path == NULL)
 			return_value = CRIT_ERROR;
-		if (return_value != CRIT_ERROR && chdir_set_wd_var(temp_path, vars) == SUCCESS)
+		if (return_value != CRIT_ERROR && chdir_update_wd_vars(temp_path, vars) == SUCCESS)
 			return_value = SUCCESS;
 		if (return_value == SUCCESS)
 			printf("%s\n", temp_path);
@@ -208,22 +315,12 @@ int	test_possible_paths(char *path, t_shell_vars *vars)
 		temp_path = ft_strjoin("./", path);
 		if (temp_path == NULL)
 			return (CRIT_ERROR);
-		return_value = chdir_set_wd_var(temp_path, vars);
+		return_value = chdir_update_wd_vars(temp_path, vars);
 		free(temp_path);
 	}
 	if (return_value == ERROR && cdpath != NULL)
 		return_value = iter_cdpath(path, cdpath, vars);
 	return (return_value);
-}
-
-static int	is_path_syntax_valid(char *path)
-{
-	if (ft_strncmp(path, "./", 2) == SUCCESS ||
-		ft_strncmp(path, "../", 3) == SUCCESS ||
-		ft_strncmp(path, "..", 3) == SUCCESS ||
-		ft_strncmp(path, "/", 1) == SUCCESS)
-		return (SUCCESS);
-	return (ERROR);
 }
 
 int	ms_cd(char **args, t_shell_vars *vars)
@@ -240,11 +337,11 @@ int	ms_cd(char **args, t_shell_vars *vars)
 	else if (ft_strncmp(args[0], "-", 2) == SUCCESS)
 		return (cd_to_oldpwd(vars));
 	if (is_path_syntax_valid(args[0]) == SUCCESS)
-		return_value = chdir_set_wd_var(args[0], vars);
+		return_value = chdir_update_wd_vars(args[0], vars);
 	else
 		return_value = test_possible_paths(args[0], vars);
 	if (return_value == CRIT_ERROR)
-		return (return_perror("minishell: cd critical error:", CRIT_ERROR));
+		return (return_perror("minishell: cd critical error", CRIT_ERROR));
 	else if (return_value == ERROR)
 		return (return_print_no_path_err(args[0]));
 	return (SUCCESS);
@@ -263,10 +360,21 @@ int	main(int ac, char *av[], char *envp[])
 	// 	i++;
 	// }
 	vars.env = init_env_array(envp, &error);
+	vars.cwd_backup = init_cwd_backup(vars.env);
+	printf("Initial BACKUP var value : %s\n", vars.cwd_backup);
 	printf("Initial PWD var value : %s\n", get_env_var_value("PWD", vars.env));
 	printf("Initial OLDPWD var value : %s\n------------------------------------------------------------------\n", get_env_var_value("OLDPWD", vars.env));
 	ms_cd(&av[2], &vars);
+	printf("Updated BACKUP var value : %s\n", vars.cwd_backup);
 	printf("Updated PWD var value : %s\n", get_env_var_value("PWD", vars.env));
 	printf("Updated OLDPWD var value : %s\nGG !\n", get_env_var_value("OLDPWD", vars.env));
 	free_array(vars.env);
+	free(vars.cwd_backup);
+	// int ret;
+
+	// ret = is_valid_relative_path(av[1]);
+	// if (ret == SUCCESS)
+	// 	printf("SUCCESS : %s\n", av[1]);
+	// else
+	// 	printf("ERROR : %s\n", av[1]);
 }
