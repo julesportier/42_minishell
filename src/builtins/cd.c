@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ecasalin <ecasalin@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ecasalin <ecasalin@42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 07:21:49 by ecasalin          #+#    #+#             */
-/*   Updated: 2025/05/14 15:57:59 by ecasalin         ###   ########.fr       */
+/*   Updated: 2025/05/14 22:31:01 by ecasalin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,7 +101,7 @@ static int	is_path_syntax_valid(char *path)
 char	*concat_path_and_cwd_backup(char *cwd_backup, char *path)
 {
 	char	*formatted_path;
-	
+
 	formatted_path = ft_strdup(cwd_backup);
 	if (formatted_path == NULL)
 		return (NULL);
@@ -133,7 +133,7 @@ int	update_wd_vars(t_shell_vars *vars)
 {
 	char	*temp_wd;
 	int		return_value;
-	
+
 	return_value = SUCCESS;
 	temp_wd = getcwd(NULL, 0);
 	if (errno == ENOMEM)
@@ -148,14 +148,19 @@ int	update_wd_vars(t_shell_vars *vars)
 	return (return_value);
 }
 
+char	*parse_relative_path(char *path)
+{
+	
+}
+
 /*Path is not a mallocked var --> no leaks*/
 int	chdir_unlinked_cwd(char *path, t_shell_vars *vars)
 {
 	int		return_value;
 	char	*temp_wd;
-	
+
 	return_value = ERROR;
-	if (is_valid_relative_path(path))
+	if (is_valid_relative_path(path) == SUCCESS)
 	{
 		path = concat_path_and_cwd_backup(vars->cwd_backup, path);
 		if (path == NULL)
@@ -180,7 +185,7 @@ int	chdir_unlinked_cwd(char *path, t_shell_vars *vars)
 int	chdir_update_wd_vars(char *path, t_shell_vars *vars)
 {
 	char	*temp_wd;
-	
+
 	temp_wd = getcwd(NULL, 0);
 	if (errno == ENOMEM)
 		return (CRIT_ERROR);
@@ -361,6 +366,8 @@ int	main(int ac, char *av[], char *envp[])
 	// }
 	vars.env = init_env_array(envp, &error);
 	vars.cwd_backup = init_cwd_backup(vars.env);
+	if (vars.cwd_backup == NULL)
+		return (printf("Backup malloc error\n"));
 	printf("Initial BACKUP var value : %s\n", vars.cwd_backup);
 	printf("Initial PWD var value : %s\n", get_env_var_value("PWD", vars.env));
 	printf("Initial OLDPWD var value : %s\n------------------------------------------------------------------\n", get_env_var_value("OLDPWD", vars.env));

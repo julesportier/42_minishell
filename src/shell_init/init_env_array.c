@@ -6,7 +6,7 @@
 /*   By: ecasalin <ecasalin@42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 08:01:52 by ecasalin          #+#    #+#             */
-/*   Updated: 2025/05/12 22:04:59 by ecasalin         ###   ########.fr       */
+/*   Updated: 2025/05/14 20:59:26 by ecasalin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,11 @@ char	**init_env_array(char **env, t_error *error)
 char	*init_cwd_backup(char **env)
 {
 	char	*cwd;
+	char	*pwd;
 
+	pwd = get_env_var_value("PWD", env);
+	if (pwd != NULL)
+		return (ft_strdup(pwd));
 	cwd = getcwd(NULL, 0);
 	if (errno == ENOMEM)
 		return (NULL);
