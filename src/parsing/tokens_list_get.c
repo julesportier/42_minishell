@@ -1,29 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   token_extract_utils.c                              :+:      :+:    :+:   */
+/*   tokens_list_get.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: juportie <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/28 16:14:05 by juportie          #+#    #+#             */
-/*   Updated: 2025/05/06 15:25:00 by juportie         ###   ########.fr       */
+/*   Created: 2025/05/06 10:59:37 by juportie          #+#    #+#             */
+/*   Updated: 2025/05/06 11:51:44 by juportie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdlib.h>
 #include "parsing.h"
-#include "lexer.h"
 
-void	extract_two_char(t_token *token, enum e_token_type type, int *pos)
+// /!\ The three functions below must be called after checking
+// that the tokens list is not NULL.
+enum e_token_type	get_toklist_type(t_dlst *list)
 {
-	advance(2, pos);
-	token->str = NULL;
-	token->type = type;
+	return (((t_token *)(list->content))->type);
 }
 
-void	extract_one_char(t_token *token, enum e_token_type type, int *pos)
+char	*get_toklist_str(t_dlst *list)
 {
-	advance(1, pos);
-	token->str = NULL;
-	token->type = type;
+	return (((t_token *)(list->content))->str);
+}
+
+t_bool	get_toklist_cat_prev(t_dlst *list)
+{
+	return (((t_token *)(list->content))->cat_prev);
 }

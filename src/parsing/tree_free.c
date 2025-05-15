@@ -1,29 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   token_extract_utils.c                              :+:      :+:    :+:   */
+/*   tree_free.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: juportie <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/28 16:14:05 by juportie          #+#    #+#             */
-/*   Updated: 2025/05/06 15:25:00 by juportie         ###   ########.fr       */
+/*   Created: 2025/05/13 12:25:12 by juportie          #+#    #+#             */
+/*   Updated: 2025/05/13 17:26:34 by juportie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdlib.h>
 #include "parsing.h"
-#include "lexer.h"
 
-void	extract_two_char(t_token *token, enum e_token_type type, int *pos)
+static void	free_tree_node(t_bin_tree *node)
 {
-	advance(2, pos);
-	token->str = NULL;
-	token->type = type;
+	free_toklist(&(node->content->inputs));
+	free_toklist(&(node->content->outputs));
+	free_toklist(&(node->content->tokens_list));
+	free(node->content);
+	free(node);
 }
 
-void	extract_one_char(t_token *token, enum e_token_type type, int *pos)
+void	free_tree(t_bin_tree *tree)
 {
-	advance(1, pos);
-	token->str = NULL;
-	token->type = type;
+	t_bin_tree	*temp;
+
+	if (tree == NULL)
+		return ;
+	temp = tree;
+	free_tree(tree->left);
+	free_tree(tree->right);
+	free_tree_node(temp);
 }

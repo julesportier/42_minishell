@@ -6,7 +6,7 @@
 /*   By: juportie <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/28 16:21:32 by juportie          #+#    #+#             */
-/*   Updated: 2025/04/28 16:56:10 by juportie         ###   ########.fr       */
+/*   Updated: 2025/05/14 11:31:45 by juportie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 #include "parsing.h"
 #include "lexer.h"
 
-int	extract_quotes(t_word *token, char *line, int *pos)
+int	extract_quotes(t_token *token, char *line, int *pos)
 {
 	int	start;
 	char	quote;
@@ -36,14 +36,14 @@ int	extract_quotes(t_word *token, char *line, int *pos)
 		token->type = double_quotes;
 	else
 		token->type = literal;
-	token->str = ft_strdup(ft_substr(line, start, *pos - start)); // Returns "\0" for "" as input.
+	token->str = ft_substr(line, start, *pos - start); // Returns "\0" for "" as input.
 	if (token->str == NULL)
 		return (CRIT_ERROR);
 	advance(1, pos);
 	return (SUCCESS);
 }
 
-int	extract_literal(t_word *token, char *line, int *pos)
+int	extract_literal(t_token *token, char *line, int *pos)
 {
 	int	start;
 
@@ -55,13 +55,13 @@ int	extract_literal(t_word *token, char *line, int *pos)
 		&& line[*pos] != '\0')
 		advance(1, pos);
 	token->type = literal;
-	token->str = ft_strdup(ft_substr(line, start, *pos - start)); // Returns "\0" for "" as input.
+	token->str = ft_substr(line, start, *pos - start); // Returns "\0" for "" as input.
 	if (token->str == NULL)
 		return (CRIT_ERROR);
 	return (SUCCESS);
 }
 
-int	extract_variable_identifier(t_word *token, char *line, int *pos)
+int	extract_variable_identifier(t_token *token, char *line, int *pos)
 {
 	int	start;
 
@@ -76,7 +76,7 @@ int	extract_variable_identifier(t_word *token, char *line, int *pos)
 	if (*pos - start > 0)
 	{
 		token->type = variable;
-		token->str = ft_strdup(ft_substr(line, start, *pos - start)); // Returns "\0" for "" as input.
+		token->str = ft_substr(line, start, *pos - start); // Returns "\0" for "" as input.
 	}
 	else
 	{
@@ -88,7 +88,7 @@ int	extract_variable_identifier(t_word *token, char *line, int *pos)
 	return (SUCCESS);
 }
 
-void	extract_operator(t_word *token, char *line, int *pos)
+int	extract_operator(t_token *token, char *line, int *pos)
 {
 	if (match(&line[*pos], '|'))
 		extract_two_char(token, or, pos);
@@ -96,10 +96,8 @@ void	extract_operator(t_word *token, char *line, int *pos)
 		extract_one_char(token, pipeline, pos);
 	else if (match(&line[*pos], '&'))
 		extract_two_char(token, and, pos);
-	else if (line[*pos] == '(')
-		extract_one_char(token, left_parenthesis, pos);
-	else if (line[*pos] == ')')
-		extract_one_char(token, right_parenthesis, pos);
+	else if (line[*pos] == '(' || line[*pos] == ')')
+		return (extract_grouping(token, line, pos));
 	else if (match(&line[*pos], '<'))
 		extract_two_char(token, heredoc, pos);
 	else if (line[*pos] == '<')
@@ -108,9 +106,10 @@ void	extract_operator(t_word *token, char *line, int *pos)
 		extract_two_char(token, append_output, pos);
 	else if (line[*pos] == '>')
 		extract_one_char(token, redir_output, pos);
+	return (SUCCESS);
 }
 
-int	extract_expanding(t_word *token, char *line, int *pos)
+int	extract_expanding(t_token *token, char *line, int *pos)
 {
 	if (line[*pos] == '$')
 		return (extract_variable_identifier(token, line, pos));

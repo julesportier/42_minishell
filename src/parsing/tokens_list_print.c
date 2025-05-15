@@ -1,0 +1,83 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   tokens_list_print.c                                :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: juportie <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/05/06 10:59:37 by juportie          #+#    #+#             */
+/*   Updated: 2025/05/13 11:31:56 by juportie         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include <stdio.h>
+#include "parsing.h"
+
+const char	*token_type_to_str(enum e_token_type type)
+{
+	const char	*token_types_lookup[14] = {
+		"null",
+		"literal",
+		"double_quotes",
+		"variable",
+		"wildcard",
+		"or",
+		"and",
+		"pipeline",
+		"left_parenthesis",
+		"right_parenthesis",
+		"redir_output",
+		"append_output",
+		"redir_input",
+		"heredoc"
+	};
+
+	if (type >= 0 && type <= 14)
+		return (token_types_lookup[type]);
+	else
+		return ("non identified");
+}
+
+static const char	*bool_to_str(t_bool bool)
+{
+	if (bool == 0)
+		return ("false");
+	else
+		return ("true");
+}
+
+void	print_toklist(t_dlst *list, int indent)
+{
+	int	i;
+
+	i = 0;
+	while (list)
+	{
+		if (list->content)
+		{
+			print_indent(indent);
+			printf("token %d: %s, '%s', cat_prev: %s\n",
+				i,
+				token_type_to_str(get_toklist_type(list)),
+				get_toklist_str(list),
+				bool_to_str(get_toklist_cat_prev(list)));
+		}
+		else
+		{
+			print_indent(indent);
+			printf("token %d: content == NULL\n", i);
+		}
+		list = list->next;
+		++i;
+	}
+}
+//
+//int main(void)
+//{
+//	t_dlst	*tokens_list;
+//	t_error	error;
+//
+//	tokens_list = scan_line("echo $var | \"cat\" \'", &error);
+//	print_toklist(tokens_list, 1);
+//	return (SUCCESS);
+//}

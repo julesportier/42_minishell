@@ -1,29 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   token_extract_utils.c                              :+:      :+:    :+:   */
+/*   tokens_list_free.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: juportie <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/28 16:14:05 by juportie          #+#    #+#             */
-/*   Updated: 2025/05/06 15:25:00 by juportie         ###   ########.fr       */
+/*   Created: 2025/05/07 10:56:00 by juportie          #+#    #+#             */
+/*   Updated: 2025/05/13 17:22:17 by juportie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdlib.h>
 #include "parsing.h"
-#include "lexer.h"
 
-void	extract_two_char(t_token *token, enum e_token_type type, int *pos)
+// The function to give as second argument to ft_dlstclear() or ft_dlstremove()
+void	free_token_content(void *content)
 {
-	advance(2, pos);
-	token->str = NULL;
-	token->type = type;
+	free(((t_token *)content)->str);
+	free(content);
 }
 
-void	extract_one_char(t_token *token, enum e_token_type type, int *pos)
+void	free_toklist(t_dlst **toklist)
 {
-	advance(1, pos);
-	token->str = NULL;
-	token->type = type;
+	ft_dlstclear(*toklist, free_token_content);
+	*toklist = NULL;
 }

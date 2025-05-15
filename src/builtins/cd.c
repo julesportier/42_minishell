@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ecasalin <ecasalin@42.fr>                  +#+  +:+       +#+        */
+/*   By: ecasalin <ecasalin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 07:21:49 by ecasalin          #+#    #+#             */
-/*   Updated: 2025/05/14 22:31:01 by ecasalin         ###   ########.fr       */
+/*   Updated: 2025/05/15 08:52:07 by ecasalin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -150,7 +150,10 @@ int	update_wd_vars(t_shell_vars *vars)
 
 char	*parse_relative_path(char *path)
 {
+	int	i;
 	
+	i = 0;
+	while (path[i])
 }
 
 /*Path is not a mallocked var --> no leaks*/

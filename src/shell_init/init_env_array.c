@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_env_array.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ecasalin <ecasalin@42.fr>                  +#+  +:+       +#+        */
+/*   By: ecasalin <ecasalin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 08:01:52 by ecasalin          #+#    #+#             */
-/*   Updated: 2025/05/14 20:59:26 by ecasalin         ###   ########.fr       */
+/*   Updated: 2025/05/15 08:50:53 by ecasalin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,16 +50,21 @@ char	**init_env_array(char **env, t_error *error)
 char	*init_cwd_backup(char **env)
 {
 	char	*cwd;
-	char	*pwd;
+	// char	*pwd;
 
-	pwd = get_env_var_value("PWD", env);
-	if (pwd != NULL)
-		return (ft_strdup(pwd));
+	// pwd = get_env_var_value("PWD", env);
+	// if (pwd != NULL)
+	// 	return (ft_strdup(pwd));
 	cwd = getcwd(NULL, 0);
 	if (errno == ENOMEM)
 		return (NULL);
 	if (cwd == NULL)
+	{
 		cwd = ft_strdup("/");
+		if (cwd == NULL)
+			return (NULL);
+		ft_putstr_fd("minishell: current working directory is unlinked: setting internal backup cwd to /\n", 2);
+	}
 	return (cwd);
 }
 

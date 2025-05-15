@@ -1,29 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   token_extract_utils.c                              :+:      :+:    :+:   */
+/*   tree_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: juportie <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/28 16:14:05 by juportie          #+#    #+#             */
-/*   Updated: 2025/05/06 15:25:00 by juportie         ###   ########.fr       */
+/*   Created: 2025/05/13 14:21:17 by juportie          #+#    #+#             */
+/*   Updated: 2025/05/13 14:26:30 by juportie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdlib.h>
 #include "parsing.h"
-#include "lexer.h"
 
-void	extract_two_char(t_token *token, enum e_token_type type, int *pos)
+t_bin_tree	*tree_root(t_bin_tree *node)
 {
-	advance(2, pos);
-	token->str = NULL;
-	token->type = type;
-}
-
-void	extract_one_char(t_token *token, enum e_token_type type, int *pos)
-{
-	advance(1, pos);
-	token->str = NULL;
-	token->type = type;
+	if (node == NULL)
+		return (NULL);
+	while (node->parent)
+		node = node->parent;
+	return (node);
 }
