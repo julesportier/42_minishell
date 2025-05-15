@@ -6,7 +6,7 @@
 /*   By: ecasalin <ecasalin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 11:28:04 by ecasalin          #+#    #+#             */
-/*   Updated: 2025/05/09 09:26:12 by ecasalin         ###   ########.fr       */
+/*   Updated: 2025/05/15 10:43:44 by ecasalin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ static char	*extract_path_var(char **envp, t_shell_vars *vars)
 		{
 			if (envp[i][5] == '\0')
 				return (NULL);
-			path_var = ft_strdup(envp[i]);
+			path_var = ft_strdup_s(envp[i]);
 			// if (path_var == NULL)
 			// 	exit_free_close("extrac_path_var, malloc error", 1, data);
 			// else

@@ -6,7 +6,7 @@
 /*   By: ecasalin <ecasalin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/25 15:41:16 by ecasalin          #+#    #+#             */
-/*   Updated: 2025/05/09 13:52:08 by ecasalin         ###   ########.fr       */
+/*   Updated: 2025/05/15 10:43:19 by ecasalin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ char	**add_var_to_env(char *var, char **env)
 		new_env_array[i] = env[i];
 		i++;
 	}
-	new_env_array[i] = ft_strdup(var);
+	new_env_array[i] = ft_strdup_s(var);
 	if (new_env_array[i] == NULL)
 	{
 		free(new_env_array);
@@ -73,7 +73,7 @@ int	update_var(char *var, char *new_var_value, char **env)
 	while (env[i] != var)
 		i++;
 	free(env[i]);
-	env[i] = ft_strdup(new_var_value);
+	env[i] = ft_strdup_s(new_var_value);
 	if (env[i] == NULL)
 		return (CRIT_ERROR);
 	return (SUCCESS);
