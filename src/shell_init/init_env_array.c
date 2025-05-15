@@ -6,18 +6,20 @@
 /*   By: ecasalin <ecasalin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 08:01:52 by ecasalin          #+#    #+#             */
-/*   Updated: 2025/04/28 11:32:51 by ecasalin         ###   ########.fr       */
+/*   Updated: 2025/05/15 14:13:40 by ecasalin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <unistd.h>
+#include <sys/types.h>
+#include <sys/stat.h>
 #include "../../libft/src/libft.h"
 #include "../error_handling/errors.h"
 #include "../general_utils/utils.h"
 #include "../cleaning_utils/cleaning.h"
 #include "../minishell.h"
 #include "../builtins/builtins.h"
-
+#include <errno.h>
 
 char	**init_env_array(char **env, t_error *error)
 {
@@ -35,7 +37,7 @@ char	**init_env_array(char **env, t_error *error)
 	i--;
 	while (i >= 0)
 	{
-		env_array[i] = ft_strdup(env[i]);
+		env_array[i] = ft_strdup_s(env[i]);
 		if (env_array[i] == NULL)
 		{
 			free_array(env_array);
@@ -44,6 +46,26 @@ char	**init_env_array(char **env, t_error *error)
 		i--;
 	}
 	return (env_array);
+}
+
+/*Dans le main faudra bien free env et se barrer si ca return NULL*/
+char	*init_cwd_backup(char **env)
+{
+	char		*cwd;
+	int			temp;
+	
+	cwd = getcwd(NULL, 0);
+	if (errno == ENOMEM)
+		return (NULL);
+	if (cwd == NULL)
+	{
+		cwd = ft_strdup_s("/");
+		if (cwd == NULL)
+			return (NULL);
+		ft_putstr_fd("minishell: current working directory is unlinked: setting internal backup cwd to /\n", 2);
+		errno = 0;
+	}
+	return (cwd);
 }
 
 // #include <stdio.h>

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env_utils.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ecasalin <ecasalin@42.fr>                  +#+  +:+       +#+        */
+/*   By: ecasalin <ecasalin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 18:52:27 by ecasalin          #+#    #+#             */
-/*   Updated: 2025/05/01 21:31:22 by ecasalin         ###   ########.fr       */
+/*   Updated: 2025/05/09 13:41:58 by ecasalin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ char	*get_env_var_value(char *var_name, char **env)
 	int		i;
 
 	var_value = get_env_var(var_name, env);
-	if (var_value == NULL || !is_var_value_present(var_name))
+	if (var_value == NULL || !is_var_value_present(var_value))
 		return (NULL);
 	i = 0;
 	while (var_value[i] != '=')

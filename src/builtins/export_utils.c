@@ -6,7 +6,7 @@
 /*   By: ecasalin <ecasalin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 19:03:09 by ecasalin          #+#    #+#             */
-/*   Updated: 2025/05/05 13:44:20 by ecasalin         ###   ########.fr       */
+/*   Updated: 2025/05/15 14:32:37 by ecasalin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,28 +73,28 @@ int	print_no_value_var(char *var)
 
 int	print_quoted_env_var(char *var)
 {
-	char	*var_to_print;
+	char	*var;
 	int		var_name_len;
 	int		temp;
 
 	if (!is_var_value_present(var))
 		return (print_no_value_var(var));
 	var_name_len = get_var_name_len(var);
-	var_to_print = ft_calloc(ft_strlen(var) + 4, 1);
-	if (var_to_print == NULL)
+	var = ft_calloc(ft_strlen(var) + 4, 1);
+	if (var == NULL)
 		return (CRIT_ERROR);
-	ft_memcpy(var_to_print, var, var_name_len + 1);
-	var_to_print = free_strjoin(var_to_print, "\"", true, false);
-	if (var_to_print == NULL)
+	ft_memcpy(var, var, var_name_len + 1);
+	var = free_strjoin(var, "\"", true, false);
+	if (var == NULL)
 		return (CRIT_ERROR);
-	var_to_print = free_strjoin(var_to_print, &var[var_name_len + 1], true, false);
-	if (var_to_print == NULL)
+	var = free_strjoin(var, &var[var_name_len + 1], true, false);
+	if (var == NULL)
 		return (CRIT_ERROR);
-	var_to_print = free_strjoin(var_to_print, "\"\n", true, false);
-	if (var_to_print == NULL)
+	var = free_strjoin(var, "\"\n", true, false);
+	if (var == NULL)
 		return (CRIT_ERROR);
-	temp = write(1, var_to_print, ft_strlen(var_to_print));
-	free(var_to_print);
+	temp = write(1, var, ft_strlen(var));
+	free(var);
 	if (temp == FAILURE)
 		return (ERROR);
 	return (SUCCESS);
