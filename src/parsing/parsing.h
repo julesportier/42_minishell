@@ -93,7 +93,7 @@ t_dlst	*scan_line(char *line, t_error *error);
 void	free_token_content(void *content);
 void	free_toklist(t_dlst **toklist);
 // tree_free.c
-void	free_tree(t_bin_tree *tree);
+void	free_tree(t_bin_tree **tree);
 
 /******************
  * ERROR HANDLING *

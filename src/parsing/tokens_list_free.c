@@ -16,6 +16,7 @@
 void	free_token_content(void *content)
 {
 	free(((t_token *)content)->str);
+	((t_token *)content)->str = NULL;
 	free(content);
 }
 
