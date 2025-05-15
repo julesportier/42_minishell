@@ -40,7 +40,7 @@ SRC += $(SRC_PARSING) $(SRC_GENERAL_UTILS)
 BUILD_DIR := build
 OBJ := $(addprefix $(BUILD_DIR)/, $(SRC:.c=.o))
 
-DEP_FLAGS = -MD
+DEP_FLAGS = -MMD
 DEP_FILES := $(OBJ:.o=.d)
 
 all: $(BUILD_DIR) ft $(NAME)
