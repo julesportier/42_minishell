@@ -37,18 +37,21 @@ static int	divide_tokens_list(
 		t_dlst	**toklist_left,
 		t_dlst 	**toklist_right,
 		t_dlst	*toklist,
-		t_dlst	*pivot)
+		t_dlst	**pivot)
 {
-	if (toklist == pivot)
+	if (toklist == *pivot)
 	{
-		return (print_syntax_error("missing operand before ", get_toklist_type(pivot), ERROR));
+		return (print_syntax_error("missing operand before ", get_toklist_type(*pivot), ERROR));
 	}
-	if (ft_dlstlast(toklist) == pivot)
+	if (ft_dlstlast(toklist) == *pivot)
 	{
-		return (print_syntax_error("missing operand after ", get_toklist_type(pivot), ERROR));
+		return (print_syntax_error("missing operand after ", get_toklist_type(*pivot), ERROR));
 	}
-	*toklist_right = (pivot->next);
-	ft_dlstsplit(pivot);
+	*toklist_right = ((*pivot)->next);
+	ft_dlstsplit(*pivot);
+	free_token_content((*pivot)->content);
+	free(*pivot);
+	*pivot = NULL;
 	*toklist_left = toklist;
 	return (SUCCESS);
 }
@@ -226,10 +229,12 @@ static t_dlst	*find_operator(t_bin_tree *tree_node, t_dlst *toklist, t_error *er
 
 static int	free_tree_materials(t_dlst **toklist, t_bin_tree **tree_node, t_error *error)
 {
+	t_bin_tree	*root;
+
 	free_toklist(toklist);
 	*toklist = NULL;
-	free_tree(tree_root(*tree_node));
-	*tree_node = NULL;
+	root = tree_root(*tree_node);
+	free_tree(&root);
 	return (*error);
 }
 
@@ -261,7 +266,7 @@ static int	populate_parse_tree(t_bin_tree **tree_node, t_dlst **toklist, t_error
 		*error = critical;
 		return (free_tree_materials(toklist, tree_node, error));
 	}
-	divide_tokens_list(&toklist_left, &toklist_right, *toklist, pivot);
+	divide_tokens_list(&toklist_left, &toklist_right, *toklist, &pivot);
 	populate_parse_tree(&(*tree_node)->left, &toklist_left, error);
 	populate_parse_tree(&(*tree_node)->right, &toklist_right, error);
 	return (SUCCESS);
@@ -280,7 +285,7 @@ t_bin_tree	*build_parse_tree(t_dlst *toklist, t_error *error)
 		free_toklist(&toklist);
 		return (NULL);
 	}
-	parse_tree->content->tokens_list = toklist;
+	//parse_tree->content->tokens_list = toklist;
 	if (populate_parse_tree(&parse_tree, &toklist, error))
 		return (NULL);
 	else
@@ -306,6 +311,7 @@ t_bin_tree	*build_parse_tree(t_dlst *toklist, t_error *error)
 //		return (-1);
 //	}
 //	print_tree(tree, 0);
+//	free_tree(&tree);
 //	return (0);
 //}
 

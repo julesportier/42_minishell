@@ -12,23 +12,27 @@
 
 #include "parsing.h"
 
-static void	free_tree_node(t_bin_tree *node)
+static void	free_tree_node(t_bin_tree **node)
 {
-	free_toklist(&(node->content->inputs));
-	free_toklist(&(node->content->outputs));
-	free_toklist(&(node->content->tokens_list));
-	free(node->content);
-	free(node);
+	free_toklist(&((*node)->content->inputs));
+	free_toklist(&((*node)->content->outputs));
+	free_toklist(&((*node)->content->tokens_list));
+	free((*node)->content);
+	(*node)->content = NULL;
+	free(*node);
+	*node = NULL;
 }
 
-void	free_tree(t_bin_tree *tree)
+void	free_tree(t_bin_tree **tree)
 {
-	t_bin_tree	*temp;
+	t_bin_tree	**temp;
 
-	if (tree == NULL)
+	if (*tree == NULL)
 		return ;
 	temp = tree;
-	free_tree(tree->left);
-	free_tree(tree->right);
+	if ((*tree)->left)
+		free_tree(&((*tree)->left));
+	if ((*tree)->right)
+		free_tree(&((*tree)->right));
 	free_tree_node(temp);
 }
