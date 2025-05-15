@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ecasalin <ecasalin@42.fr>                  +#+  +:+       +#+        */
+/*   By: ecasalin <ecasalin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/25 15:41:16 by ecasalin          #+#    #+#             */
-/*   Updated: 2025/05/01 23:44:49 by ecasalin         ###   ########.fr       */
+/*   Updated: 2025/05/15 10:43:19 by ecasalin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ static int	is_valid_var_name(char *var)
 }
 
 // /*POUR RAJOUTER DU PIQUANT, SI VAR = NULL CA SEGFAULT*/
-static char	**add_var_to_env(char *var, char **env)
+char	**add_var_to_env(char *var, char **env)
 {
 	int		i;
 	char	**new_env_array;
@@ -52,7 +52,7 @@ static char	**add_var_to_env(char *var, char **env)
 		new_env_array[i] = env[i];
 		i++;
 	}
-	new_env_array[i] = ft_strdup(var);
+	new_env_array[i] = ft_strdup_s(var);
 	if (new_env_array[i] == NULL)
 	{
 		free(new_env_array);
@@ -63,7 +63,7 @@ static char	**add_var_to_env(char *var, char **env)
 	return (new_env_array);
 }
 
-static int	update_var(char *var, char *new_var_value, char **env)
+int	update_var(char *var, char *new_var_value, char **env)
 {
 	int	i;
 
@@ -73,7 +73,7 @@ static int	update_var(char *var, char *new_var_value, char **env)
 	while (env[i] != var)
 		i++;
 	free(env[i]);
-	env[i] = ft_strdup(new_var_value);
+	env[i] = ft_strdup_s(new_var_value);
 	if (env[i] == NULL)
 		return (CRIT_ERROR);
 	return (SUCCESS);
@@ -146,3 +146,4 @@ int	ms_export(char **args, t_shell_vars *vars)
 // 	free_array(vars.env);
 // 	return (temp);
 // }
+	

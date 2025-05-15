@@ -6,7 +6,7 @@
 /*   By: ecasalin <ecasalin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 19:04:53 by ecasalin          #+#    #+#             */
-/*   Updated: 2025/05/05 13:43:27 by ecasalin         ###   ########.fr       */
+/*   Updated: 2025/05/15 14:34:12 by ecasalin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,8 @@ int	print_var_name_error(char *var)
 	error_msg = free_strjoin(error_msg, var_name, true, true);
 	if (error_msg == NULL)
 		return (CRIT_ERROR);
-	error_msg = free_strjoin(error_msg, "': not a valid identifier\n", true, false);
+	error_msg = free_strjoin(error_msg, "': not a valid identifier\n",
+			true, false);
 	if (error_msg == NULL)
 		return (CRIT_ERROR);
 	write(2, error_msg, ft_strlen(error_msg));
