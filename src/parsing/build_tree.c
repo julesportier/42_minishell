@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   build_tree.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: juportie <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: ecasalin <ecasalin@42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 09:44:07 by juportie          #+#    #+#             */
-/*   Updated: 2025/05/16 13:04:24 by juportie         ###   ########.fr       */
+/*   Updated: 2025/05/16 21:36:45 by ecasalin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -135,7 +135,7 @@ static int	populate_parse_tree(t_bin_tree **tree_node, t_dlst **toklist, t_error
 	}
 	(*tree_node)->left = alloc_tree_node(); // CHECK MALLOC;
 	(*tree_node)->right = alloc_tree_node(); // CHECK MALLOC;
-	if ((*tree_node)->left == NULL || (*tree_node)->right == NULL) 
+	if ((*tree_node)->left == NULL || (*tree_node)->right == NULL)
 	{
 		*error = critical;
 		return (free_tree_materials(toklist, tree_node, error));
@@ -169,37 +169,42 @@ t_bin_tree	*build_parse_tree(t_dlst *toklist, t_error *error)
 	else
 		return (parse_tree);
 }
+#include "../exec/exec.h"
+#include "../shell_init/init.h"
+int	main(int argc, char *argv[], char *envp[])
+{
+	t_error	error = success;
 
-//int	main(int argc, char *argv[])
-//{
-//	t_error	error = success;
-//
-//	if (argc != 2)
-//		return (FAILURE);
-//	t_dlst	*toklist = scan_line(argv[1], &error);
-//	if (error)
-//	{
-//		printf("scanning error\n");
-//		free_toklist(&toklist);
-//		return (-1);
-//	}
-//	else if (!toklist)
-//	{
-//		printf("empty toklist\n");
-//		return (0);
-//	}
-//
-//	t_bin_tree	*tree = build_parse_tree(toklist, &error);
-//	if (error)
-//	{
-//		printf("parsing error\n");
-//		free_tree(&tree);
-//		return (-1);
-//	}
-//	print_tree(tree, 0);
-//	free_tree(&tree);
-//	return (0);
-//}
+	if (argc != 2)
+		return (FAILURE);
+	t_dlst	*toklist = scan_line(argv[1], &error);
+	if (error)
+	{
+		printf("scanning error\n");
+		free_toklist(&toklist);
+		return (-1);
+	}
+	else if (!toklist)
+	{
+		printf("empty toklist\n");
+		return (0);
+	}
+
+	t_bin_tree	*tree = build_parse_tree(toklist, &error);
+	if (error)
+	{
+		printf("parsing error\n");
+		free_tree(&tree);
+		return (-1);
+	}
+	t_shell_vars	vars;
+	int	ret;
+	vars.env = init_env_array(envp, &error);
+	ret = exec_cmd_tree(tree, &vars);
+	print_tree(tree, 0);
+	free_tree(&tree);
+	return (ret);
+}
 
 
 //

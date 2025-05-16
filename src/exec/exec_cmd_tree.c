@@ -3,16 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   exec_cmd_tree.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kura <kura@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: ecasalin <ecasalin@42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 06:55:11 by ecasalin          #+#    #+#             */
-/*   Updated: 2025/04/26 11:58:02 by kura             ###   ########.fr       */
+/*   Updated: 2025/05/16 21:06:47 by ecasalin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "exec.h"
+#include "../parsing/parsing.h"
 
-static int	recurse_left_side(t_node *curr_node, t_shell_vars *vars)
+static int	recurse_left_side(t_bin_tree *curr_node, t_shell_vars *vars)
 {
 	if (curr_node->left)
 		return (exec_cmd_tree(curr_node->left, vars));
@@ -20,7 +21,7 @@ static int	recurse_left_side(t_node *curr_node, t_shell_vars *vars)
 		return (prepare_to_exec(curr_node, vars));
 }
 
-static int	recurse_right_side(t_node *curr_node, t_shell_vars *vars)
+static int	recurse_right_side(t_bin_tree *curr_node, t_shell_vars *vars)
 {
 	if (curr_node->right)
 		return (exec_cmd_tree(curr_node->right, vars));
@@ -28,22 +29,22 @@ static int	recurse_right_side(t_node *curr_node, t_shell_vars *vars)
 		return (prepare_to_exec(curr_node, vars));
 }
 
-static int	check_right_cmd_conditions(t_node *curr_node, int left_cmd_return)
+static int	check_right_cmd_conditions(t_bin_tree *curr_node, int left_cmd_return)
 {
 	if (!curr_node->right)
 		return (0);
-	if (curr_node->op == OR)
+	if (curr_node->operator == OR)
 		if (left_cmd_return == 0)
 			return (0);
-	if (curr_node->op == AND)
+	if (curr_node->operator == AND)
 		if (left_cmd_return)
 			return (0);
 	return (1);
 }
 
-int	exec_cmd_tree(t_node *curr_node, t_shell_vars *vars)
+int	exec_cmd_tree(t_bin_tree *curr_node, t_shell_vars *vars)
 {
-	if (curr_node->op == PIPE)
+	if (curr_node->operator == PIPE)
 		return (fork_pipeline_sides(curr_node, vars));
 	else
 	{

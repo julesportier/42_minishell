@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd_exec.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ecasalin <ecasalin@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ecasalin <ecasalin@42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/28 15:00:16 by ecasalin          #+#    #+#             */
-/*   Updated: 2025/05/05 13:45:22 by ecasalin         ###   ########.fr       */
+/*   Updated: 2025/05/16 22:02:54 by ecasalin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 #include "../general_utils/utils.h"
 #include "../error_handling/errors.h"
 #include "../cleaning_utils/cleaning.h"
+#include "../parsing/parsing.h"
 #include "exec.h"
 #include "../minishell.h"
 
@@ -27,7 +28,7 @@
 // 	// set_redirections(curr_node->cmd.input, curr_node->cmd.output);
 // }
 
-int	prepare_to_exec(t_node *curr_node, t_shell_vars *vars)
+int	prepare_to_exec(t_bin_tree *curr_node, t_shell_vars *vars)
 {
 	char	**paths_array;
 	int		child_pid;
@@ -36,7 +37,7 @@ int	prepare_to_exec(t_node *curr_node, t_shell_vars *vars)
 	paths_array = create_paths_array(vars);
 	// if (is_builtin(curr_node->cmd))
 		// return (exec_builtin(curr_node, vars));
-	if (curr_node->prev && curr_node->prev->op == PIPE)
+	if (curr_node->parent && curr_node->parent->operator == PIPE)
 		execution(curr_node, paths_array, vars);
 	child_pid = fork();
 	if (child_pid == CHILD)
@@ -73,22 +74,44 @@ static void	exec_cmd(char **array1, char **array2, int i, t_shell_vars *vars)
 // 		exit_free_close("set_cmd_arg_array, malloc error", 1, data);
 // }
 
-void	execution(t_node *curr_node, char **paths_array, t_shell_vars *vars)
+
+/*NO PROTECTIONS AGAINST SEGFAULT*/
+char	**craft_cmd_array(t_dlst *args)
 {
-	int	i;
+	char	**cmd_array;
+	int		lst_len;
+	int		i;
 
 	i = 0;
-	if (paths_array != NULL && ft_strnstr(curr_node->cmd[0],
-			"/", ft_strlen(curr_node->cmd[0])) == NULL)
+	lst_len = ft_dlstsize(args);
+	cmd_array = calloc(lst_len + 1, sizeof(char *));
+	while (args != NULL)
+	{
+		cmd_array[i] = ft_strdup(get_toklist_str(args));
+		i++;
+		args = args->next;
+	}
+	return (cmd_array);
+}
+
+void	execution(t_bin_tree *curr_node, char **paths_array, t_shell_vars *vars)
+{
+	int		i;
+	char	**cmd_array;
+
+	cmd_array = craft_cmd_array(curr_node->content->tokens_list);
+	i = 0;
+	if (paths_array != NULL && ft_strnstr(cmd_array[0],
+			"/", ft_strlen(cmd_array[0])) == NULL)
 	{
 		while (paths_array != NULL && paths_array[i] != NULL)
 		{
 			paths_array[i] = free_strjoin(paths_array[i],
-					curr_node->cmd[0], true, false);
+					cmd_array[0], true, false);
 			// if (paths_array[i] == NULL)
 			// 	exit_free_close("check_cmd_path, malloc error", 1, data);
 			if (access(paths_array[i], F_OK) == 0)
-				exec_cmd(paths_array, curr_node->cmd, i, vars);
+				exec_cmd(paths_array, cmd_array, i, vars);
 			i++;
 		}
 		perror("BAD PATH");
@@ -97,5 +120,5 @@ void	execution(t_node *curr_node, char **paths_array, t_shell_vars *vars)
 		// ft_putstr_fd(data->cmd_arg_array[0], 2);
 		// exit_free_close(NULL, 127, data);
 	}
-	exec_cmd(curr_node->cmd, curr_node->cmd, 0, vars);
+	exec_cmd(cmd_array, cmd_array, 0, vars);
 }

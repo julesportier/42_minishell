@@ -3,15 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   pipeline_handling_1.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kura <kura@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: ecasalin <ecasalin@42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/21 14:19:24 by ecasalin          #+#    #+#             */
-/*   Updated: 2025/04/26 11:58:02 by kura             ###   ########.fr       */
+/*   Updated: 2025/05/16 21:08:55 by ecasalin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 // #include "../cleaning_utils/cleaning.h"
 #include "../error_handling/errors.h"
+#include "../parsing/parsing.h"
 #include <sys/wait.h>
 #include <stdlib.h>
 #include <stdio.h>
@@ -42,7 +43,7 @@ static int	link_pipe_to_stdin(int *pip)
 	return (SUCCESS);
 }
 
-static void	continue_pipeline_left_process(t_node *curr_node, int *pip, t_shell_vars *vars)
+static void	continue_pipeline_left_process(t_bin_tree *curr_node, int *pip, t_shell_vars *vars)
 {
 	link_pipe_to_stdout(pip);
 	if (curr_node->left)
@@ -54,7 +55,7 @@ static void	continue_pipeline_left_process(t_node *curr_node, int *pip, t_shell_
 		prepare_to_exec(curr_node, vars);
 }
 
-static void	continue_pipeline_right_process(t_node *curr_node, int *pip, t_shell_vars *vars)
+static void	continue_pipeline_right_process(t_bin_tree *curr_node, int *pip, t_shell_vars *vars)
 {
 	link_pipe_to_stdin(pip);
 	if (curr_node->right)
@@ -66,7 +67,7 @@ static void	continue_pipeline_right_process(t_node *curr_node, int *pip, t_shell
 		prepare_to_exec(curr_node, vars);
 }
 
-int	fork_pipeline_sides(t_node *curr_node, t_shell_vars *vars)
+int	fork_pipeline_sides(t_bin_tree *curr_node, t_shell_vars *vars)
 {
 	int	pip[2];
 	int	child_pid;
