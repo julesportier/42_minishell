@@ -59,6 +59,7 @@ int	divide_tokens_list(
 		return (print_syntax_error("missing operand after ", get_toklist_type(*pivot), ERROR));
 	}
 	*toklist_right = ((*pivot)->next);
+	(*toklist_right)->prev = NULL;
 	ft_dlstsplit(*pivot);
 	free_token_content((*pivot)->content);
 	free(*pivot);

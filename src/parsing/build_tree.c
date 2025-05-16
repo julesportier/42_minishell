@@ -6,7 +6,7 @@
 /*   By: juportie <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 09:44:07 by juportie          #+#    #+#             */
-/*   Updated: 2025/05/15 11:21:11 by juportie         ###   ########.fr       */
+/*   Updated: 2025/05/16 13:04:24 by juportie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,88 +45,59 @@ FUNCTIONS TO SEARCH OPERATORS
 //		return (search_???_op(ft_dlsthead(toklist), error));
 //	return (NULL);
 //}
-//static t_dlst	*search_pipeline_op(t_dlst *toklist, t_error *error)
-//{
-//	while (toklist != NULL)
-//	{
-//		toklist = skip_parenthesis(toklist, error);
-//		if (toklist == NULL)
-//			return (NULL);
-//		if (is_pipeline_op(get_toklist_type(toklist)))
-//			return (toklist);
-//		toklist = toklist->next;
-//	}
-//	if (!error)
-//		return (search_redir_op(ft_dlsthead(toklist), error));
-//	return (NULL);
-//}
 
-// KEEP IT TO HANDLE PARENTHESIS
-//
-//static t_dlst	*extract_group(t_dlst *toklist)//, t_error *error)
+// FIX NODE MOVING FROM TOKLIST TO TREE_NODE AND HANDLE ERRORS
+//static t_dlst	*set_redirection(t_bin_tree *tree_node, t_dlst *toklist)
 //{
 //	int	nesting_level;
-//	//int	format_is_ok;
 //
 //	nesting_level = 0;
-//	//if (get_toklist_type(toklist) == left_parenthesis)
-//	//	format_is_ok = 1;
 //	while (toklist)
 //	{
 //		nesting_level = update_parenthesis_nesting_level(toklist, nesting_level);
-//		//if (nesting_level != 0 && !format_is_ok)
-//		//{
-//		//	*error = recoverable;
-//		//	return (NULL);
-//		//}
-//		if (get_toklist_type(toklist) && nesting_level == 0 )
-//			return (toklist);
-//		toklist = toklist->next;
+//		if (is_redir_op(get_toklist_type(toklist)) && nesting_level == 0)
+//		{
+//			if (get_toklist_type(toklist) == redir_input
+//				|| get_toklist_type(toklist) == heredoc)
+//				ft_dlstadd_back(&(tree_node->content->inputs), toklist);
+//			else
+//				ft_dlstadd_back(&(tree_node->content->outputs), toklist);
+//			toklist = toklist->next;
+//			ft_dlstremove(toklist->prev, NULL, NULL);
+//		}
+//		else
+//			toklist = toklist->next;
 //	}
-//	return (NULL);
+//	return (toklist);
 //}
 
-
-// FIX NODE MOVING FROM TOKLIST TO TREE_NODE AND HANDLE ERRORS
-static t_dlst	*set_redirection(t_bin_tree *tree_node, t_dlst *toklist)
-{
-	int	nesting_level;
-
-	nesting_level = 0;
-	while (toklist)
-	{
-		nesting_level = update_parenthesis_nesting_level(toklist, nesting_level);
-		if (is_redir_op(get_toklist_type(toklist)) && nesting_level == 0)
-		{
-			if (get_toklist_type(toklist) == redir_input
-				|| get_toklist_type(toklist) == heredoc)
-				ft_dlstadd_back(&(tree_node->content->inputs), toklist);
-			else
-				ft_dlstadd_back(&(tree_node->content->outputs), toklist);
-			toklist = toklist->next;
-			ft_dlstremove(toklist->prev, NULL, NULL);
-		}
-		else
-			toklist = toklist->next;
-	}
-	return (toklist);
-}
-
-static t_dlst	*find_operator(t_bin_tree *tree_node, t_dlst *toklist, t_error *error)
+static t_dlst	*find_operator(t_bin_tree *tree_node, t_dlst **toklist, t_error *error)
 {
 	t_dlst	*head;
+	t_dlst	*token;
 
-	head = toklist;
-	toklist = find_control_op(head);//, error);
-	if (toklist || *error)
-		return (toklist);
-	toklist = find_pipeline_op(head);//, error);
-	if (toklist || *error)
-		return (toklist);
-	toklist = set_redirection(tree_node, head);
-	//if (extract_grouping(&ft_dlsthead(toklist), error))
-	//	find_operator(tree_node, toklist, error);
+	if (*toklist == NULL)
+	{
+		*error = recoverable;
+		ft_putendl_fd("minishell: syntax error: illformed input", 2);
+		return (NULL);
+	}
+	head = *toklist;
+	token = find_control_op(head);//, error);
+	if (token || *error)
+		return (token);
+	token = find_pipeline_op(head);//, error);
+	if (token || *error)
+		return (token);
+	token = extract_grouping_content(toklist, error);
+	if (*error)
+		return (NULL);
+	else if (token)
+		token = find_operator(tree_node, toklist, error);
+	if (token)
+		return (token);
 	//else
+	//toklist = set_redirection(tree_node, head);
 	return (NULL);
 }
 
@@ -151,7 +122,7 @@ static int	populate_parse_tree(t_bin_tree **tree_node, t_dlst **toklist, t_error
 	// PUT SEARCH_OPERATOR INTO DIVIDE_TOKENS_LIST ?
 	if (*error)
 		return (free_tree_materials(toklist, tree_node, error));
-	pivot = find_operator(*tree_node, *toklist, error);
+	pivot = find_operator(*tree_node, toklist, error);
 	if (*error)
 		return (free_tree_materials(toklist, tree_node, error));
 	else if (pivot)
@@ -169,7 +140,11 @@ static int	populate_parse_tree(t_bin_tree **tree_node, t_dlst **toklist, t_error
 		*error = critical;
 		return (free_tree_materials(toklist, tree_node, error));
 	}
-	divide_tokens_list(&toklist_left, &toklist_right, *toklist, &pivot);
+	if (divide_tokens_list(&toklist_left, &toklist_right, *toklist, &pivot) != SUCCESS)
+	{
+		*error = recoverable;
+		return (free_tree_materials(toklist, tree_node, error));
+	}
 	populate_parse_tree(&(*tree_node)->left, &toklist_left, error);
 	populate_parse_tree(&(*tree_node)->right, &toklist_right, error);
 	return (SUCCESS);
@@ -205,12 +180,20 @@ t_bin_tree	*build_parse_tree(t_dlst *toklist, t_error *error)
 //	if (error)
 //	{
 //		printf("scanning error\n");
+//		free_toklist(&toklist);
 //		return (-1);
 //	}
+//	else if (!toklist)
+//	{
+//		printf("empty toklist\n");
+//		return (0);
+//	}
+//
 //	t_bin_tree	*tree = build_parse_tree(toklist, &error);
 //	if (error)
 //	{
 //		printf("parsing error\n");
+//		free_tree(&tree);
 //		return (-1);
 //	}
 //	print_tree(tree, 0);
