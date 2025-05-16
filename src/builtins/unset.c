@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   unset.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ecasalin <ecasalin@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ecasalin <ecasalin@42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 07:54:32 by ecasalin          #+#    #+#             */
-/*   Updated: 2025/05/16 12:55:33 by ecasalin         ###   ########.fr       */
+/*   Updated: 2025/05/16 18:30:17 by ecasalin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,10 +22,14 @@ static int	get_env_var_index(char *var_name, char **env, int env_len)
 	int		temp;
 
 	i = 0;
+	if (var_name[ft_strlen(var_name) - 1] == '=')
+		return (-1);
 	while (i < env_len)
 	{
-		if (compare_env_var_names(var_name, env[i], get_var_name_len(var_name)) == SUCCESS)
-			return (i);
+		if (env[i] != NULL)
+			if (compare_env_var_names(var_name, env[i],
+					get_var_name_len(var_name)) == SUCCESS)
+				return (i);
 		i++;
 	}
 	return (-1);
@@ -43,18 +47,18 @@ static int	find_and_remove_var(char *var, t_shell_vars *vars, int env_len)
 	return (1);
 }
 
-static char	**update_env(t_shell_vars *vars, int old_env_len)
+static char	**update_env(t_shell_vars *vars, int old_env_len, int removed_vars)
 {
 	int		i;
 	int		y;
 	char	**new_env;
-	
+
 	i = 0;
 	y = 0;
-	new_env = ft_calloc(old_env_len + 1, sizeof(char*));
+	new_env = ft_calloc(old_env_len - removed_vars + 1, sizeof(char *));
 	if (new_env == NULL)
 		return (NULL);
-	while (old_env_len)
+	while (old_env_len >= 0)
 	{
 		if (vars->env[i] != NULL)
 		{
@@ -70,46 +74,45 @@ static char	**update_env(t_shell_vars *vars, int old_env_len)
 
 int	ms_unset(char **args, t_shell_vars *vars)
 {
-	int	rm_var_count;
+	int	removed_vars;
 	int	env_len;
 	int	i;
-	
+
 	i = 0;
 	if (args[0] == NULL || vars->env == NULL)
 		return (SUCCESS);
-	rm_var_count = 0;
+	removed_vars = 0;
 	env_len = count_array_len(vars->env);
 	while (args[i])
 	{
-		rm_var_count += find_and_remove_var(args[i], vars, env_len);
+		removed_vars += find_and_remove_var(args[i], vars, env_len);
 		i++;
 	}
-	env_len -= rm_var_count;
-	vars->env = update_env(vars, env_len);
+	vars->env = update_env(vars, env_len, removed_vars);
 	if (vars->env == NULL)
 		return (CRIT_ERROR);
 	return (SUCCESS);
 }
 
-#include "../shell_init/init.h"
-#include <stdio.h>
-#include "../cleaning_utils/cleaning.h"
-int	main(int ac, char *av[], char *envp[])
-{
-	t_error	error;
-	int	ret;
-	int	i = 0;
-	t_shell_vars	vars;
-	
-	if (ac < 2)
-		return (0);
-	vars.env = init_env_array(envp, &error);
-	ret = ms_unset(&av[2], &vars); 
-	while (vars.env[i])
-	{
-		printf("%s --> %d\n", vars.env[i], i);
-		i++;
-	}
-	// free_array(vars.env);
-	return (ret);
-}
+// #include "../shell_init/init.h"
+// #include <stdio.h>
+// #include "../cleaning_utils/cleaning.h"
+// int	main(int ac, char *av[], char *envp[])
+// {
+// 	t_error	error;
+// 	int	ret;
+// 	int	i = 0;
+// 	t_shell_vars	vars;
+
+// 	if (ac < 2)
+// 		return (0);
+// 	vars.env = init_env_array(envp, &error);
+// 	ret = ms_unset(&av[2], &vars);
+// 	while (vars.env[i])
+// 	{
+// 		printf("%s --> %d\n", vars.env[i], i);
+// 		i++;
+// 	}
+// 	free_array(vars.env);
+// 	return (ret);
+// }

@@ -19,6 +19,7 @@ int		ms_export(char **args, t_shell_vars *vars);
 int		ms_pwd(void);
 int		ms_cd(char **args, t_shell_vars *vars);
 int		ms_env(char **env);
+int		ms_unset(char **args, t_shell_vars *vars);
 
 /*EXPORT UTILS*/
 char	*find_biggest_env_var(char **env);
