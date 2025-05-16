@@ -6,7 +6,7 @@
 /*   By: juportie <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 09:44:07 by juportie          #+#    #+#             */
-/*   Updated: 2025/05/14 12:58:44 by juportie         ###   ########.fr       */
+/*   Updated: 2025/05/15 11:21:11 by juportie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,76 +14,8 @@
 #include "../../libft/src/libft.h"
 #include "../minishell.h"
 #include "parsing.h"
+#include "build_tree.h"
 
-static t_bin_tree	*alloc_tree_node(void)
-{
-	t_bin_tree	*node;
-	t_node_content	*content;
-
-	node = ft_calloc(1, sizeof(t_bin_tree));
-	if (node == NULL)
-		return (NULL);
-	content = ft_calloc(1, sizeof(t_node_content));
-	if (content == NULL)
-	{
-		free(node);
-		return (NULL);
-	}
-	node->content = content;
-	return (node);
-}
-
-static int	divide_tokens_list(
-		t_dlst	**toklist_left,
-		t_dlst 	**toklist_right,
-		t_dlst	*toklist,
-		t_dlst	**pivot)
-{
-	if (toklist == *pivot)
-	{
-		return (print_syntax_error("missing operand before ", get_toklist_type(*pivot), ERROR));
-	}
-	if (ft_dlstlast(toklist) == *pivot)
-	{
-		return (print_syntax_error("missing operand after ", get_toklist_type(*pivot), ERROR));
-	}
-	*toklist_right = ((*pivot)->next);
-	ft_dlstsplit(*pivot);
-	free_token_content((*pivot)->content);
-	free(*pivot);
-	*pivot = NULL;
-	*toklist_left = toklist;
-	return (SUCCESS);
-}
-
-t_bool	is_control_op(enum e_token_type type)
-{
-	return (type == or
-			|| type == and);
-}
-t_bool	is_pipeline_op(enum e_token_type type)
-{
-	return (type == pipeline);
-}
-t_bool	is_redir_op(enum e_token_type type)
-{
-	return (type == redir_output
-			|| type == append_output
-			|| type == redir_input
-			|| type == heredoc);
-}
-t_bool	is_grouping_op(enum e_token_type type)
-{
-	return (type == left_parenthesis
-			|| type == right_parenthesis);
-}
-t_bool	is_primary(enum e_token_type type)
-{
-	return (type == literal
-			|| type == double_quotes
-			|| type == variable
-			|| type == wildcard);
-}
 
 
 
@@ -129,26 +61,6 @@ FUNCTIONS TO SEARCH OPERATORS
 //	return (NULL);
 //}
 
-static t_dlst	*find_binary_op(
-	t_dlst *toklist,
-	t_bool fptr_is_operator(enum e_token_type))
-//	t_error *error)
-{
-	int	nesting_level;
-	t_dlst	*operator;
-
-	nesting_level = 0;
-	operator = NULL;
-	while (toklist)
-	{
-		nesting_level = update_parenthesis_nesting_level(toklist, nesting_level);
-		if (fptr_is_operator(get_toklist_type(toklist)) && nesting_level == 0)
-			operator = toklist;
-		toklist = toklist->next;
-	}
-	return (operator);
-}
-
 // KEEP IT TO HANDLE PARENTHESIS
 //
 //static t_dlst	*extract_group(t_dlst *toklist)//, t_error *error)
@@ -173,15 +85,6 @@ static t_dlst	*find_binary_op(
 //	}
 //	return (NULL);
 //}
-
-static t_dlst	*find_control_op(t_dlst *toklist)//, t_error *error)
-{
-	return (find_binary_op(toklist, is_control_op));//, error));
-}
-static t_dlst	*find_pipeline_op(t_dlst *toklist)//, t_error *error)
-{
-	return (find_binary_op(toklist, is_pipeline_op));//, error));
-}
 
 
 // FIX NODE MOVING FROM TOKLIST TO TREE_NODE AND HANDLE ERRORS
