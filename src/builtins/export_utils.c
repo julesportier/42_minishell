@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ecasalin <ecasalin@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ecasalin <ecasalin@42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 19:03:09 by ecasalin          #+#    #+#             */
-/*   Updated: 2025/05/15 14:32:37 by ecasalin         ###   ########.fr       */
+/*   Updated: 2025/05/16 17:08:51 by ecasalin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,28 +73,28 @@ int	print_no_value_var(char *var)
 
 int	print_quoted_env_var(char *var)
 {
-	char	*var;
+	char	*to_print;
 	int		var_name_len;
 	int		temp;
 
 	if (!is_var_value_present(var))
 		return (print_no_value_var(var));
 	var_name_len = get_var_name_len(var);
-	var = ft_calloc(ft_strlen(var) + 4, 1);
-	if (var == NULL)
+	to_print = ft_calloc(ft_strlen(var) + 4, 1);
+	if (to_print == NULL)
 		return (CRIT_ERROR);
-	ft_memcpy(var, var, var_name_len + 1);
-	var = free_strjoin(var, "\"", true, false);
-	if (var == NULL)
+	ft_memcpy(to_print, var, var_name_len + 1);
+	to_print = free_strjoin(to_print, "\"", true, false);
+	if (to_print == NULL)
 		return (CRIT_ERROR);
-	var = free_strjoin(var, &var[var_name_len + 1], true, false);
-	if (var == NULL)
+	to_print = free_strjoin(to_print, &var[var_name_len + 1], true, false);
+	if (to_print == NULL)
 		return (CRIT_ERROR);
-	var = free_strjoin(var, "\"\n", true, false);
-	if (var == NULL)
+	to_print = free_strjoin(to_print, "\"\n", true, false);
+	if (to_print == NULL)
 		return (CRIT_ERROR);
-	temp = write(1, var, ft_strlen(var));
-	free(var);
+	temp = write(1, to_print, ft_strlen(to_print));
+	free(to_print);
 	if (temp == FAILURE)
 		return (ERROR);
 	return (SUCCESS);
