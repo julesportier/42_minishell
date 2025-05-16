@@ -6,7 +6,7 @@
 /*   By: ecasalin <ecasalin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 19:03:09 by ecasalin          #+#    #+#             */
-/*   Updated: 2025/05/15 14:32:37 by ecasalin         ###   ########.fr       */
+/*   Updated: 2025/05/16 12:40:38 by ecasalin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,7 +106,7 @@ int	print_sorted_env(char **env)
 	char	*var_to_print;
 	int		y;
 	int		error;
-
+	
 	y = count_array_len(env);
 	smallest_var = "\0";
 	while (y > 0)
