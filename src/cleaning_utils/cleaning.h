@@ -3,16 +3,19 @@
 /*                                                        :::      ::::::::   */
 /*   cleaning.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kura <kura@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: ecasalin <ecasalin@42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/25 17:59:52 by kura              #+#    #+#             */
-/*   Updated: 2025/04/26 12:18:36 by kura             ###   ########.fr       */
+/*   Updated: 2025/05/18 10:02:10 by ecasalin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef CLEANING_H
 # define CLEANING_H
 
+#include "../parsing/parsing.h"
+
 void	free_array(char **array);
+void	free_tree_and_vars(t_bin_tree *tree_root, t_shell_vars *vars);
 
 #endif

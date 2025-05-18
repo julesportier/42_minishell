@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd_cwd_vars_utils.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ecasalin <ecasalin@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ecasalin <ecasalin@42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 10:53:03 by ecasalin          #+#    #+#             */
-/*   Updated: 2025/05/15 12:47:21 by ecasalin         ###   ########.fr       */
+/*   Updated: 2025/05/18 16:12:45 by ecasalin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ char	*concat_path_and_cwd_backup(char *cwd_backup, char *path)
 	formatted_path = ft_strdup_s(cwd_backup);
 	if (formatted_path == NULL)
 		return (NULL);
-	if (ft_strncmp(formatted_path, "/", 2) != SUCCESS && formatted_path[ft_strlen(formatted_path)] != '/')
+	if (ft_strncmp(formatted_path, "/", 2) != SUCCESS && formatted_path[ft_strlen(formatted_path)] != '/') // ON PEUT UTILISER GET_LAST_CHAR DANS GENREAL_UTILS->PATH_UTILS
 		formatted_path = free_strjoin(formatted_path, "/", true, false);
 	if (formatted_path == NULL)
 		return (NULL);

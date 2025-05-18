@@ -6,7 +6,7 @@
 /*   By: ecasalin <ecasalin@42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 09:44:07 by juportie          #+#    #+#             */
-/*   Updated: 2025/05/16 21:36:45 by ecasalin         ###   ########.fr       */
+/*   Updated: 2025/05/18 15:17:32 by ecasalin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -171,6 +171,7 @@ t_bin_tree	*build_parse_tree(t_dlst *toklist, t_error *error)
 }
 #include "../exec/exec.h"
 #include "../shell_init/init.h"
+#include "../cleaning_utils/cleaning.h"
 int	main(int argc, char *argv[], char *envp[])
 {
 	t_error	error = success;
@@ -200,9 +201,11 @@ int	main(int argc, char *argv[], char *envp[])
 	t_shell_vars	vars;
 	int	ret;
 	vars.env = init_env_array(envp, &error);
+	vars.cwd_backup = NULL;
 	ret = exec_cmd_tree(tree, &vars);
-	print_tree(tree, 0);
-	free_tree(&tree);
+	// print_tree(tree, 0);
+	// free_tree(&tree);
+	free_tree_and_vars(tree_root(tree), &vars);
 	return (ret);
 }
 

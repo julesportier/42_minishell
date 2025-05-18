@@ -6,13 +6,14 @@
 /*   By: ecasalin <ecasalin@42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/21 14:19:24 by ecasalin          #+#    #+#             */
-/*   Updated: 2025/05/16 21:08:55 by ecasalin         ###   ########.fr       */
+/*   Updated: 2025/05/18 10:12:44 by ecasalin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 // #include "../cleaning_utils/cleaning.h"
 #include "../error_handling/errors.h"
 #include "../parsing/parsing.h"
+#include "../cleaning_utils/cleaning.h"
 #include <sys/wait.h>
 #include <stdlib.h>
 #include <stdio.h>
@@ -23,9 +24,9 @@ static int	link_pipe_to_stdout(int *pip)
 {
 	if (dup2(pip[WRITE], STDOUT_FILENO) == FAILURE)
 	{
-		perror("INTERNAL ERROR");
+		perror("CHILD INTERNAL ERROR");
 		close_pipe(pip);
-		exit (ERROR);
+		return (ERROR);
 	}
 	close_pipe(pip);
 	return (SUCCESS);
@@ -35,9 +36,9 @@ static int	link_pipe_to_stdin(int *pip)
 {
 	if (dup2(pip[READ], STDIN_FILENO) == FAILURE)
 	{
-		perror("INTERNAL ERROR");
+		perror("CHILD INTERNAL ERROR");
 		close_pipe(pip);
-		exit (ERROR);
+		return (ERROR);
 	}
 	close_pipe(pip);
 	return (SUCCESS);
@@ -45,7 +46,11 @@ static int	link_pipe_to_stdin(int *pip)
 
 static void	continue_pipeline_left_process(t_bin_tree *curr_node, int *pip, t_shell_vars *vars)
 {
-	link_pipe_to_stdout(pip);
+	if (link_pipe_to_stdout(pip) == ERROR)
+	{
+		free_tree_and_vars(tree_root(curr_node), vars);
+		exit (ERROR);
+	}
 	if (curr_node->left)
 	{
 		vars->last_cmd_ext_code = (exec_cmd_tree(curr_node->left, vars));
@@ -57,7 +62,11 @@ static void	continue_pipeline_left_process(t_bin_tree *curr_node, int *pip, t_sh
 
 static void	continue_pipeline_right_process(t_bin_tree *curr_node, int *pip, t_shell_vars *vars)
 {
-	link_pipe_to_stdin(pip);
+	if (link_pipe_to_stdin(pip))
+	{
+		free_tree_and_vars(tree_root(curr_node), vars);
+		exit (ERROR);
+	}
 	if (curr_node->right)
 	{
 		vars->last_cmd_ext_code = (exec_cmd_tree(curr_node->right, vars));

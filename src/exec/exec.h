@@ -16,14 +16,14 @@
 #include "../minishell.h"
 #include "../parsing/parsing.h"
 
-#define PIPE 1
-#define OR 2
-#define AND 3
 #define CHILD 0
 #define READ 0
 #define WRITE 1
 #define LEFT 1
 #define RIGHT 2
+#define OR 5
+#define AND 6
+#define PIPE 7
 
 // typedef	struct s_cmd
 // {

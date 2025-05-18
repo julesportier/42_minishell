@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   path_parsing.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ecasalin <ecasalin@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ecasalin <ecasalin@42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 11:28:04 by ecasalin          #+#    #+#             */
-/*   Updated: 2025/05/15 10:43:44 by ecasalin         ###   ########.fr       */
+/*   Updated: 2025/05/18 17:02:45 by ecasalin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,52 +19,24 @@
 #include "exec.h"
 #include "../minishell.h"
 
-static char	*extract_path_var(char **envp, t_shell_vars *vars)
-{
-	int		i;
-	char	*path_var;
-
-	i = 0;
-	while (envp[i] != NULL)
-	{
-		if (ft_strncmp(envp[i], "PATH=", 5) == 0)
-		{
-			if (envp[i][5] == '\0')
-				return (NULL);
-			path_var = ft_strdup_s(envp[i]);
-			// if (path_var == NULL)
-			// 	exit_free_close("extrac_path_var, malloc error", 1, data);
-			// else
-				return (path_var);
-		}
-		i++;
-	}
-	return (NULL);
-}
-
-static char	**parse_path_to_array(char *path_var)
-{
-	char	**paths_array;
-
-	paths_array = ft_split(path_var + 5, ':');
-	free(path_var);
-	return (paths_array);
-}
-
-char	**create_paths_array(t_shell_vars *vars)
+char	**create_paths_array(t_shell_vars *vars, t_error *error)
 {
 	char	**paths_array;
 	char	*path_var;
 
+	*error = success;
 	if (vars->env == NULL)
 		return (NULL);
-	path_var = extract_path_var(vars->env, vars);
-	// if (path_var == NULL)
-	// 	return (NULL);
-	paths_array = parse_path_to_array(path_var);
-	// if (paths_array == NULL)
-	// 	exit_free_close("parse_path_to_array, malloc error", 1, data);
-	// if (add_slash_to_paths(paths_array) == 0)     !!!!!!!!!!!!!!!! SI ADD_SLASHS_TO_ARRAY FAIL IL FAUT FREE LE TABLEAU DES PATHS !!!!!!!!!!!!
-	// 	exit_free_close("add_slash_to_paths, malloc error", 1, data);
+	path_var = get_env_var_value("PATH", vars->env);
+	if (path_var == NULL)
+		return (NULL);
+	paths_array = ft_split(path_var, ':');
+	if (paths_array == NULL)
+		return (set_err_return_null(error, critical));
+	if (add_slash_to_paths(paths_array) == CRIT_ERROR)
+	{
+		free_array(paths_array);
+		return (set_err_return_null(error, critical));
+	}
 	return (paths_array);
 }
