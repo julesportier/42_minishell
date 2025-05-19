@@ -38,14 +38,6 @@ const char	*token_type_to_str(enum e_token_type type)
 		return ("non identified");
 }
 
-static const char	*bool_to_str(t_bool bool)
-{
-	if (bool == 0)
-		return ("false");
-	else
-		return ("true");
-}
-
 void	print_toklist(t_dlst *list, int indent)
 {
 	int	i;

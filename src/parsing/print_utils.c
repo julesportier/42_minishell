@@ -11,9 +11,18 @@
 /* ************************************************************************** */
 
 #include <stdio.h>
+#include "../minishell.h"
 
 void	print_indent(int indent_level)
 {
 	while (indent_level--)
 		printf("   ");
+}
+
+const char	*bool_to_str(t_bool bool)
+{
+	if (bool == 0)
+		return ("false");
+	else
+		return ("true");
 }

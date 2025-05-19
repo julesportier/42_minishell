@@ -90,7 +90,7 @@ static t_dlst	*find_operator(t_bin_tree *tree_node, t_dlst **toklist, t_error *e
 	//set_redirection(toklist, tree_node, error);
 	//if (*error)
 	//	return (NULL);
-	token = extract_grouping_content(toklist, error);
+	token = extract_grouping_content(tree_node, toklist, error);
 	if (*error || token == NULL)
 		return (NULL);
 	token = find_operator(tree_node, toklist, error);
