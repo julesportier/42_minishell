@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   build_tree.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ecasalin <ecasalin@42.fr>                  +#+  +:+       +#+        */
+/*   By: ecasalin <ecasalin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 09:44:07 by juportie          #+#    #+#             */
-/*   Updated: 2025/05/18 15:17:32 by ecasalin         ###   ########.fr       */
+/*   Updated: 2025/05/19 10:24:55 by ecasalin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -202,7 +202,7 @@ int	main(int argc, char *argv[], char *envp[])
 	int	ret;
 	vars.env = init_env_array(envp, &error);
 	vars.cwd_backup = NULL;
-	ret = exec_cmd_tree(tree, &vars);
+	ret = exec_cmd_tree(tree, &vars, &error);
 	// print_tree(tree, 0);
 	// free_tree(&tree);
 	free_tree_and_vars(tree_root(tree), &vars);
