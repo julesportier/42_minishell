@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd_exec.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ecasalin <ecasalin@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ecasalin <ecasalin@42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/28 15:00:16 by ecasalin          #+#    #+#             */
-/*   Updated: 2025/05/19 17:13:25 by ecasalin         ###   ########.fr       */
+/*   Updated: 2025/05/19 21:54:00 by ecasalin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,11 +36,11 @@ int	create_exec_setup(t_bin_tree *curr_node, t_shell_vars *vars, t_error *error)
 	int		child_exit_status;
 
 	child_pid = FAILURE;
+	// if (is_builtin(curr_node->cmd))
+		// return (exec_builtin(curr_node, vars));
 	paths_array = create_paths_array(vars, error);
 	if (*error != success)
 		return (*error);
-	// if (is_builtin(curr_node->cmd))
-		// return (exec_builtin(curr_node, vars));
 	if (curr_node->parent && curr_node->parent->operator == pipeline)
 		prepare_to_exec(curr_node, paths_array, vars);
 	child_pid = fork();
@@ -104,12 +104,12 @@ static int	exec_cmd(char *cmd_name, char **array2, t_shell_vars *vars)
 		return (1);
 }
 
-int	exec_relative_path_cmd(char **paths_array, char **cmd_array, t_shell_vars *vars)
+int	exec_relative_path_cmd(char **paths_array, char **cmd_array, t_shell_vars *vars, t_bin_tree *curr_node)
 {
 	int		i;
 	int		exit_value;
 	char	*temp_line;
-	
+
 	i = 0;
 	while (paths_array[i] != NULL)
 	{
@@ -124,6 +124,7 @@ int	exec_relative_path_cmd(char **paths_array, char **cmd_array, t_shell_vars *v
 	exit_value = print_cmd_exec_issue(cmd_array[0], ": command not found\n", 127);
 	free_array(paths_array);
 	free_array(cmd_array);
+	free_tree_and_vars(tree_root(curr_node), vars);
 	exit(exit_value);
 }
 
@@ -135,16 +136,16 @@ void	prepare_to_exec(t_bin_tree *curr_node, char **paths_array, t_shell_vars *va
 
 	cmd_array = craft_cmd_array(curr_node->content->tokens_list);
 	if (cmd_array == NULL)
-		exit_value = CRIT_ERROR;//return_perror("minishell: execution: critical error", CRIT_ERROR);
+		exit_value = CRIT_ERROR;
 	else if (paths_array != NULL
 		&& paths_array[0] != NULL
 		&& cmd_array != NULL
 		&& cmd_array[0] != NULL
 		&& ft_strnstr(cmd_array[0], "/", ft_strlen(cmd_array[0])) == NULL)
-		exit_value = exec_relative_path_cmd(paths_array, cmd_array, vars);
+		exit_value = exec_relative_path_cmd(paths_array, cmd_array, vars, curr_node);
 	else if (cmd_array != NULL)
 		exit_value = exec_cmd(cmd_array[0], cmd_array, vars);
-	exit_value = print_exec_error(cmd_array[0], exit_value);
+	exit_value = print_exec_error(cmd_array, exit_value);
 	free_array(paths_array);
 	free_array(cmd_array);
 	free_tree_and_vars(tree_root(curr_node), vars);

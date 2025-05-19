@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_errors_utils.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ecasalin <ecasalin@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ecasalin <ecasalin@42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 17:03:56 by ecasalin          #+#    #+#             */
-/*   Updated: 2025/05/19 17:26:19 by ecasalin         ###   ########.fr       */
+/*   Updated: 2025/05/19 21:35:56 by ecasalin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@
 #include "../minishell.h"
 
 int	print_cmd_exec_issue(char *cmd_name, char *msg, int return_value)
-{	
+{
 	char	*error_msg;
 
 	error_msg = ft_strdup("minishell: ");
@@ -41,7 +41,7 @@ int	print_cmd_exec_issue(char *cmd_name, char *msg, int return_value)
 static char *create_errno_msg(void)
 {
 	char	*formatted_strerror;
-	
+
 	formatted_strerror = ft_strdup(": ");
 	if (formatted_strerror == NULL)
 		return (NULL);
@@ -54,7 +54,7 @@ static char *create_errno_msg(void)
 	return (formatted_strerror);
 }
 
-int	print_exec_error(char *cmd_name, int exit_value)
+int	print_exec_error(char **cmd_array, int exit_value)
 {
 	char	*formatted_strerror;
 
@@ -67,7 +67,7 @@ int	print_exec_error(char *cmd_name, int exit_value)
 		formatted_strerror = create_errno_msg();
 		if (formatted_strerror == NULL)
 			return (return_perror("minishell: execution: critical error", ERROR));
-		exit_value = print_cmd_exec_issue(cmd_name, formatted_strerror, exit_value);
+		exit_value = print_cmd_exec_issue(cmd_array[0], formatted_strerror, exit_value);
 		free(formatted_strerror);
 		return (exit_value);
 	}

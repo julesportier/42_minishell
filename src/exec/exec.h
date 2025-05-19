@@ -26,7 +26,7 @@ int		close_pipe(int *pipe);
 
 /*ERROR UTILS*/
 int		print_cmd_exec_issue(char *cmd_name, char *msg, int return_value);
-int		print_exec_error(char *cmd_name, int exit_value);
+int		print_exec_error(char **cmd_array, int exit_value);
 
 /*ENV UTILS*/
 char	**create_paths_array(t_shell_vars *vars, t_error *error);
