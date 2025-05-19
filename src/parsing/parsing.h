@@ -85,7 +85,7 @@ void	free_tree(t_bin_tree **tree);
  * ERROR HANDLING *
  * ****************/
 // error_print.c
-int	print_syntax_error(char *message, enum e_token_type type, int errnum);
+t_error	print_syntax_error(char *message, enum e_token_type type, t_error errnum);
 
 /************
  * PRINTING *
@@ -110,6 +110,6 @@ t_bin_tree	*tree_root(t_bin_tree *node);
 t_bin_tree	*alloc_tree_node(void);
 // parenthesis_handling_utils.c
 int	update_parenthesis_nesting_level(t_dlst *token, int nesting_level);
-int	check_nesting_level(int nesting_level, t_dlst *toklist);
+t_error	check_nesting_level(int nesting_level, t_dlst *toklist);
 
 #endif

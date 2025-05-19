@@ -99,7 +99,7 @@ static t_dlst	*find_operator(t_bin_tree *tree_node, t_dlst **toklist, t_error *e
 	return (NULL);
 }
 
-static int	free_tree_materials(t_dlst **toklist, t_bin_tree **tree_node, t_error *error)
+static t_error	free_tree_materials(t_dlst **toklist, t_bin_tree **tree_node, t_error *error)
 {
 	if (toklist)
 	{
@@ -115,7 +115,7 @@ static int	free_tree_materials(t_dlst **toklist, t_bin_tree **tree_node, t_error
 }
 
 // GET RID OF INT RETURN VALUES AND JUST RETURN IF ERROR (REDUCE LINE NUMBER)
-static int	populate_parse_tree(t_bin_tree **tree_node, t_dlst **toklist, t_error *error)
+static t_error	populate_parse_tree(t_bin_tree **tree_node, t_dlst **toklist, t_error *error)
 {
 	t_dlst	*toklist_left;
 	t_dlst	*toklist_right;
@@ -131,7 +131,7 @@ static int	populate_parse_tree(t_bin_tree **tree_node, t_dlst **toklist, t_error
 	{
 		(*tree_node)->operator = null;
 		(*tree_node)->content->tokens_list = *toklist;
-		return (SUCCESS);
+		return (success);
 	}
 	(*tree_node)->left = alloc_tree_node(); // CHECK MALLOC;
 	(*tree_node)->right = alloc_tree_node(); // CHECK MALLOC;
@@ -142,17 +142,17 @@ static int	populate_parse_tree(t_bin_tree **tree_node, t_dlst **toklist, t_error
 	}
 	(*tree_node)->left->parent = *tree_node;
 	(*tree_node)->right->parent = *tree_node;
-	if (divide_tokens_list(&toklist_left, &toklist_right, toklist, &pivot) != SUCCESS)
+	if (divide_tokens_list(&toklist_left, &toklist_right, toklist, &pivot) != success)
 	{
 		*error = recoverable;
 		free_tree_materials(NULL, tree_node, error);
-		return (ERROR);
+		return (*error);
 	}
 	populate_parse_tree(&(*tree_node)->left, &toklist_left, error);
 	populate_parse_tree(&(*tree_node)->right, &toklist_right, error);
 	if (*error)
 		return (free_tree_materials(NULL, tree_node, error));
-	return (SUCCESS);
+	return (success);
 }
 
 
@@ -182,7 +182,7 @@ t_bin_tree	*build_parse_tree(t_dlst **toklist, t_error *error)
 //	t_error	error = success;
 //
 //	if (argc != 2)
-//		return (FAILURE);
+//		return (-1);
 //	t_dlst	*toklist = scan_line(argv[1], &error);
 //	if (error)
 //	{

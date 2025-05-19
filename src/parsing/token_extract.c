@@ -17,7 +17,7 @@
 #include "parsing.h"
 #include "lexer.h"
 
-int	extract_quotes(t_token *token, char *line, int *pos)
+t_error	extract_quotes(t_token *token, char *line, int *pos)
 {
 	int	start;
 	char	quote;
@@ -30,7 +30,7 @@ int	extract_quotes(t_token *token, char *line, int *pos)
 	if (line[*pos] == '\0')
 	{
 		printf("minishell: syntax error: unclosed '%c'\n", quote); // PUT THIS IN A SYNTAX ERROR FILE
-		return (ERROR);
+		return (recoverable);
 	}
 	if (quote == '"')
 		token->type = double_quotes;
@@ -38,12 +38,12 @@ int	extract_quotes(t_token *token, char *line, int *pos)
 		token->type = literal;
 	token->str = ft_substr(line, start, *pos - start); // Returns "\0" for "" as input.
 	if (token->str == NULL)
-		return (CRIT_ERROR);
+		return (critical);
 	advance(1, pos);
-	return (SUCCESS);
+	return (success);
 }
 
-int	extract_literal(t_token *token, char *line, int *pos)
+t_error	extract_literal(t_token *token, char *line, int *pos)
 {
 	int	start;
 
@@ -57,11 +57,11 @@ int	extract_literal(t_token *token, char *line, int *pos)
 	token->type = literal;
 	token->str = ft_substr(line, start, *pos - start); // Returns "\0" for "" as input.
 	if (token->str == NULL)
-		return (CRIT_ERROR);
-	return (SUCCESS);
+		return (critical);
+	return (success);
 }
 
-int	extract_variable_identifier(t_token *token, char *line, int *pos)
+t_error	extract_variable_identifier(t_token *token, char *line, int *pos)
 {
 	int	start;
 
@@ -84,11 +84,11 @@ int	extract_variable_identifier(t_token *token, char *line, int *pos)
 		token->str = ft_strdup("$");
 	}
 	if (token->str == NULL)
-		return (CRIT_ERROR);
-	return (SUCCESS);
+		return (critical);
+	return (success);
 }
 
-int	extract_operator(t_token *token, char *line, int *pos)
+t_error	extract_operator(t_token *token, char *line, int *pos)
 {
 	if (match(&line[*pos], '|'))
 		extract_two_char(token, or, pos);
@@ -106,14 +106,14 @@ int	extract_operator(t_token *token, char *line, int *pos)
 		extract_two_char(token, append_output, pos);
 	else if (line[*pos] == '>')
 		extract_one_char(token, redir_output, pos);
-	return (SUCCESS);
+	return (success);
 }
 
-int	extract_expanding(t_token *token, char *line, int *pos)
+t_error	extract_expanding(t_token *token, char *line, int *pos)
 {
 	if (line[*pos] == '$')
 		return (extract_variable_identifier(token, line, pos));
 	else if (line[*pos] == '*')
 		extract_one_char(token, wildcard, pos);
-	return (SUCCESS);
+	return (success);
 }
