@@ -44,19 +44,23 @@ t_dlst	*find_pipeline_op(t_dlst *toklist)//, t_error *error)
 	return (find_binary_op(toklist, is_pipeline_op));//, error));
 }
 
-int	divide_tokens_list(
+t_error	divide_tokens_list(
 		t_dlst	**toklist_left,
 		t_dlst 	**toklist_right,
-		t_dlst	*toklist,
+		t_dlst	**toklist,
 		t_dlst	**pivot)
 {
-	if (toklist == *pivot)
+	if (*toklist == *pivot)
 	{
-		return (print_syntax_error("missing operand before ", get_toklist_type(*pivot), ERROR));
+		print_syntax_error("missing operand before ", get_toklist_type(*pivot), recoverable);
+		free_toklist(toklist);
+		return (recoverable);
 	}
-	if (ft_dlstlast(toklist) == *pivot)
+	if (ft_dlstlast(*toklist) == *pivot)
 	{
-		return (print_syntax_error("missing operand after ", get_toklist_type(*pivot), ERROR));
+		print_syntax_error("missing operand after ", get_toklist_type(*pivot), recoverable);
+		free_toklist(toklist);
+		return (recoverable);
 	}
 	*toklist_right = ((*pivot)->next);
 	(*toklist_right)->prev = NULL;
@@ -64,6 +68,6 @@ int	divide_tokens_list(
 	free_token_content((*pivot)->content);
 	free(*pivot);
 	*pivot = NULL;
-	*toklist_left = toklist;
-	return (SUCCESS);
+	*toklist_left = *toklist;
+	return (success);
 }

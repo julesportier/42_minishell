@@ -32,11 +32,11 @@ t_bool	match(char *str, char c);
 t_bool	skip_spaces(char *line, int *pos);
 void	extract_two_char(t_token *token, enum e_token_type type, int *pos);
 void	extract_one_char(t_token *token, enum e_token_type type, int *pos);
-int	extract_quotes(t_token *token, char *line, int *pos);
-int	extract_literal(t_token *token, char *line, int *pos);
-int	extract_variable_identifier(t_token *token, char *line, int *pos);
-int	extract_operator(t_token *token, char *line, int *pos);
-int	extract_expanding(t_token *token, char *line, int *pos);
-int	extract_grouping(t_token *token, char *line, int *pos);
+t_error	extract_quotes(t_token *token, char *line, int *pos);
+t_error	extract_literal(t_token *token, char *line, int *pos);
+t_error	extract_variable_identifier(t_token *token, char *line, int *pos);
+t_error	extract_operator(t_token *token, char *line, int *pos);
+t_error	extract_expanding(t_token *token, char *line, int *pos);
+t_error	extract_grouping(t_token *token, char *line, int *pos);
 
 #endif

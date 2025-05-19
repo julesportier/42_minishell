@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   build_tree.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ecasalin <ecasalin@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ecasalin <ecasalin@42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 09:44:07 by juportie          #+#    #+#             */
-/*   Updated: 2025/05/19 10:24:55 by ecasalin         ###   ########.fr       */
+/*   Updated: 2025/05/19 21:11:48 by ecasalin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,6 @@ FUNCTIONS TO SEARCH OPERATORS
 
 static t_dlst	*find_operator(t_bin_tree *tree_node, t_dlst **toklist, t_error *error)
 {
-	t_dlst	*head;
 	t_dlst	*token;
 
 	if (*toklist == NULL)
@@ -82,46 +81,47 @@ static t_dlst	*find_operator(t_bin_tree *tree_node, t_dlst **toklist, t_error *e
 		ft_putendl_fd("minishell: syntax error: illformed input", 2);
 		return (NULL);
 	}
-	head = *toklist;
-	token = find_control_op(head);//, error);
+	token = find_control_op(*toklist);//, error);
 	if (token || *error)
 		return (token);
-	token = find_pipeline_op(head);//, error);
+	token = find_pipeline_op(*toklist);//, error);
 	if (token || *error)
 		return (token);
-	token = extract_grouping_content(toklist, error);
-	if (*error)
+	//set_redirection(toklist, tree_node, error);
+	//if (*error)
+	//	return (NULL);
+	token = extract_grouping_content(tree_node, toklist, error);
+	if (*error || token == NULL)
 		return (NULL);
-	else if (token)
-		token = find_operator(tree_node, toklist, error);
-	if (token)
+	token = find_operator(tree_node, toklist, error);
+	if (token || *error)
 		return (token);
-	//else
-	//toklist = set_redirection(tree_node, head);
 	return (NULL);
 }
 
-static int	free_tree_materials(t_dlst **toklist, t_bin_tree **tree_node, t_error *error)
+static t_error	free_tree_materials(t_dlst **toklist, t_bin_tree **tree_node, t_error *error)
 {
-	t_bin_tree	*root;
-
-	free_toklist(toklist);
-	*toklist = NULL;
-	root = tree_root(*tree_node);
-	free_tree(&root);
+	if (toklist)
+	{
+		free_toklist(toklist);
+		*toklist = NULL;
+	}
+	if (tree_node && *tree_node)
+	{
+		free_tree(tree_node);
+		*tree_node = NULL;
+	}
 	return (*error);
 }
 
 // GET RID OF INT RETURN VALUES AND JUST RETURN IF ERROR (REDUCE LINE NUMBER)
-static int	populate_parse_tree(t_bin_tree **tree_node, t_dlst **toklist, t_error *error)
+static t_error	populate_parse_tree(t_bin_tree **tree_node, t_dlst **toklist, t_error *error)
 {
 	t_dlst	*toklist_left;
 	t_dlst	*toklist_right;
 	t_dlst	*pivot;
 
 	// PUT SEARCH_OPERATOR INTO DIVIDE_TOKENS_LIST ?
-	if (*error)
-		return (free_tree_materials(toklist, tree_node, error));
 	pivot = find_operator(*tree_node, toklist, error);
 	if (*error)
 		return (free_tree_materials(toklist, tree_node, error));
@@ -131,7 +131,7 @@ static int	populate_parse_tree(t_bin_tree **tree_node, t_dlst **toklist, t_error
 	{
 		(*tree_node)->operator = null;
 		(*tree_node)->content->tokens_list = *toklist;
-		return (SUCCESS);
+		return (success);
 	}
 	(*tree_node)->left = alloc_tree_node(); // CHECK MALLOC;
 	(*tree_node)->right = alloc_tree_node(); // CHECK MALLOC;
@@ -140,19 +140,24 @@ static int	populate_parse_tree(t_bin_tree **tree_node, t_dlst **toklist, t_error
 		*error = critical;
 		return (free_tree_materials(toklist, tree_node, error));
 	}
-	if (divide_tokens_list(&toklist_left, &toklist_right, *toklist, &pivot) != SUCCESS)
+	(*tree_node)->left->parent = *tree_node;
+	(*tree_node)->right->parent = *tree_node;
+	if (divide_tokens_list(&toklist_left, &toklist_right, toklist, &pivot) != success)
 	{
 		*error = recoverable;
-		return (free_tree_materials(toklist, tree_node, error));
+		free_tree_materials(NULL, tree_node, error);
+		return (*error);
 	}
 	populate_parse_tree(&(*tree_node)->left, &toklist_left, error);
 	populate_parse_tree(&(*tree_node)->right, &toklist_right, error);
-	return (SUCCESS);
+	if (*error)
+		return (free_tree_materials(NULL, tree_node, error));
+	return (success);
 }
 
 
 // TOKLIST MUST NOT BE EMPTY
-t_bin_tree	*build_parse_tree(t_dlst *toklist, t_error *error)
+t_bin_tree	*build_parse_tree(t_dlst **toklist, t_error *error)
 {
 	t_bin_tree	*parse_tree;
 
@@ -160,54 +165,47 @@ t_bin_tree	*build_parse_tree(t_dlst *toklist, t_error *error)
 	if (parse_tree == NULL)
 	{
 		*error = critical;
-		free_toklist(&toklist);
+		free_toklist(toklist);
 		return (NULL);
 	}
-	//parse_tree->content->tokens_list = toklist;
-	if (populate_parse_tree(&parse_tree, &toklist, error))
+	if (populate_parse_tree(&parse_tree, toklist, error) != SUCCESS)
+	{
+		//free_tree(&parse_tree);
 		return (NULL);
+	}
 	else
 		return (parse_tree);
 }
-#include "../exec/exec.h"
-#include "../shell_init/init.h"
-#include "../cleaning_utils/cleaning.h"
-int	main(int argc, char *argv[], char *envp[])
-{
-	t_error	error = success;
 
-	if (argc != 2)
-		return (FAILURE);
-	t_dlst	*toklist = scan_line(argv[1], &error);
-	if (error)
-	{
-		printf("scanning error\n");
-		free_toklist(&toklist);
-		return (-1);
-	}
-	else if (!toklist)
-	{
-		printf("empty toklist\n");
-		return (0);
-	}
-
-	t_bin_tree	*tree = build_parse_tree(toklist, &error);
-	if (error)
-	{
-		printf("parsing error\n");
-		free_tree(&tree);
-		return (-1);
-	}
-	t_shell_vars	vars;
-	int	ret;
-	vars.env = init_env_array(envp, &error);
-	vars.cwd_backup = NULL;
-	ret = exec_cmd_tree(tree, &vars, &error);
-	// print_tree(tree, 0);
-	// free_tree(&tree);
-	free_tree_and_vars(tree_root(tree), &vars);
-	return (ret);
-}
+//int	main(int argc, char *argv[])
+//{
+//	t_error	error = success;
+//
+//	if (argc != 2)
+//		return (-1);
+//	t_dlst	*toklist = scan_line(argv[1], &error);
+//	if (error)
+//	{
+//		printf("scanning error\n");
+//		free_toklist(&toklist);
+//		return (-1);
+//	}
+//	else if (!toklist)
+//	{
+//		printf("empty toklist\n");
+//		return (0);
+//	}
+//	t_bin_tree	*tree = build_parse_tree(&toklist, &error);
+//	if (error)
+//	{
+//		printf("parsing error\n");
+//		print_tree(tree, 0);
+//		return (-1);
+//	}
+//	print_tree(tree, 0);
+//	free_tree(&tree);
+//	return (0);
+//}
 
 
 //

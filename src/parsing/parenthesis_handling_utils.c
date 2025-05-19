@@ -22,10 +22,10 @@ int	update_parenthesis_nesting_level(t_dlst *token, int nesting_level)
 		return (nesting_level);
 }
 
-int	check_nesting_level(int nesting_level, t_dlst *toklist)
+t_error	check_nesting_level(int nesting_level, t_dlst *toklist)
 {
 	if (nesting_level < 0 || (toklist->next == NULL && nesting_level != 0))
-		return (ERROR);
+		return (recoverable);
 	else
-		return (SUCCESS);
+		return (success);
 }

@@ -46,27 +46,28 @@ static t_bool	is_correct_grouping(t_dlst *toklist, t_error *error)
 		{
 			print_syntax_error(
 				"there must be something inside parenthesis ; unexpected token ",
-				get_toklist_type(last), ERROR);
+				get_toklist_type(last), recoverable);
 			*error = recoverable;
 		}
 		else if (contains_parenthesis(toklist))
 		{
 			print_syntax_error(
 				"there can only be binary operators around parenthesis ; unexpected token ",
-				get_toklist_type(toklist), ERROR);
+				get_toklist_type(toklist), recoverable);
 			*error = recoverable;
 		}
 		return (false);
 	}
 }
 
-t_dlst	*extract_grouping_content(t_dlst **toklist, t_error *error)
+t_dlst	*extract_grouping_content(t_bin_tree *tree_node, t_dlst **toklist, t_error *error)
 {
 	int	nesting_level;
 	t_dlst	*token;
 
 	if (!is_correct_grouping(*toklist, error))
 		return (NULL);
+	tree_node->content->subshell = true;
 	token = *toklist;
 	*toklist = (*toklist)->next;
 	ft_dlstremove(token, free_token_content, free);
@@ -75,9 +76,9 @@ t_dlst	*extract_grouping_content(t_dlst **toklist, t_error *error)
 	while (1)
 	{
 		nesting_level = update_parenthesis_nesting_level(token, nesting_level);
-		if (check_nesting_level(nesting_level, token) == ERROR)
+		if (check_nesting_level(nesting_level, token) != success)
 		{
-			print_syntax_error("unexpected token ", get_toklist_type(token), ERROR);
+			print_syntax_error("unexpected token ", get_toklist_type(token), recoverable);
 			*error = recoverable;
 			return (NULL);
 		}

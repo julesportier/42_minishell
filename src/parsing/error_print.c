@@ -16,7 +16,7 @@
 #include "parsing.h"
 
 // If malloc fails better not crash the full shell
-int	print_syntax_error(char *message, enum e_token_type type, int errnum)
+t_error	print_syntax_error(char *message, enum e_token_type type, t_error errnum)
 {
 	char *error;
 
