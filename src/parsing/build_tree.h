@@ -28,5 +28,5 @@ t_dlst	*find_pipeline_op(t_dlst *toklist);//, t_error *error)
 int	divide_tokens_list(
 	t_dlst	**toklist_left,
 	t_dlst 	**toklist_right,
-	t_dlst	*toklist,
+	t_dlst	**toklist,
 	t_dlst	**pivot);
