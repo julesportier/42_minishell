@@ -25,7 +25,7 @@ t_dlst	*extract_grouping_content(t_dlst **toklist, t_error *error);
 // build_tree_binary_op.c
 t_dlst	*find_control_op(t_dlst *toklist);//, t_error *error)
 t_dlst	*find_pipeline_op(t_dlst *toklist);//, t_error *error)
-int	divide_tokens_list(
+t_error	divide_tokens_list(
 	t_dlst	**toklist_left,
 	t_dlst 	**toklist_right,
 	t_dlst	**toklist,

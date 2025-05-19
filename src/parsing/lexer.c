@@ -17,7 +17,6 @@
 #include "parsing.h"
 #include "lexer.h"
 
-// Needs error pointer to discrimine between critical and recoverable errors.
 static t_token	*extract_token(char *line, int *pos, t_bool cat_prev, t_error *error)
 {
 	t_token	*token;
@@ -45,7 +44,7 @@ static t_token	*extract_token(char *line, int *pos, t_bool cat_prev, t_error *er
 	return (token);
 }
 
-static int	append_token_to_list(t_dlst **tokens_list, t_token *token, t_error *error)
+static t_error	append_token_to_list(t_dlst **tokens_list, t_token *token, t_error *error)
 {
 	t_dlst	*new_node;
 
@@ -57,10 +56,10 @@ static int	append_token_to_list(t_dlst **tokens_list, t_token *token, t_error *e
 		free_token_content(token);
 		free(token);
 		*error = critical;
-		return (CRIT_ERROR); // ERROR MESSAGE + FREE;
+		return (critical); // ERROR MESSAGE + FREE;
 	}
 	ft_dlstadd_back(tokens_list, new_node);
-	return (SUCCESS);
+	return (success);
 }
 
 // In case of error scan_line free it's memory but it's the responsibiliy of the caller to free line.
@@ -84,7 +83,7 @@ t_dlst	*scan_line(char *line, t_error *error)
 		if (line[pos] == '\0')
 			break ;
 		token = extract_token(line, &pos, cat_prev, error);
-		if (append_token_to_list(&tokens_list, token, error) != SUCCESS)
+		if (append_token_to_list(&tokens_list, token, error) != success)
 		{
 			free_toklist(&tokens_list);
 			return (NULL);
