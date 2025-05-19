@@ -6,7 +6,7 @@
 /*   By: ecasalin <ecasalin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/24 09:30:22 by erik              #+#    #+#             */
-/*   Updated: 2025/05/19 10:01:34 by ecasalin         ###   ########.fr       */
+/*   Updated: 2025/05/19 17:04:58 by ecasalin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 #include <stdio.h>
 #include <unistd.h>
 #include "../error_handling/errors.h"
+#include "../general_utils/utils.h"
 #include "exec.h"
 #include "../minishell.h"
 

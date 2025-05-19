@@ -6,7 +6,7 @@
 /*   By: ecasalin <ecasalin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/21 14:19:24 by ecasalin          #+#    #+#             */
-/*   Updated: 2025/05/19 10:55:47 by ecasalin         ###   ########.fr       */
+/*   Updated: 2025/05/19 12:43:07 by ecasalin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ static void	continue_pipeline_left_process(t_bin_tree *curr_node, int *pip, t_sh
 		exit(vars->last_cmd_ext_code);
 	}
 	else
-		prepare_to_exec(curr_node, vars, error);
+		create_exec_setup(curr_node, vars, error);
 }
 
 static void	continue_pipeline_right_process(t_bin_tree *curr_node, int *pip, t_shell_vars *vars, t_error *error)
@@ -67,7 +67,8 @@ static void	continue_pipeline_right_process(t_bin_tree *curr_node, int *pip, t_s
 		exit(vars->last_cmd_ext_code);
 	}
 	else
-		prepare_to_exec(curr_node, vars, error);
+		create_exec_setup(curr_node, vars, error);
+	exit(*error);
 }
 
 int	fork_pipeline_sides(t_bin_tree *curr_node, t_shell_vars *vars, t_error *error)
@@ -76,17 +77,17 @@ int	fork_pipeline_sides(t_bin_tree *curr_node, t_shell_vars *vars, t_error *erro
 	int	child_pid;
 
 	if (pipe(pip) == FAILURE)
-		return (return_perror("minishell: execution: pipe error", ERROR));
+		return (return_perror_set_err("minishell: execution: pipe error", error, recoverable));
 	child_pid = fork();
 	if (child_pid == FAILURE)
-		return (close_pipe_perror("minishell: execution: fork error", ERROR, pip));
+		return (return_perror_set_err("minishell: execution: fork error", error, recoverable));
 	if (child_pid == CHILD)
 		continue_pipeline_left_process(curr_node, pip, vars, error);
 	child_pid = fork();
 	if (child_pid == FAILURE)
 	{
 		wait(NULL);
-		return (close_pipe_perror("minishell: execution: fork error", ERROR, pip));
+		return (return_perror_set_err("minishell: execution: fork error", error, recoverable));
 	}
 	if (child_pid == CHILD)
 		continue_pipeline_right_process(curr_node, pip, vars, error);

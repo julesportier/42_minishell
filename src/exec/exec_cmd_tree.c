@@ -6,7 +6,7 @@
 /*   By: ecasalin <ecasalin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 06:55:11 by ecasalin          #+#    #+#             */
-/*   Updated: 2025/05/19 10:54:09 by ecasalin         ###   ########.fr       */
+/*   Updated: 2025/05/19 12:30:28 by ecasalin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ static int	recurse_left_side(t_bin_tree *curr_node, t_shell_vars *vars, t_error 
 	if (curr_node->left)
 		return (exec_cmd_tree(curr_node->left, vars, error));
 	else
-		return (prepare_to_exec(curr_node, vars, error));
+		return (create_exec_setup(curr_node, vars, error));
 }
 
 static int	recurse_right_side(t_bin_tree *curr_node, t_shell_vars *vars, t_error *error)
@@ -26,7 +26,7 @@ static int	recurse_right_side(t_bin_tree *curr_node, t_shell_vars *vars, t_error
 	if (curr_node->right)
 		return (exec_cmd_tree(curr_node->right, vars, error));
 	else
-		return (prepare_to_exec(curr_node, vars, error));
+		return (create_exec_setup(curr_node, vars, error));
 }
 
 static int	check_right_cmd_conditions(t_bin_tree *curr_node, int left_cmd_return, t_error *error)
