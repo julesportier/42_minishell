@@ -73,7 +73,6 @@ FUNCTIONS TO SEARCH OPERATORS
 
 static t_dlst	*find_operator(t_bin_tree *tree_node, t_dlst **toklist, t_error *error)
 {
-	t_dlst	*head;
 	t_dlst	*token;
 
 	if (*toklist == NULL)
@@ -82,19 +81,20 @@ static t_dlst	*find_operator(t_bin_tree *tree_node, t_dlst **toklist, t_error *e
 		ft_putendl_fd("minishell: syntax error: illformed input", 2);
 		return (NULL);
 	}
-	head = *toklist;
-	token = find_control_op(head);//, error);
+	token = find_control_op(*toklist);//, error);
 	if (token || *error)
 		return (token);
-	token = find_pipeline_op(head);//, error);
+	token = find_pipeline_op(*toklist);//, error);
 	if (token || *error)
 		return (token);
+	//set_redirection(toklist, tree_node, error);
+	//if (*error)
+	//	return (NULL);
 	token = extract_grouping_content(toklist, error);
-	if (*error)
+	if (*error || token == NULL)
 		return (NULL);
-	else if (token)
-		token = find_operator(tree_node, toklist, error);
-	if (token)
+	token = find_operator(tree_node, toklist, error);
+	if (token || *error)
 		return (token);
 	//else
 	//toklist = set_redirection(tree_node, head);
