@@ -48,7 +48,7 @@ typedef struct	s_token
 // Structures to give to exec.
 typedef struct	s_node_content
 {
-	//int is_subshell; // start from zero (no subshell) to N nested subshells
+	t_bool subshell; // true for the node that enters in subshell, not inherited by childrens
 	// 01b heredoc, 00b standard file
 	// 00b no expansions on input (if delimiter inside quotes or double quotes), 10b expands. Delimiter is never expanded.
 	int	heredoc_flags;
@@ -92,6 +92,7 @@ t_error	print_syntax_error(char *message, enum e_token_type type, t_error errnum
  * **********/
 // print_utils.c
 void	print_indent(int indent_level);
+const char	*bool_to_str(t_bool bool);
 // tokens_list_print.c
 const char	*token_type_to_str(enum e_token_type type);
 void	print_toklist(t_dlst *list, int indent);

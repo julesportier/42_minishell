@@ -22,12 +22,18 @@ static void	print_tree_node(t_bin_tree *node, int indent)
 	if (node->operator)
 	{
 		print_indent(indent);
-		printf("%s%s%s\n", yellow, token_type_to_str(node->operator), reset);
+		if (node->content->subshell)
+			printf("%s%s (subshell)%s\n", yellow, token_type_to_str(node->operator), reset);
+		else
+			printf("%s%s%s\n", yellow, token_type_to_str(node->operator), reset);
 	}
 	else
 	{
 		print_indent(indent);
-		printf("%sleaf%s\n", green, reset);
+		if (node->content->subshell)
+			printf("%sleaf (subshell)%s\n", green, reset);
+		else
+			printf("%sleaf%s\n", green, reset);
 		print_indent(indent + 1);
 		printf("inputs:\n");
 		print_toklist(node->content->inputs, indent + 2);
