@@ -6,7 +6,7 @@
 /*   By: juportie <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 11:06:41 by juportie          #+#    #+#             */
-/*   Updated: 2025/05/13 16:11:23 by juportie         ###   ########.fr       */
+/*   Updated: 2025/05/20 11:16:34 by juportie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,16 @@ static void	print_tree_node(t_bin_tree *node, int indent)
 	{
 		print_indent(indent);
 		if (node->content->subshell)
-			printf("%s%s (subshell)%s\n", yellow, token_type_to_str(node->operator), reset);
+		{
+			printf("%s%s (subshell)\n", yellow, token_type_to_str(node->operator));
+			print_indent(indent);
+			printf("inputs:\n");
+			print_toklist(node->content->inputs, indent + 1);
+			print_indent(indent);
+			printf("outputs:\n");
+			print_toklist(node->content->outputs, indent + 1);
+			printf("%s", reset);
+		}
 		else
 			printf("%s%s%s\n", yellow, token_type_to_str(node->operator), reset);
 	}

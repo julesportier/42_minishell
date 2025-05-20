@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   build_tree_grouping.c                              :+:      :+:    :+:   */
+/*   tree_build_grouping.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: juportie <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 09:44:07 by juportie          #+#    #+#             */
-/*   Updated: 2025/05/16 12:45:19 by juportie         ###   ########.fr       */
+/*   Updated: 2025/05/20 11:39:17 by juportie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 #include "../../libft/src/libft.h"
 #include "../minishell.h"
 #include "parsing.h"
-#include "build_tree.h"
+#include "tree_build.h"
 
 static t_bool	contains_parenthesis(t_dlst *toklist)
 {
@@ -52,7 +52,8 @@ static t_bool	is_correct_grouping(t_dlst *toklist, t_error *error)
 		else if (contains_parenthesis(toklist))
 		{
 			print_syntax_error(
-				"there can only be binary operators around parenthesis ; unexpected token ",
+				"there can only be binary operators or redirections around parenthesis ; \
+				unexpected token ",
 				get_toklist_type(toklist), recoverable);
 			*error = recoverable;
 		}
