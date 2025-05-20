@@ -6,7 +6,7 @@
 /*   By: ecasalin <ecasalin@42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/21 14:19:24 by ecasalin          #+#    #+#             */
-/*   Updated: 2025/05/19 21:32:25 by ecasalin         ###   ########.fr       */
+/*   Updated: 2025/05/20 21:22:59 by ecasalin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ static void	continue_pipeline_right_process(t_bin_tree *curr_node, int *pip, t_s
 int	fork_pipeline_sides(t_bin_tree *curr_node, t_shell_vars *vars, t_error *error)
 {
 	int	pip[2];
-	int	child_pid;
+	pid_t	child_pid;
 
 	if (pipe(pip) == FAILURE)
 		return (return_perror_set_err("minishell: execution: pipe error", error, recoverable));

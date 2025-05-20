@@ -6,7 +6,7 @@
 /*   By: ecasalin <ecasalin@42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/28 15:00:16 by ecasalin          #+#    #+#             */
-/*   Updated: 2025/05/19 21:54:00 by ecasalin         ###   ########.fr       */
+/*   Updated: 2025/05/20 21:21:11 by ecasalin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@
 int	create_exec_setup(t_bin_tree *curr_node, t_shell_vars *vars, t_error *error)
 {
 	char	**paths_array;
-	int		child_pid;
+	pid_t		child_pid;
 	int		child_exit_status;
 
 	child_pid = FAILURE;

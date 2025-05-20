@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   subprocess_utils.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kura <kura@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: ecasalin <ecasalin@42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/21 14:20:47 by ecasalin          #+#    #+#             */
-/*   Updated: 2025/04/26 11:49:05 by kura             ###   ########.fr       */
+/*   Updated: 2025/05/20 21:24:05 by ecasalin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ int	get_exit_code(int child_exit_status)
 	return (WEXITSTATUS(child_exit_status));
 }
 
-int	wait_childs(int second_child_pid)
+int	wait_childs(pid_t second_child_pid)
 {
 	int	child_exit_status;
 

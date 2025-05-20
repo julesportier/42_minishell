@@ -15,6 +15,7 @@
 
 #include "../minishell.h"
 #include "../parsing/parsing.h"
+#include <sys/types.h>
 
 #define CHILD 0
 #define READ 0
@@ -40,8 +41,9 @@ int		create_exec_setup(t_bin_tree *curr_node, t_shell_vars *vars, t_error *error
 int	fork_pipeline_sides(t_bin_tree *curr_node, t_shell_vars *vars, t_error *error);
 
 /*SUBPROCESS UTILS*/
-int	wait_childs(int second_child_pid);
+int	wait_childs(pid_t second_child_pid);
 int	get_exit_code(int child_exit_status);
+int	fork_subshell(t_bin_tree *curr_node, t_shell_vars *vars, t_error *error);
 
 /*TEST AND DEBUG*/
 // t_bin_tree *hardcoded_tree(void);
