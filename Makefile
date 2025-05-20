@@ -30,13 +30,14 @@ SRC_PARSING := lexer.c \
 	   tree_print.c \
 	   tree_free.c \
 	   tree_utils.c \
-	   build_tree.c \
+	   tree_build.c \
 	   error_print.c \
 	   parenthesis_handling_utils.c \
 	   token_extract_grouping.c \
 	   token_type_identity_check.c \
-	   build_tree_binary_op.c \
-	   build_tree_grouping.c
+	   tree_build_binary_op.c \
+	   tree_build_redirections.c \
+	   tree_build_grouping.c
 SRC_GENERAL_UTILS := general_utils.c
 SRC += $(SRC_PARSING) $(SRC_GENERAL_UTILS)
 

@@ -1,19 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   build_tree_redirections.c                          :+:      :+:    :+:   */
+/*   tree_build_redirections.c                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: juportie <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 11:13:48 by juportie          #+#    #+#             */
-/*   Updated: 2025/05/20 11:14:36 by juportie         ###   ########.fr       */
+/*   Updated: 2025/05/20 11:39:36 by juportie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../libft/src/libft.h"
 #include "../minishell.h"
 #include "parsing.h"
-#include "build_tree.h"
+#include "tree_build.h"
 
 static void	move_redir_token(t_dlst **target, t_dlst **source_head, t_dlst **source)
 {

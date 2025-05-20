@@ -1,18 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   build_tree_binary_op.c                             :+:      :+:    :+:   */
+/*   tree_build_binary_op.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: juportie <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 11:14:12 by juportie          #+#    #+#             */
-/*   Updated: 2025/05/15 11:17:11 by juportie         ###   ########.fr       */
+/*   Updated: 2025/05/20 11:38:55 by juportie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 #include "parsing.h"
-#include "build_tree.h"
+#include "tree_build.h"
 
 static t_dlst	*find_binary_op(
 	t_dlst *toklist,
