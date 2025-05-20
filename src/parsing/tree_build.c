@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   build_tree.c                                       :+:      :+:    :+:   */
+/*   tree_build.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: juportie <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 09:44:07 by juportie          #+#    #+#             */
-/*   Updated: 2025/05/20 11:18:23 by juportie         ###   ########.fr       */
+/*   Updated: 2025/05/20 11:39:07 by juportie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 #include "../../libft/src/libft.h"
 #include "../minishell.h"
 #include "parsing.h"
-#include "build_tree.h"
+#include "tree_build.h"
 
 static t_dlst	*find_operator(t_bin_tree *tree_node, t_dlst **toklist, t_error *error)
 {
