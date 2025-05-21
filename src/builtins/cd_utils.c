@@ -6,7 +6,7 @@
 /*   By: ecasalin <ecasalin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 10:49:58 by ecasalin          #+#    #+#             */
-/*   Updated: 2025/05/15 14:23:30 by ecasalin         ###   ########.fr       */
+/*   Updated: 2025/05/21 13:46:54 by ecasalin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,6 @@ static t_bool	is_dir_unlinked(char *path)
 int	chdir_unlinked_cwd(char *path, t_shell_vars *vars)
 {
 	int			return_value;
-	char		*temp_wd;
 
 	return_value = ERROR;
 	if (is_valid_relative_path(path) == SUCCESS)

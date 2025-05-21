@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_errors_utils.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ecasalin <ecasalin@42.fr>                  +#+  +:+       +#+        */
+/*   By: ecasalin <ecasalin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 17:03:56 by ecasalin          #+#    #+#             */
-/*   Updated: 2025/05/19 21:35:56 by ecasalin         ###   ########.fr       */
+/*   Updated: 2025/05/21 14:17:28 by ecasalin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ static char *create_errno_msg(void)
 	return (formatted_strerror);
 }
 
-int	print_exec_error(char **cmd_array, int exit_value)
+int	print_exec_error(char *cmd_name, int exit_value)
 {
 	char	*formatted_strerror;
 
@@ -67,7 +67,7 @@ int	print_exec_error(char **cmd_array, int exit_value)
 		formatted_strerror = create_errno_msg();
 		if (formatted_strerror == NULL)
 			return (return_perror("minishell: execution: critical error", ERROR));
-		exit_value = print_cmd_exec_issue(cmd_array[0], formatted_strerror, exit_value);
+		exit_value = print_cmd_exec_issue(cmd_name, formatted_strerror, exit_value);
 		free(formatted_strerror);
 		return (exit_value);
 	}

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd_exec.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ecasalin <ecasalin@42.fr>                  +#+  +:+       +#+        */
+/*   By: ecasalin <ecasalin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/28 15:00:16 by ecasalin          #+#    #+#             */
-/*   Updated: 2025/05/20 21:21:11 by ecasalin         ###   ########.fr       */
+/*   Updated: 2025/05/21 14:17:13 by ecasalin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,7 @@ char	**craft_cmd_array(t_dlst *args)
 
 	i = 0;
 	lst_len = ft_dlstsize(args);
-	cmd_array = calloc(lst_len + 1, sizeof(char *));
+	cmd_array = ft_calloc(lst_len + 1, sizeof(char *));
 	while (args != NULL)
 	{
 		cmd_array[i] = ft_strdup(get_toklist_str(args));
@@ -130,10 +130,10 @@ int	exec_relative_path_cmd(char **paths_array, char **cmd_array, t_shell_vars *v
 
 void	prepare_to_exec(t_bin_tree *curr_node, char **paths_array, t_shell_vars *vars)
 {
-	int		i;
 	int		exit_value;
 	char	**cmd_array;
-
+	
+	exit_value = SUCCESS;
 	cmd_array = craft_cmd_array(curr_node->content->tokens_list);
 	if (cmd_array == NULL)
 		exit_value = CRIT_ERROR;
@@ -145,7 +145,7 @@ void	prepare_to_exec(t_bin_tree *curr_node, char **paths_array, t_shell_vars *va
 		exit_value = exec_relative_path_cmd(paths_array, cmd_array, vars, curr_node);
 	else if (cmd_array != NULL)
 		exit_value = exec_cmd(cmd_array[0], cmd_array, vars);
-	exit_value = print_exec_error(cmd_array, exit_value);
+	exit_value = print_exec_error(cmd_array[0], exit_value);
 	free_array(paths_array);
 	free_array(cmd_array);
 	free_tree_and_vars(tree_root(curr_node), vars);

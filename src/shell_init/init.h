@@ -6,7 +6,7 @@
 /*   By: ecasalin <ecasalin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/25 17:15:10 by kura              #+#    #+#             */
-/*   Updated: 2025/05/14 15:52:00 by ecasalin         ###   ########.fr       */
+/*   Updated: 2025/05/21 13:57:05 by ecasalin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,6 @@
 #include "../minishell.h"
 
 char	**init_env_array(char **env, t_error *error);
-char	*init_cwd_backup(char **env);
+char	*init_cwd_backup(void);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: ecasalin <ecasalin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 18:52:27 by ecasalin          #+#    #+#             */
-/*   Updated: 2025/05/09 13:41:58 by ecasalin         ###   ########.fr       */
+/*   Updated: 2025/05/21 13:56:14 by ecasalin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,6 @@ int	get_var_name_len(char *var)
 char	*get_env_var(char *var_name, char **env)
 {
 	int		i;
-	int		temp;
 
 	if (env == NULL || var_name == NULL)
 		return (NULL);
