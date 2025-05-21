@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   unset.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ecasalin <ecasalin@42.fr>                  +#+  +:+       +#+        */
+/*   By: ecasalin <ecasalin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 07:54:32 by ecasalin          #+#    #+#             */
-/*   Updated: 2025/05/18 16:14:51 by ecasalin         ###   ########.fr       */
+/*   Updated: 2025/05/21 13:47:35 by ecasalin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,6 @@
 static int	get_env_var_index(char *var_name, char **env, int env_len)
 {
 	int		i;
-	int		temp;
 
 	i = 0;
 	if (var_name[ft_strlen(var_name) - 1] == '=') // ICI AUSSI ON PEUT UTILISER GET_LAST_CHAR

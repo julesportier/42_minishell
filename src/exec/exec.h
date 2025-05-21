@@ -27,7 +27,7 @@ int		close_pipe(int *pipe);
 
 /*ERROR UTILS*/
 int		print_cmd_exec_issue(char *cmd_name, char *msg, int return_value);
-int		print_exec_error(char **cmd_array, int exit_value);
+int		print_exec_error(char *cmd_name, int exit_value);
 
 /*ENV UTILS*/
 char	**create_paths_array(t_shell_vars *vars, t_error *error);
@@ -38,12 +38,12 @@ int		exec_cmd_tree(t_bin_tree *curr_node, t_shell_vars *vars, t_error *error);
 int		create_exec_setup(t_bin_tree *curr_node, t_shell_vars *vars, t_error *error);
 
 /*PIPELINE HANDLING*/
-int	fork_pipeline_sides(t_bin_tree *curr_node, t_shell_vars *vars, t_error *error);
+int		fork_pipeline_sides(t_bin_tree *curr_node, t_shell_vars *vars, t_error *error);
 
 /*SUBPROCESS UTILS*/
-int	wait_childs(pid_t second_child_pid);
-int	get_exit_code(int child_exit_status);
-int	fork_subshell(t_bin_tree *curr_node, t_shell_vars *vars, t_error *error);
+int		wait_childs(pid_t second_child_pid);
+int		get_exit_code(int child_exit_status);
+int		fork_subshell(t_bin_tree *curr_node, t_shell_vars *vars, t_error *error);
 
 /*TEST AND DEBUG*/
 // t_bin_tree *hardcoded_tree(void);

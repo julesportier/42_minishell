@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   init_env_array.c                                   :+:      :+:    :+:   */
+/*   shell_init.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ecasalin <ecasalin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 08:01:52 by ecasalin          #+#    #+#             */
-/*   Updated: 2025/05/15 14:13:40 by ecasalin         ###   ########.fr       */
+/*   Updated: 2025/05/21 13:56:57 by ecasalin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,10 +49,9 @@ char	**init_env_array(char **env, t_error *error)
 }
 
 /*Dans le main faudra bien free env et se barrer si ca return NULL*/
-char	*init_cwd_backup(char **env)
+char	*init_cwd_backup(void)
 {
 	char		*cwd;
-	int			temp;
 	
 	cwd = getcwd(NULL, 0);
 	if (errno == ENOMEM)
