@@ -3,28 +3,27 @@
 /*                                                        :::      ::::::::   */
 /*   exec_clean_utils.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kura <kura@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: ecasalin <ecasalin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/24 09:30:22 by erik              #+#    #+#             */
-/*   Updated: 2025/04/26 12:05:27 by kura             ###   ########.fr       */
+/*   Updated: 2025/05/19 17:04:58 by ecasalin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdlib.h>
 #include <stdio.h>
 #include <unistd.h>
+#include "../error_handling/errors.h"
+#include "../general_utils/utils.h"
 #include "exec.h"
 #include "../minishell.h"
 
-int	close_fd(int *fd)
+int	close_fd(int *fd) //pas utilisé pour l'instant
 {
-	if (close(*fd) == -1)
-	{
-		perror("close_fd, close error");
-		return (0);
-	}
+	if (close(*fd) == FAILURE)
+		return_perror("minishell: execution: close error", ERROR);
 	*fd = -1;
-	return (1);
+	return (SUCCESS);
 }
 
 int	close_pipe(int *pipe)
@@ -35,7 +34,7 @@ int	close_pipe(int *pipe)
 	temp1 = close(pipe[READ]);
 	temp2 = close(pipe[WRITE]);
 	if (temp1 == FAILURE || temp2 == FAILURE)
-		return (FAILURE);
+		return (return_perror("minishell: execution: error closing pipe", ERROR));
 	return (SUCCESS);
 }
 
