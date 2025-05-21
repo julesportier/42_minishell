@@ -47,6 +47,7 @@ int		fork_subshell(t_bin_tree *curr_node, t_shell_vars *vars, t_error *error);
 
 /*REDIRECTIONS HANDLING*/
 int		set_input(t_bin_tree *curr_node);
+int		set_output(t_bin_tree *curr_node);
 
 /*TEST AND DEBUG*/
 // t_bin_tree *hardcoded_tree(void);

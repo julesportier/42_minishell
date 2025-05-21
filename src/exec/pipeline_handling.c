@@ -6,7 +6,7 @@
 /*   By: ecasalin <ecasalin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/21 14:19:24 by ecasalin          #+#    #+#             */
-/*   Updated: 2025/05/21 15:32:51 by ecasalin         ###   ########.fr       */
+/*   Updated: 2025/05/21 16:09:43 by ecasalin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,12 @@ static void	continue_pipeline_left_process(t_bin_tree *curr_node, int *pip, t_sh
 
 static void	continue_pipeline_right_process(t_bin_tree *curr_node, int *pip, t_shell_vars *vars, t_error *error)
 {
-	if (link_pipe_to_stdin(pip) == ERROR)
+	int return_value;
+	
+	return_value = SUCCESS;
+	if (curr_node->content->subshell == true)
+		return_value = set_output(curr_node);
+	if (return_value != SUCCESS || link_pipe_to_stdin(pip) == ERROR)
 	{
 		free_tree_and_vars(tree_root(curr_node), vars);
 		exit (ERROR);

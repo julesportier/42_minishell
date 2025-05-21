@@ -6,7 +6,7 @@
 /*   By: ecasalin <ecasalin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 21:13:38 by ecasalin          #+#    #+#             */
-/*   Updated: 2025/05/21 11:13:53 by ecasalin         ###   ########.fr       */
+/*   Updated: 2025/05/21 16:08:49 by ecasalin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,16 @@ static void	continue_in_subshell(t_bin_tree *curr_node, t_shell_vars *vars, t_er
 	exit(vars->last_cmd_ext_code);
 }
 
+static int	set_io_fds(t_bin_tree *curr_node)
+{
+	int	return_value;
+
+	return_value = set_input(curr_node);
+	if (return_value != SUCCESS)
+		return (return_value);
+	return (set_output(curr_node));
+}
+
 int	fork_subshell(t_bin_tree *curr_node, t_shell_vars *vars, t_error *error)
 {
 	pid_t	pid;
@@ -45,7 +55,7 @@ int	fork_subshell(t_bin_tree *curr_node, t_shell_vars *vars, t_error *error)
 		return (return_perror_set_err("minishell: execution: fork error", error, recoverable));
 	if (pid == CHILD)
 	{
-		exit_value =  set_input(curr_node);
+		exit_value = set_io_fds(curr_node);
 		if (exit_value != SUCCESS)
 		{
 			free_tree_and_vars(tree_root(curr_node), vars);
