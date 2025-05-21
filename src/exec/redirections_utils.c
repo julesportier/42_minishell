@@ -6,7 +6,7 @@
 /*   By: ecasalin <ecasalin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 08:35:28 by ecasalin          #+#    #+#             */
-/*   Updated: 2025/05/21 13:42:14 by ecasalin         ###   ########.fr       */
+/*   Updated: 2025/05/21 14:40:26 by ecasalin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,9 +27,10 @@ int	set_input(t_bin_tree *curr_node)
 	
 	if (curr_node->content->inputs == NULL)
 		return (SUCCESS);
-	while (curr_node->content->inputs != NULL)
+	temp_head = curr_node->content->inputs;
+	while (temp_head != NULL)
 	{
-		temp_head = curr_node->content->inputs->next;
+		temp_head = temp_head->next;
 		file_name = get_toklist_str(temp_head);
 		fd = open(file_name, O_RDONLY);
 		if (fd == FAILURE)
@@ -37,7 +38,7 @@ int	set_input(t_bin_tree *curr_node)
 		return_value = dup2(fd, STDIN_FILENO);
 		if (close(fd) == FAILURE || return_value == FAILURE)
 			return (return_perror("minishell: execution: redirection error", ERROR));
-		temp_head = temp_head->next->next;
+		temp_head = temp_head->next;
 	}
 	return (SUCCESS);
 }

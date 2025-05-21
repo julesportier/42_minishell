@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pipeline_handling_1.c                              :+:      :+:    :+:   */
+/*   pipeline_handling.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ecasalin <ecasalin@42.fr>                  +#+  +:+       +#+        */
+/*   By: ecasalin <ecasalin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/21 14:19:24 by ecasalin          #+#    #+#             */
-/*   Updated: 2025/05/20 21:22:59 by ecasalin         ###   ########.fr       */
+/*   Updated: 2025/05/21 15:32:51 by ecasalin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,12 @@ static int	link_pipe_to_stdin(int *pip)
 
 static void	continue_pipeline_left_process(t_bin_tree *curr_node, int *pip, t_shell_vars *vars, t_error *error)
 {
-	if (link_pipe_to_stdout(pip) == ERROR)
+	int return_value;
+	
+	return_value = SUCCESS;
+	if (curr_node->content->subshell == true)
+		return_value = set_input(curr_node);
+	if (return_value == ERROR || link_pipe_to_stdout(pip) == ERROR)
 	{
 		free_tree_and_vars(tree_root(curr_node), vars);
 		exit (ERROR);
