@@ -6,7 +6,7 @@
 /*   By: ecasalin <ecasalin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 07:21:49 by ecasalin          #+#    #+#             */
-/*   Updated: 2025/05/15 14:35:21 by ecasalin         ###   ########.fr       */
+/*   Updated: 2025/05/21 13:46:41 by ecasalin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,7 +107,6 @@ int	chdir_update_wd_vars(char *path, t_shell_vars *vars)
 int	ms_cd(char **args, t_shell_vars *vars)
 {
 	int		args_number;
-	char	*path;
 	int		return_value;
 
 	args_number = count_array_len(args);
