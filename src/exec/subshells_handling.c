@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   subshells_handling.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ecasalin <ecasalin@42.fr>                  +#+  +:+       +#+        */
+/*   By: ecasalin <ecasalin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 21:13:38 by ecasalin          #+#    #+#             */
-/*   Updated: 2025/05/20 22:07:09 by ecasalin         ###   ########.fr       */
+/*   Updated: 2025/05/21 11:13:53 by ecasalin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,13 +37,22 @@ static void	continue_in_subshell(t_bin_tree *curr_node, t_shell_vars *vars, t_er
 int	fork_subshell(t_bin_tree *curr_node, t_shell_vars *vars, t_error *error)
 {
 	pid_t	pid;
+	int		exit_value;
 
 	curr_node->content->subshell = false;
 	pid = fork();
 	if (pid == FAILURE)
 		return (return_perror_set_err("minishell: execution: fork error", error, recoverable));
 	if (pid == CHILD)
+	{
+		exit_value =  set_input(curr_node);
+		if (exit_value != SUCCESS)
+		{
+			free_tree_and_vars(tree_root(curr_node), vars);
+			exit(exit_value);
+		}
 		continue_in_subshell(curr_node, vars, error);
+	}
 	return (wait_child());
 }
 
