@@ -15,10 +15,10 @@
 
 static t_error	check_nesting(int nesting_level, char next_char, enum e_token_type token_type)
 {
-	if (nesting_level < 0)
-		return (print_syntax_error("unexpected ", token_type, recoverable));
-	else if (next_char == '\0' && nesting_level > 0)
+	if (next_char == '\0' && nesting_level != 0)
 		return (print_syntax_error("missing ", right_parenthesis, recoverable));
+	else if (nesting_level < 0)
+		return (print_syntax_error("unexpected ", token_type, recoverable));
 	else
 		return (success);
 }
