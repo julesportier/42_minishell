@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pipeline_handling_1.c                              :+:      :+:    :+:   */
+/*   pipeline_handling.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ecasalin <ecasalin@42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/21 14:19:24 by ecasalin          #+#    #+#             */
-/*   Updated: 2025/05/20 21:22:59 by ecasalin         ###   ########.fr       */
+/*   Updated: 2025/05/22 10:49:06 by ecasalin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,12 @@ static int	link_pipe_to_stdin(int *pip)
 
 static void	continue_pipeline_left_process(t_bin_tree *curr_node, int *pip, t_shell_vars *vars, t_error *error)
 {
-	if (link_pipe_to_stdout(pip) == ERROR)
+	int return_value;
+
+	return_value = SUCCESS;
+	if (curr_node->content->subshell == true)
+		return_value = set_input(curr_node);
+	if (return_value == ERROR || link_pipe_to_stdout(pip) == ERROR)
 	{
 		free_tree_and_vars(tree_root(curr_node), vars);
 		exit (ERROR);
@@ -55,7 +60,12 @@ static void	continue_pipeline_left_process(t_bin_tree *curr_node, int *pip, t_sh
 
 static void	continue_pipeline_right_process(t_bin_tree *curr_node, int *pip, t_shell_vars *vars, t_error *error)
 {
-	if (link_pipe_to_stdin(pip) == ERROR)
+	int return_value;
+
+	return_value = SUCCESS;
+	if (curr_node->content->subshell == true)
+		return_value = set_output(curr_node);
+	if (return_value != SUCCESS || link_pipe_to_stdin(pip) == ERROR)
 	{
 		free_tree_and_vars(tree_root(curr_node), vars);
 		exit (ERROR);
@@ -93,9 +103,9 @@ int	fork_pipeline_sides(t_bin_tree *curr_node, t_shell_vars *vars, t_error *erro
 		continue_pipeline_right_process(curr_node, pip, vars, error);
 	if (close_pipe(pip) == ERROR)
 	{
-		wait_childs(child_pid);
+		wait_2_children(child_pid);
 		return (ERROR);
 	}
-	vars->last_cmd_ext_code = wait_childs(child_pid);
+	vars->last_cmd_ext_code = wait_2_children(child_pid);
 	return (vars->last_cmd_ext_code);
 }

@@ -52,7 +52,8 @@ SRC_EXEC_DIR := cmd_exec.c \
 				path_parsing.c \
 				pipeline_handling.c \
 				subprocess_utils.c \
-				subshells_handling.c
+				subshells_handling.c \
+				redirections_utils.c
 SRC_GENERAL_UTILS := env_utils.c \
 					 general_utils.c \
 					 paths_utils.c

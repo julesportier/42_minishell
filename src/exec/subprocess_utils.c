@@ -6,7 +6,7 @@
 /*   By: ecasalin <ecasalin@42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/21 14:20:47 by ecasalin          #+#    #+#             */
-/*   Updated: 2025/05/20 21:24:05 by ecasalin         ###   ########.fr       */
+/*   Updated: 2025/05/22 10:59:30 by ecasalin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,15 @@ int	get_exit_code(int child_exit_status)
 	return (WEXITSTATUS(child_exit_status));
 }
 
-int	wait_childs(pid_t second_child_pid)
+int	wait_child(void)
+{
+	int	exit_status;
+
+	wait(&exit_status);
+	return (get_exit_code(exit_status));
+}
+
+int	wait_2_children(pid_t second_child_pid)
 {
 	int	child_exit_status;
 
