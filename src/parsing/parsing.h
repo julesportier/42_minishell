@@ -6,7 +6,7 @@
 /*   By: juportie <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 10:24:06 by juportie          #+#    #+#             */
-/*   Updated: 2025/05/15 11:12:36 by juportie         ###   ########.fr       */
+/*   Updated: 2025/05/20 15:31:13 by juportie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,12 @@ typedef struct	s_bin_tree
  * ********/
 // lexer.c
 t_dlst	*scan_line(char *line, t_error *error);
+
+/***********
+ * PARSING *
+ * *********/
+// tree_build.c
+t_bin_tree	*build_parse_tree(t_dlst **toklist, t_error *error);
 
 /********
  * FREE *

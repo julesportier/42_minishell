@@ -15,31 +15,79 @@ LIBS_FLAGS := -lft -L$(LIBFT_DIR) -lreadline
 NAME := minishell
 
 SRC_DIR := src
-SRC_PARSING_DIR := $(SRC_DIR)/parsing
+SRC_BUILTINS_DIR := $(SRC_DIR)/builtins
+SRC_CLEANING_UTILS_DIR := $(SRC_DIR)/cleaning_utils
+SRC_ERROR_HANDLING_DIR := $(SRC_DIR)/error_handling
+SRC_EXEC_DIR := $(SRC_DIR)/exec
 SRC_GENERAL_UTILS_DIR := $(SRC_DIR)/general_utils
-vpath %.c $(SRC_DIR):$(SRC_PARSING_DIR):$(SRC_GENERAL_UTILS_DIR)
+SRC_INPUT_DIR := $(SRC_DIR)/input
+SRC_PARSING_DIR := $(SRC_DIR)/parsing
+SRC_SHELL_INIT_DIR := $(SRC_DIR)/shell_init
+vpath %.c $(SRC_DIR):\
+	$(SRC_BUILTINS_DIR):\
+	$(SRC_CLEANING_UTILS_DIR):\
+	$(SRC_ERROR_HANDLING_DIR):\
+	$(SRC_EXEC_DIR):\
+	$(SRC_GENERAL_UTILS_DIR):\
+	$(SRC_INPUT_DIR):\
+	$(SRC_PARSING_DIR):\
+	$(SRC_SHELL_INIT_DIR)
+SRC_BUILTINS_DIR := cd.c \
+					cd_cdpath_utils.c \
+					cd_cwd_vars_utils.c \
+					cd_utils.c \
+					echo.c \
+					env.c \
+					export.c \
+					export_error_utils.c \
+					export_utils.c \
+					pwd.c \
+					unset.c
+SRC_CLEANING_UTILS_DIR := cleaning_utils_1.c
+SRC_ERROR_HANDLING_DIR := error_utils.c
+SRC_EXEC_DIR := cmd_exec.c \
+				exec_clean_utils.c \
+				exec_cmd_tree.c \
+				exec_errors_utils.c \
+				path_parsing.c \
+				pipeline_handling.c \
+				subprocess_utils.c \
+				subshells_handling.c
+SRC_GENERAL_UTILS := env_utils.c \
+					 general_utils.c \
+					 paths_utils.c
+SRC_INPUT := input.c \
+			 input_signal_handling.c
 SRC_PARSING := lexer.c \
-	   char_identity_check.c \
-	   lexer_utils.c \
-	   token_extract.c \
-	   token_extract_utils.c \
-	   tokens_list_get.c \
-	   print_utils.c \
-	   tokens_list_print.c \
-	   tokens_list_free.c \
-	   tree_print.c \
-	   tree_free.c \
-	   tree_utils.c \
-	   tree_build.c \
-	   error_print.c \
-	   parenthesis_handling_utils.c \
-	   token_extract_grouping.c \
-	   token_type_identity_check.c \
-	   tree_build_binary_op.c \
-	   tree_build_redirections.c \
-	   tree_build_grouping.c
-SRC_GENERAL_UTILS := general_utils.c
-SRC += $(SRC_PARSING) $(SRC_GENERAL_UTILS)
+			   char_identity_check.c \
+			   lexer_utils.c \
+			   token_extract.c \
+			   token_extract_utils.c \
+			   tokens_list_get.c \
+			   print_utils.c \
+			   tokens_list_print.c \
+			   tokens_list_free.c \
+			   tree_print.c \
+			   tree_free.c \
+			   tree_utils.c \
+			   tree_build.c \
+			   error_print.c \
+			   parenthesis_handling_utils.c \
+			   token_extract_grouping.c \
+			   token_type_identity_check.c \
+			   tree_build_binary_op.c \
+			   tree_build_redirections.c \
+			   tree_build_grouping.c
+SRC_SHELL_INIT_DIR := shell_init.c
+SRC := minishell.c \
+	   $(SRC_BUILTINS) \
+	   $(SRC_CLEANING_UTILS_DIR) \
+	   $(SRC_ERROR_HANDLING_DIR) \
+	   $(SRC_EXEC_DIR) \
+	   $(SRC_GENERAL_UTILS) \
+	   $(SRC_INPUT) \
+	   $(SRC_PARSING) \
+	   $(SRC_SHELL_INIT_DIR)
 
 BUILD_DIR := build
 OBJ := $(addprefix $(BUILD_DIR)/, $(SRC:.c=.o))
