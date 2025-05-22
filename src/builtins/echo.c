@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ecasalin <ecasalin@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ecasalin <ecasalin@42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 07:07:22 by ecasalin          #+#    #+#             */
-/*   Updated: 2025/05/05 13:41:44 by ecasalin         ###   ########.fr       */
+/*   Updated: 2025/05/22 15:35:28 by ecasalin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ int	ms_echo(char **args)
 	int		i;
 	char	*buffer;
 
-	i = 1;
+	i = 0;
 	n_flag = 0;
 	while (args[i])
 	{
