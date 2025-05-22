@@ -6,7 +6,7 @@
 /*   By: ecasalin <ecasalin@42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2025/05/22 11:19:50 by ecasalin         ###   ########.fr       */
+/*   Updated: 2025/05/22 15:25:35 by ecasalin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 #include "../error_handling/errors.h"
 #include "../cleaning_utils/cleaning.h"
 #include "../parsing/parsing.h"
+#include "../builtins/builtins.h"
 #include "exec.h"
 #include "../minishell.h"
 
@@ -34,30 +35,6 @@ static void	free_arrays_tree_and_vars(char **paths_array, char **cmd_array, t_bi
 	free_array(paths_array);
 	free_array(cmd_array);
 	free_tree_and_vars(tree_root(curr_node), vars);
-}
-
-int	create_exec_setup(t_bin_tree *curr_node, t_shell_vars *vars, t_error *error)
-{
-	char	**paths_array;
-	pid_t		child_pid;
-
-	child_pid = FAILURE;
-	// if (is_builtin(curr_node->cmd))
-		// return (exec_builtin(curr_node, vars));
-	paths_array = create_paths_array(vars, error);
-	if (*error != success)
-		return (*error);
-	if (curr_node->parent && curr_node->parent->operator == pipeline)
-		prepare_to_exec(curr_node, paths_array, vars);
-	child_pid = fork();
-	if (child_pid == FAILURE)
-		*error = recoverable;
-	if (child_pid == CHILD)
-		prepare_to_exec(curr_node, paths_array, vars);
-	free_array(paths_array);
-	if (*error == success && child_pid != CHILD)
-		return (wait_child());
-	return (*error);
 }
 
 /*NO PROTECTIONS AGAINST SEGFAULT*/
@@ -78,6 +55,98 @@ char	**craft_cmd_array(t_dlst *args)
 	}
 	return (cmd_array);
 }
+
+int	is_builtin(t_bin_tree *curr_node)
+{
+	char	*cmd_name;
+
+	cmd_name = get_toklist_str(curr_node->content->tokens_list);
+	if (cmd_name == NULL)
+		return (not_builtin);
+	if (ft_strncmp(cmd_name, "echo", 5) == SUCCESS)
+		return (echo);
+	if (ft_strncmp(cmd_name, "cd", 3) == SUCCESS)
+		return (cd);
+	if (ft_strncmp(cmd_name, "pwd", 4) == SUCCESS)
+		return (pwd);
+	if (ft_strncmp(cmd_name, "env", 4) == SUCCESS)
+		return (env);
+	if (ft_strncmp(cmd_name, "export", 7) == SUCCESS)
+		return (export);
+	if (ft_strncmp(cmd_name, "unset", 6) == SUCCESS)
+		return (unset);
+	if (ft_strncmp(cmd_name, "exit", 5) == SUCCESS)
+		return (ext);
+	return (not_builtin);
+}
+
+int	exec_builtin(int builtin, char **cmd_array, t_shell_vars *vars)
+{
+	if (builtin == echo)
+		return (ms_echo(&cmd_array[1]));
+	if (builtin == cd)
+		return (ms_cd(&cmd_array[1], vars));
+	if (builtin == pwd)
+		return (ms_pwd());
+	if (builtin == env)
+		return (ms_env(vars->env));
+	if (builtin == export)
+		return (ms_export(&cmd_array[1], vars));
+	if (builtin == unset)
+		return (ms_unset(&cmd_array[1], vars));
+	// if (builtin == exit)
+		// return (ms_exit())
+	return (SUCCESS);
+}
+
+int	prepare_builtin_exec(int builtin, t_bin_tree *curr_node, t_shell_vars *vars)
+{
+	int		temp_fd_in;
+	int		temp_fd_out;
+	char	**cmd_array;
+	int		return_value;
+
+	cmd_array = craft_cmd_array(curr_node->content->tokens_list);
+	temp_fd_in = dup(STDIN_FILENO);
+	temp_fd_out = dup(STDOUT_FILENO);
+	set_io_fds(curr_node);
+	return_value = exec_builtin(builtin, cmd_array, vars);
+	free_array(cmd_array);
+	dup2(temp_fd_in, STDIN_FILENO);
+	dup2(temp_fd_out, STDOUT_FILENO);
+	close(temp_fd_in);
+	close(temp_fd_out);
+	return (return_value);
+}
+
+int	create_exec_setup(t_bin_tree *curr_node, t_shell_vars *vars, t_error *error)
+{
+	char	**paths_array;
+	pid_t	child_pid;
+	int		builtin;
+
+	// expand_args(curr_node->cmd.cmd, vars);
+	// expand_redirections(curr_node->cmd.input, curr_node->cmd.output, vars);
+	child_pid = FAILURE;
+	builtin = is_builtin(curr_node);
+	if (builtin)
+		return (prepare_builtin_exec(builtin, curr_node, vars));
+	paths_array = create_paths_array(vars, error);
+	if (*error != success)
+		return (*error);
+	if (curr_node->parent && curr_node->parent->operator == pipeline)
+		prepare_to_exec(curr_node, paths_array, vars);
+	child_pid = fork();
+	if (child_pid == FAILURE)
+		*error = recoverable;
+	if (child_pid == CHILD)
+		prepare_to_exec(curr_node, paths_array, vars);
+	free_array(paths_array);
+	if (*error == success && child_pid != CHILD)
+		return (wait_child());
+	return (*error);
+}
+
 
 static int	exec_cmd(char *cmd_name, char **array2, t_shell_vars *vars)
 {
