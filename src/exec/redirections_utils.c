@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirections_utils.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ecasalin <ecasalin@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ecasalin <ecasalin@42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 08:35:28 by ecasalin          #+#    #+#             */
-/*   Updated: 2025/05/21 16:17:42 by ecasalin         ###   ########.fr       */
+/*   Updated: 2025/05/22 11:02:21 by ecasalin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ int	set_output(t_bin_tree *curr_node)
 	char	*file_name;
 	int		return_value;
 	t_dlst	*temp_head;
-	
+
 	if (curr_node->content->outputs == NULL)
 		return (SUCCESS);
 	temp_head = curr_node->content->outputs;
@@ -52,7 +52,7 @@ int	set_input(t_bin_tree *curr_node)
 	char	*file_name;
 	int		return_value;
 	t_dlst	*temp_head;
-	
+
 	if (curr_node->content->inputs == NULL)
 		return (SUCCESS);
 	temp_head = curr_node->content->inputs;
@@ -69,4 +69,14 @@ int	set_input(t_bin_tree *curr_node)
 		temp_head = temp_head->next;
 	}
 	return (SUCCESS);
+}
+
+int	set_io_fds(t_bin_tree *curr_node)
+{
+	int	return_value;
+
+	return_value = set_input(curr_node);
+	if (return_value != SUCCESS)
+		return (return_value);
+	return (set_output(curr_node));
 }

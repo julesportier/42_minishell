@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd_exec.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ecasalin <ecasalin@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ecasalin <ecasalin@42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2025/05/21 14:32:08 by ecasalin         ###   ########.fr       */
+/*   Updated: 2025/05/22 11:19:50 by ecasalin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,11 +29,17 @@
 // 	// set_redirections(curr_node->cmd.input, curr_node->cmd.output);
 // }
 
+static void	free_arrays_tree_and_vars(char **paths_array, char **cmd_array, t_bin_tree *curr_node, t_shell_vars *vars)
+{
+	free_array(paths_array);
+	free_array(cmd_array);
+	free_tree_and_vars(tree_root(curr_node), vars);
+}
+
 int	create_exec_setup(t_bin_tree *curr_node, t_shell_vars *vars, t_error *error)
 {
 	char	**paths_array;
 	pid_t		child_pid;
-	int		child_exit_status;
 
 	child_pid = FAILURE;
 	// if (is_builtin(curr_node->cmd))
@@ -50,26 +56,9 @@ int	create_exec_setup(t_bin_tree *curr_node, t_shell_vars *vars, t_error *error)
 		prepare_to_exec(curr_node, paths_array, vars);
 	free_array(paths_array);
 	if (*error == success && child_pid != CHILD)
-	{
-		waitpid(child_pid, &child_exit_status, 0);
-		return (get_exit_code(child_exit_status));
-	}
+		return (wait_child());
 	return (*error);
 }
-
-
-// static void	set_cmd_arg_array(t_data *data)
-// {
-// 	if (data->argv[data->cmd][0] == '\0' || data->argv[data->cmd][0] == ' ')
-// 	{
-// 		print_cmd_nfound(data);
-// 		exit_free_close(NULL, 127, data);
-// 	}
-// 	data->cmd_arg_array = ft_split(data->argv[data->cmd], ' ');
-// 	if (data->cmd_arg_array == NULL)
-// 		exit_free_close("set_cmd_arg_array, malloc error", 1, data);
-// }
-
 
 /*NO PROTECTIONS AGAINST SEGFAULT*/
 char	**craft_cmd_array(t_dlst *args)
@@ -122,9 +111,7 @@ int	exec_relative_path_cmd(char **paths_array, char **cmd_array, t_shell_vars *v
 		i++;
 	}
 	exit_value = print_cmd_exec_issue(cmd_array[0], ": command not found\n", 127);
-	free_array(paths_array);
-	free_array(cmd_array);
-	free_tree_and_vars(tree_root(curr_node), vars);
+	free_arrays_tree_and_vars(paths_array, cmd_array, curr_node, vars);
 	exit(exit_value);
 }
 
@@ -132,11 +119,17 @@ void	prepare_to_exec(t_bin_tree *curr_node, char **paths_array, t_shell_vars *va
 {
 	int		exit_value;
 	char	**cmd_array;
-	
-	exit_value = SUCCESS;
+
+	exit_value = set_io_fds(curr_node);
+	if (exit_value == ERROR)
+	{
+		free_array(paths_array);
+		free_tree_and_vars(tree_root(curr_node), vars);
+		exit(ERROR);
+	}
 	cmd_array = craft_cmd_array(curr_node->content->tokens_list);
 	if (cmd_array == NULL)
-		exit_value = CRIT_ERROR;
+	exit_value = CRIT_ERROR;
 	else if (paths_array != NULL
 		&& paths_array[0] != NULL
 		&& cmd_array != NULL
@@ -146,8 +139,6 @@ void	prepare_to_exec(t_bin_tree *curr_node, char **paths_array, t_shell_vars *va
 	else if (cmd_array != NULL)
 		exit_value = exec_cmd(cmd_array[0], cmd_array, vars);
 	exit_value = print_exec_error(cmd_array[0], exit_value);
-	free_array(paths_array);
-	free_array(cmd_array);
-	free_tree_and_vars(tree_root(curr_node), vars);
+	free_arrays_tree_and_vars(paths_array, cmd_array, curr_node, vars);
 	exit(exit_value);
 }

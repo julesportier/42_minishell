@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   subshells_handling.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ecasalin <ecasalin@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ecasalin <ecasalin@42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 21:13:38 by ecasalin          #+#    #+#             */
-/*   Updated: 2025/05/21 16:08:49 by ecasalin         ###   ########.fr       */
+/*   Updated: 2025/05/22 11:02:14 by ecasalin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,29 +19,11 @@
 #include "../exec/exec.h"
 #include "../cleaning_utils/cleaning.h"
 
-static int	wait_child(void)
-{
-	int	exit_status;
-
-	wait(&exit_status);
-	return (get_exit_code(exit_status));
-}
-
 static void	continue_in_subshell(t_bin_tree *curr_node, t_shell_vars *vars, t_error *error)
 {
 	vars->last_cmd_ext_code = exec_cmd_tree(curr_node, vars, error);
 	free_tree_and_vars(tree_root(curr_node), vars);
 	exit(vars->last_cmd_ext_code);
-}
-
-static int	set_io_fds(t_bin_tree *curr_node)
-{
-	int	return_value;
-
-	return_value = set_input(curr_node);
-	if (return_value != SUCCESS)
-		return (return_value);
-	return (set_output(curr_node));
 }
 
 int	fork_subshell(t_bin_tree *curr_node, t_shell_vars *vars, t_error *error)

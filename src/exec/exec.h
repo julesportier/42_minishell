@@ -41,13 +41,15 @@ int		create_exec_setup(t_bin_tree *curr_node, t_shell_vars *vars, t_error *error
 int		fork_pipeline_sides(t_bin_tree *curr_node, t_shell_vars *vars, t_error *error);
 
 /*SUBPROCESS UTILS*/
-int		wait_childs(pid_t second_child_pid);
+int		wait_2_children(pid_t second_child_pid);
 int		get_exit_code(int child_exit_status);
 int		fork_subshell(t_bin_tree *curr_node, t_shell_vars *vars, t_error *error);
+int		wait_child(void);
 
 /*REDIRECTIONS HANDLING*/
 int		set_input(t_bin_tree *curr_node);
 int		set_output(t_bin_tree *curr_node);
+int		set_io_fds(t_bin_tree *curr_node);
 
 /*TEST AND DEBUG*/
 // t_bin_tree *hardcoded_tree(void);
