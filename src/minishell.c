@@ -6,7 +6,7 @@
 /*   By: ecasalin <ecasalin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 15:31:21 by juportie          #+#    #+#             */
-/*   Updated: 2025/05/23 11:01:29 by ecasalin         ###   ########.fr       */
+/*   Updated: 2025/05/23 13:22:26 by ecasalin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,9 +27,8 @@ int	main(int argc, char *argv[], char *envp[])
 		return (2);
 	(void)argv;
 	error = success;
-	vars.env = init_env_array(envp, &error);
-	vars.cwd_backup = init_cwd_backup();
-	vars.prompt = NULL;
+	if (init_shell_vars(&vars, envp, &error) == CRIT_ERROR)
+		return (EXIT_FAILURE);
 	if (init_sigaction() == -1)
 		return (EXIT_FAILURE);
 	input_loop(&vars, &error);
