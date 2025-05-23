@@ -6,7 +6,7 @@
 /*   By: ecasalin <ecasalin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2025/05/23 11:05:41 by ecasalin         ###   ########.fr       */
+/*   Updated: 2025/05/23 15:54:15 by ecasalin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,7 @@ int	is_builtin(t_bin_tree *curr_node)
 	return (not_builtin);
 }
 
-int	exec_builtin(int builtin, char **cmd_array, t_bin_tree *curr_node, t_shell_vars *vars)
+int	exec_builtin(t_builtin builtin, char **cmd_array, t_shell_vars *vars, t_exit_error *exit_error)
 {
 	if (builtin == echo)
 		return (ms_echo(&cmd_array[1]));
@@ -95,27 +95,33 @@ int	exec_builtin(int builtin, char **cmd_array, t_bin_tree *curr_node, t_shell_v
 	if (builtin == unset)
 		return (ms_unset(&cmd_array[1], vars));
 	if (builtin == ext)
-		return (ms_exit(cmd_array, curr_node, vars));
+		return (ms_exit(cmd_array, vars, exit_error));
 	return (SUCCESS);
 }
 
-int	prepare_builtin_exec(int builtin, t_bin_tree *curr_node, t_shell_vars *vars)
+int	prepare_builtin_exec(t_builtin builtin, t_bin_tree *curr_node, t_shell_vars *vars)
 {
-	int		temp_fd_in;
-	int		temp_fd_out;
-	char	**cmd_array;
-	int		return_value;
-
+	int				fds_in_out[2];
+	char			**cmd_array;
+	int				return_value;
+	t_exit_error	exit_error;
+	
+	exit_error = no_error;
 	cmd_array = craft_cmd_array(curr_node->content->tokens_list);
-	temp_fd_in = dup(STDIN_FILENO);
-	temp_fd_out = dup(STDOUT_FILENO);
+	fds_in_out[0] = dup(STDIN_FILENO);
+	fds_in_out[1] = dup(STDOUT_FILENO);
 	set_io_fds(curr_node);
-	return_value = exec_builtin(builtin, cmd_array, curr_node, vars);
+	return_value = exec_builtin(builtin, cmd_array, vars, &exit_error);
 	free_array(cmd_array);
-	dup2(temp_fd_in, STDIN_FILENO);
-	dup2(temp_fd_out, STDOUT_FILENO);
-	close(temp_fd_in);
-	close(temp_fd_out);
+	dup2(fds_in_out[0], STDIN_FILENO);
+	dup2(fds_in_out[1], STDOUT_FILENO);
+	close(fds_in_out[0]);
+	close(fds_in_out[1]);
+	if (builtin == ext && exit_error == success)
+	{
+		free_tree_and_vars(tree_root(curr_node), vars);
+		exit(return_value);
+	}
 	return (return_value);
 }
 

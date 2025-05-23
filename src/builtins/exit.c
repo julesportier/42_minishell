@@ -6,7 +6,7 @@
 /*   By: ecasalin <ecasalin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/23 07:57:45 by ecasalin          #+#    #+#             */
-/*   Updated: 2025/05/23 09:48:35 by ecasalin         ###   ########.fr       */
+/*   Updated: 2025/05/23 16:32:08 by ecasalin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,14 +17,6 @@
 #include "../../libft/src/libft.h"
 #include "builtins.h"
 #include "../exec/exec.h"
-
-static void	clean_and_exit(char **args, t_bin_tree *curr_node, t_shell_vars *vars, int exit_value)
-{
-	free_array(args);
-	free_tree_and_vars(tree_root(curr_node), vars);
-	printf("exit\n");
-	exit(exit_value);
-}
 
 static int	ft_isspace(char c)
 {
@@ -45,11 +37,10 @@ static t_intf	atouc_flag(const char *nptr)
 	while (ft_isspace(nptr[i]))
 		i++;
 	if (nptr[i] == '+' || nptr[i] == '-')
-	{
-		if (nptr[i] == '-')
+		if (nptr[i++] == '-')
 			sign = -sign;
-		i++;
-	}
+	if (!ft_isdigit(nptr[i]))
+		nbr.flag = ERROR;
 	while (nptr[i])
 	{
 		if (!ft_isdigit(nptr[i]))
@@ -61,20 +52,29 @@ static t_intf	atouc_flag(const char *nptr)
 	return (nbr);
 }
 
-int	ms_exit(char **args, t_bin_tree *curr_node, t_shell_vars *vars)
+int	ms_exit(char **args, t_shell_vars *vars, t_exit_error *exit_error)
 {
 	int		i;
 	t_intf	exit_value;
 	
 	i = 0;
-	exit_value.value = vars->last_cmd_ext_code;
 	if (args[1] == NULL || args[1][0] == '\0')
-		clean_and_exit(args, curr_node, vars, exit_value.value);
+	{
+		printf("exit\n");
+		return (vars->last_cmd_ext_code);
+	}
 	exit_value = atouc_flag(args[1]);
 	if (exit_value.flag == ERROR)
-		return (print_cmd_exec_issue("exit: ", args[1], ": numeric argument required\n", 2));
-	if (args[2] != NULL)
-		return (print_cmd_exec_issue("exit: ", NULL, "too many arguments\n", 1));
-	clean_and_exit(args, curr_node, vars, exit_value.value);
-	return (SUCCESS);
+		*exit_error = print_cmd_exec_issue("exit: ", args[1],
+				": numeric argument required\n", not_a_digit);
+	else if (args[2] != NULL)
+		*exit_error = print_cmd_exec_issue("exit: ", NULL,
+				"too many arguments\n", too_many_args);
+	else
+		printf("exit\n");
+	if (*exit_error)
+		vars->last_cmd_ext_code = *exit_error;
+	else
+		vars->last_cmd_ext_code = exit_value.value;
+	return (vars->last_cmd_ext_code);
 }

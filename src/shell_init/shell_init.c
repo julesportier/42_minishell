@@ -6,7 +6,7 @@
 /*   By: ecasalin <ecasalin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 08:01:52 by ecasalin          #+#    #+#             */
-/*   Updated: 2025/05/21 13:56:57 by ecasalin         ###   ########.fr       */
+/*   Updated: 2025/05/23 13:20:59 by ecasalin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,22 @@ char	*init_cwd_backup(void)
 		errno = 0;
 	}
 	return (cwd);
+}
+
+int	init_shell_vars(t_shell_vars *vars, char **envp, t_error *error)
+{
+	vars->prompt = NULL;
+	vars->last_cmd_ext_code = SUCCESS;
+	vars->env = init_env_array(envp, error);
+	if (*error == critical)
+		return (CRIT_ERROR);
+	vars->cwd_backup = init_cwd_backup();
+	if (vars->cwd_backup == NULL)
+	{
+		free_array(vars->env);
+		return (CRIT_ERROR);
+	}
+	return (SUCCESS);
 }
 
 // #include <stdio.h>
