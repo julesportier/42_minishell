@@ -28,10 +28,7 @@ t_error	extract_quotes(t_token *token, char *line, int *pos)
 	while (line[*pos] != quote && line[*pos] != '\0')
 		advance(1, pos);
 	if (line[*pos] == '\0')
-	{
-		printf("minishell: syntax error: unclosed '%c'\n", quote); // PUT THIS IN A SYNTAX ERROR FILE
-		return (recoverable);
-	}
+		return (print_syntax_error("unclosed ", quote, recoverable));
 	if (quote == '"')
 		token->type = double_quotes;
 	else
