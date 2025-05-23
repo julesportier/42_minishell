@@ -10,6 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "../../libft/src/libft.h"
 #include "../minishell.h"
 #include "lexer.h"
 
@@ -34,4 +35,17 @@ t_bool	skip_spaces(char *line, int *pos)
 		advance(1, pos);
 	}
 	return (skipped);
+}
+
+t_token	*alloc_token(t_error *error)
+{
+	t_token	*token;
+
+	token = ft_calloc(1, sizeof(t_token));
+	if (token == NULL)
+	{
+		*error = critical;
+		return (NULL);
+	}
+	return (token);
 }
