@@ -6,7 +6,7 @@
 /*   By: ecasalin <ecasalin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 14:50:31 by juportie          #+#    #+#             */
-/*   Updated: 2025/05/23 11:03:46 by ecasalin         ###   ########.fr       */
+/*   Updated: 2025/05/23 17:12:28 by ecasalin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,9 +49,11 @@ void	input_loop(t_shell_vars *vars, t_error *error)
 				break ;
 			//print_tree(parse_tree, 0);
 			if (!*error)
-				exec_cmd_tree(parse_tree, vars, error);
+				*error = exec_cmd_tree(parse_tree, vars, error);
 			free_tree(&parse_tree);
 		}
+		if (*error == critical)
+			break ;
 		*error = success;
 		free(vars->prompt);
 	}
