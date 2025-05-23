@@ -13,6 +13,26 @@
 #ifndef BUILTINS_H
 # define BUILTINS_H
 
+#include "../parsing/parsing.h"
+
+enum	e_builtin
+{
+	not_builtin,
+	echo,
+	cd,
+	pwd,
+	env,
+	export,
+	unset,
+	ext
+};
+
+typedef struct s_intf
+{
+	unsigned char	value;
+	char			flag;
+}					t_intf;
+
 /*BUILTINS*/
 int		ms_echo(char **args);
 int		ms_export(char **args, t_shell_vars *vars);
@@ -20,6 +40,7 @@ int		ms_pwd(void);
 int		ms_cd(char **args, t_shell_vars *vars);
 int		ms_env(char **env);
 int		ms_unset(char **args, t_shell_vars *vars);
+int		ms_exit(char **args, t_bin_tree *curr_node, t_shell_vars *vars);
 
 /*EXPORT UTILS*/
 char	*find_biggest_env_var(char **env);

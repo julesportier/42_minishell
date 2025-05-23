@@ -26,7 +26,7 @@ int		close_pipe_perror(char *err_msg, int return_value, int *pipe);
 int		close_pipe(int *pipe);
 
 /*ERROR UTILS*/
-int		print_cmd_exec_issue(char *cmd_name, char *msg, int return_value);
+int		print_cmd_exec_issue(char *cmd_name, char *arg, char *msg, int return_value);
 int		print_exec_error(char *cmd_name, int exit_value);
 
 /*ENV UTILS*/

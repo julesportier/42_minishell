@@ -6,7 +6,7 @@
 /*   By: ecasalin <ecasalin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2025/05/21 14:30:55 by ecasalin         ###   ########.fr       */
+/*   Updated: 2025/05/23 09:08:17 by ecasalin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@
 #include "../../libft/src/libft.h"
 #include "../minishell.h"
 
-int	print_cmd_exec_issue(char *cmd_name, char *msg, int return_value)
+int	print_cmd_exec_issue(char *cmd_name, char *arg, char *msg, int return_value)
 {
 	char	*error_msg;
 
@@ -30,6 +30,12 @@ int	print_cmd_exec_issue(char *cmd_name, char *msg, int return_value)
 	error_msg = free_strjoin(error_msg, cmd_name, true, false);
 	if (error_msg == NULL)
 		return (CRIT_ERROR);
+	if (arg != NULL)
+	{
+		error_msg = free_strjoin(error_msg, arg, true, false);
+		if (error_msg == NULL)
+		return (CRIT_ERROR);
+	}
 	error_msg = free_strjoin(error_msg, msg, true, false);
 	if (error_msg == NULL)
 		return (CRIT_ERROR);
@@ -67,7 +73,7 @@ int	print_exec_error(char *cmd_name, int exit_value)
 		formatted_strerror = create_errno_msg();
 		if (formatted_strerror == NULL)
 			return (return_perror("minishell: execution: critical error", ERROR));
-		exit_value = print_cmd_exec_issue(cmd_name, formatted_strerror, exit_value);
+		exit_value = print_cmd_exec_issue(cmd_name, NULL, formatted_strerror, exit_value);
 		free(formatted_strerror);
 		return (exit_value);
 	}
