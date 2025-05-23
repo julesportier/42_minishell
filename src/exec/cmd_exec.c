@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd_exec.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ecasalin <ecasalin@42.fr>                  +#+  +:+       +#+        */
+/*   By: ecasalin <ecasalin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2025/05/22 15:25:35 by ecasalin         ###   ########.fr       */
+/*   Updated: 2025/05/23 11:05:41 by ecasalin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,7 @@ int	is_builtin(t_bin_tree *curr_node)
 	return (not_builtin);
 }
 
-int	exec_builtin(int builtin, char **cmd_array, t_shell_vars *vars)
+int	exec_builtin(int builtin, char **cmd_array, t_bin_tree *curr_node, t_shell_vars *vars)
 {
 	if (builtin == echo)
 		return (ms_echo(&cmd_array[1]));
@@ -94,8 +94,8 @@ int	exec_builtin(int builtin, char **cmd_array, t_shell_vars *vars)
 		return (ms_export(&cmd_array[1], vars));
 	if (builtin == unset)
 		return (ms_unset(&cmd_array[1], vars));
-	// if (builtin == exit)
-		// return (ms_exit())
+	if (builtin == ext)
+		return (ms_exit(cmd_array, curr_node, vars));
 	return (SUCCESS);
 }
 
@@ -110,7 +110,7 @@ int	prepare_builtin_exec(int builtin, t_bin_tree *curr_node, t_shell_vars *vars)
 	temp_fd_in = dup(STDIN_FILENO);
 	temp_fd_out = dup(STDOUT_FILENO);
 	set_io_fds(curr_node);
-	return_value = exec_builtin(builtin, cmd_array, vars);
+	return_value = exec_builtin(builtin, cmd_array, curr_node, vars);
 	free_array(cmd_array);
 	dup2(temp_fd_in, STDIN_FILENO);
 	dup2(temp_fd_out, STDOUT_FILENO);
@@ -179,7 +179,7 @@ int	exec_relative_path_cmd(char **paths_array, char **cmd_array, t_shell_vars *v
 			return (exec_cmd(paths_array[i], cmd_array, vars));
 		i++;
 	}
-	exit_value = print_cmd_exec_issue(cmd_array[0], ": command not found\n", 127);
+	exit_value = print_cmd_exec_issue(cmd_array[0], NULL, ": command not found\n", 127);
 	free_arrays_tree_and_vars(paths_array, cmd_array, curr_node, vars);
 	exit(exit_value);
 }

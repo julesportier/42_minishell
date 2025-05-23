@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   input.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: juportie <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: ecasalin <ecasalin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 14:50:31 by juportie          #+#    #+#             */
-/*   Updated: 2025/05/21 15:36:14 by juportie         ###   ########.fr       */
+/*   Updated: 2025/05/23 11:03:46 by ecasalin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,10 @@ void	input_loop(t_shell_vars *vars, t_error *error)
 
 	while (1)
 	{
-		line = readline(PROMPT);
+		vars->prompt = ft_strjoin(vars->cwd_backup, PROMPT);
+		if (vars->prompt == NULL)
+			break ;
+		line = readline(vars->prompt);
 		if (line == NULL)
 			break ;
 		if (*line)
@@ -50,5 +53,7 @@ void	input_loop(t_shell_vars *vars, t_error *error)
 			free_tree(&parse_tree);
 		}
 		*error = success;
+		free(vars->prompt);
 	}
+		free(vars->prompt);
 }

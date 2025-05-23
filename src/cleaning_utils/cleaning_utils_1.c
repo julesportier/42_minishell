@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cleaning_utils_1.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ecasalin <ecasalin@42.fr>                  +#+  +:+       +#+        */
+/*   By: ecasalin <ecasalin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/25 17:57:36 by kura              #+#    #+#             */
-/*   Updated: 2025/05/18 09:59:28 by ecasalin         ###   ########.fr       */
+/*   Updated: 2025/05/23 11:05:45 by ecasalin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,4 +36,5 @@ void	free_tree_and_vars(t_bin_tree *tree_root, t_shell_vars *vars)
 	free_tree(&tree_root);
 	free_array(vars->env);
 	free(vars->cwd_backup);
+	free(vars->prompt);
 }

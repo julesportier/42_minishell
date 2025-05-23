@@ -32,20 +32,21 @@ vpath %.c $(SRC_DIR):\
 	$(SRC_INPUT_DIR):\
 	$(SRC_PARSING_DIR):\
 	$(SRC_SHELL_INIT_DIR)
-SRC_BUILTINS_DIR := cd.c \
+SRC_BUILTINS := cd.c \
 					cd_cdpath_utils.c \
 					cd_cwd_vars_utils.c \
 					cd_utils.c \
 					echo.c \
 					env.c \
 					export.c \
-					export_error_utils.c \
+					export_errors_utils.c \
 					export_utils.c \
 					pwd.c \
-					unset.c
-SRC_CLEANING_UTILS_DIR := cleaning_utils_1.c
-SRC_ERROR_HANDLING_DIR := error_utils.c
-SRC_EXEC_DIR := cmd_exec.c \
+					unset.c \
+					exit.c
+SRC_CLEANING_UTILS := cleaning_utils_1.c
+SRC_ERROR_HANDLING := error_utils.c
+SRC_EXEC := cmd_exec.c \
 				exec_clean_utils.c \
 				exec_cmd_tree.c \
 				exec_errors_utils.c \
@@ -79,16 +80,16 @@ SRC_PARSING := lexer.c \
 			   tree_build_binary_op.c \
 			   tree_build_redirections.c \
 			   tree_build_grouping.c
-SRC_SHELL_INIT_DIR := shell_init.c
+SRC_SHELL_INIT := shell_init.c
 SRC := minishell.c \
 	   $(SRC_BUILTINS) \
-	   $(SRC_CLEANING_UTILS_DIR) \
-	   $(SRC_ERROR_HANDLING_DIR) \
-	   $(SRC_EXEC_DIR) \
+	   $(SRC_CLEANING_UTILS) \
+	   $(SRC_ERROR_HANDLING) \
+	   $(SRC_EXEC) \
 	   $(SRC_GENERAL_UTILS) \
 	   $(SRC_INPUT) \
 	   $(SRC_PARSING) \
-	   $(SRC_SHELL_INIT_DIR)
+	   $(SRC_SHELL_INIT)
 
 BUILD_DIR := build
 OBJ := $(addprefix $(BUILD_DIR)/, $(SRC:.c=.o))

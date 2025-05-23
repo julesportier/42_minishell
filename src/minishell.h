@@ -6,7 +6,7 @@
 /*   By: ecasalin <ecasalin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 16:31:37 by juportie          #+#    #+#             */
-/*   Updated: 2025/05/21 13:59:13 by juportie         ###   ########.fr       */
+/*   Updated: 2025/05/23 11:00:35 by ecasalin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ typedef	struct s_shell_vars
 	char	**env;
 	int		last_cmd_ext_code;
 	char	*cwd_backup;
+	char	*prompt;
 }				t_shell_vars;
 
 #endif // MINISHEL_H

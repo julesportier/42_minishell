@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: juportie <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: ecasalin <ecasalin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 15:31:21 by juportie          #+#    #+#             */
-/*   Updated: 2025/05/21 15:32:52 by juportie         ###   ########.fr       */
+/*   Updated: 2025/05/23 11:01:29 by ecasalin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,11 +28,13 @@ int	main(int argc, char *argv[], char *envp[])
 	(void)argv;
 	error = success;
 	vars.env = init_env_array(envp, &error);
-	vars.cwd_backup = NULL;
+	vars.cwd_backup = init_cwd_backup();
+	vars.prompt = NULL;
 	if (init_sigaction() == -1)
 		return (EXIT_FAILURE);
 	input_loop(&vars, &error);
 	free_array(vars.env);
+	free(vars.cwd_backup);
 	rl_clear_history();
 	if (error == critical)
 		return (EXIT_FAILURE);
