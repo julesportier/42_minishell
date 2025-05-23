@@ -6,7 +6,7 @@
 /*   By: ecasalin <ecasalin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2025/05/23 15:54:15 by ecasalin         ###   ########.fr       */
+/*   Updated: 2025/05/23 17:22:22 by ecasalin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,6 @@ static void	free_arrays_tree_and_vars(char **paths_array, char **cmd_array, t_bi
 	free_tree_and_vars(tree_root(curr_node), vars);
 }
 
-/*NO PROTECTIONS AGAINST SEGFAULT*/
 char	**craft_cmd_array(t_dlst *args)
 {
 	char	**cmd_array;
@@ -47,9 +46,16 @@ char	**craft_cmd_array(t_dlst *args)
 	i = 0;
 	lst_len = ft_dlstsize(args);
 	cmd_array = ft_calloc(lst_len + 1, sizeof(char *));
+	if (cmd_array == NULL)
+		return (NULL);
 	while (args != NULL)
 	{
 		cmd_array[i] = ft_strdup(get_toklist_str(args));
+		if (cmd_array[i] == NULL)
+		{
+			free_array(cmd_array);
+			return (NULL);
+		}
 		i++;
 		args = args->next;
 	}
@@ -108,6 +114,8 @@ int	prepare_builtin_exec(t_builtin builtin, t_bin_tree *curr_node, t_shell_vars 
 	
 	exit_error = no_error;
 	cmd_array = craft_cmd_array(curr_node->content->tokens_list);
+	if (cmd_array == NULL)
+		return (CRIT_ERROR);
 	fds_in_out[0] = dup(STDIN_FILENO);
 	fds_in_out[1] = dup(STDOUT_FILENO);
 	set_io_fds(curr_node);
@@ -204,16 +212,17 @@ void	prepare_to_exec(t_bin_tree *curr_node, char **paths_array, t_shell_vars *va
 	}
 	cmd_array = craft_cmd_array(curr_node->content->tokens_list);
 	if (cmd_array == NULL)
-	exit_value = CRIT_ERROR;
-	else if (paths_array != NULL
-		&& paths_array[0] != NULL
-		&& cmd_array != NULL
+		exit_value = CRIT_ERROR;
+	else if (paths_array != NULL && paths_array[0] != NULL
 		&& cmd_array[0] != NULL
 		&& ft_strnstr(cmd_array[0], "/", ft_strlen(cmd_array[0])) == NULL)
 		exit_value = exec_relative_path_cmd(paths_array, cmd_array, vars, curr_node);
 	else if (cmd_array != NULL)
 		exit_value = exec_cmd(cmd_array[0], cmd_array, vars);
-	exit_value = print_exec_error(cmd_array[0], exit_value);
+	if (exit_value == CRIT_ERROR)
+		exit_value = print_exec_error(NULL, exit_value);
+	else
+		exit_value = print_exec_error(cmd_array[0], exit_value);
 	free_arrays_tree_and_vars(paths_array, cmd_array, curr_node, vars);
 	exit(exit_value);
 }
