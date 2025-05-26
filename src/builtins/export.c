@@ -6,7 +6,7 @@
 /*   By: ecasalin <ecasalin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/25 15:41:16 by ecasalin          #+#    #+#             */
-/*   Updated: 2025/05/21 13:47:14 by ecasalin         ###   ########.fr       */
+/*   Updated: 2025/05/26 08:09:56 by ecasalin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,6 +109,7 @@ int	ms_export(char **args, t_shell_vars *vars)
 	int		return_value;
 	int		is_error;
 
+	is_error = 0;
 	if (args[0] == NULL)
 	{
 		return_value = print_sorted_env(vars->env);
