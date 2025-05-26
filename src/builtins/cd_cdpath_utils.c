@@ -6,7 +6,7 @@
 /*   By: ecasalin <ecasalin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 10:50:49 by ecasalin          #+#    #+#             */
-/*   Updated: 2025/05/15 11:43:46 by ecasalin         ###   ########.fr       */
+/*   Updated: 2025/05/26 16:40:23 by ecasalin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,24 +64,31 @@ static int	iter_cdpath(char *path, char *cdpath, t_shell_vars *vars)
 	return (return_value);
 }
 
+static int	cd_in_curr_dir(char *path, t_shell_vars *vars)
+{
+	int		return_value;
+	char	*temp_path;
+
+	temp_path = ft_strjoin("./", path);
+	if (temp_path == NULL)
+		return (CRIT_ERROR);
+	return_value = chdir_update_wd_vars(temp_path, vars);
+	free(temp_path);
+	return (return_value);
+}
+
 int	test_possible_paths(char *path, t_shell_vars *vars)
 {
 	char	*cdpath;
-	char	*temp_path;
 	int		return_value;
 
 	return_value = ERROR;
-	temp_path = NULL;
 	cdpath = get_env_var_value("CDPATH", vars->env);
 	if (cdpath == NULL || cdpath[0] == ':' || cdpath[0] == '\0')
-	{
-		temp_path = ft_strjoin("./", path);
-		if (temp_path == NULL)
-			return (CRIT_ERROR);
-		return_value = chdir_update_wd_vars(temp_path, vars);
-		free(temp_path);
-	}
+		return_value = cd_in_curr_dir(path, vars);
 	if (return_value == ERROR && cdpath != NULL)
 		return_value = iter_cdpath(path, cdpath, vars);
+	if (return_value == ERROR && cdpath != NULL)
+		return_value = cd_in_curr_dir(path, vars);
 	return (return_value);
 }
