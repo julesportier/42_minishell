@@ -6,7 +6,7 @@
 /*   By: ecasalin <ecasalin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2025/05/23 17:22:22 by ecasalin         ###   ########.fr       */
+/*   Updated: 2025/05/26 11:41:02 by ecasalin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,9 +105,43 @@ int	exec_builtin(t_builtin builtin, char **cmd_array, t_shell_vars *vars, t_exit
 	return (SUCCESS);
 }
 
+static int	reset_shell_fds(int std_shell_fds[2])
+{
+	int	return_value;
+	
+	return_value = SUCCESS;
+	if (dup2(std_shell_fds[0], STDIN_FILENO) == FAILURE
+		| dup2(std_shell_fds[1], STDOUT_FILENO) == FAILURE)
+	{
+		return_value = ERROR;
+		perror("minishell: execution: redirection error");
+	}
+	close(std_shell_fds[0]);
+	close(std_shell_fds[1]);
+	return (return_value);
+}
+
+static int save_shell_fds(int std_shell_fds[2])
+{
+	std_shell_fds[0] = dup(STDIN_FILENO);
+	if (std_shell_fds[0] == FAILURE)
+		return (return_perror("minishell: execution: redirection error", ERROR));
+	std_shell_fds[1] = dup(STDIN_FILENO);
+	if (std_shell_fds[1] == FAILURE)
+		return (return_perror("minishell: execution: redirection error", ERROR));
+	return (SUCCESS);
+}
+
+static int	free_array_return_perror(int return_value, char **array)
+{
+	perror("minishell: execution: redirection error");
+	free_array(array);
+	return (return_value);
+}
+
 int	prepare_builtin_exec(t_builtin builtin, t_bin_tree *curr_node, t_shell_vars *vars)
 {
-	int				fds_in_out[2];
+	int				std_shell_fds[2];
 	char			**cmd_array;
 	int				return_value;
 	t_exit_error	exit_error;
@@ -116,15 +150,16 @@ int	prepare_builtin_exec(t_builtin builtin, t_bin_tree *curr_node, t_shell_vars 
 	cmd_array = craft_cmd_array(curr_node->content->tokens_list);
 	if (cmd_array == NULL)
 		return (CRIT_ERROR);
-	fds_in_out[0] = dup(STDIN_FILENO);
-	fds_in_out[1] = dup(STDOUT_FILENO);
-	set_io_fds(curr_node);
+	if (save_shell_fds(std_shell_fds) != SUCCESS)
+		return (free_array_return_perror(ERROR, cmd_array));
+	return_value = set_io_fds(curr_node);
+	if (return_value != SUCCESS)
+		return (free_array_return_perror(return_value, cmd_array));
 	return_value = exec_builtin(builtin, cmd_array, vars, &exit_error);
 	free_array(cmd_array);
-	dup2(fds_in_out[0], STDIN_FILENO);
-	dup2(fds_in_out[1], STDOUT_FILENO);
-	close(fds_in_out[0]);
-	close(fds_in_out[1]);
+	if (return_value == CRIT_ERROR)
+		return (CRIT_ERROR);
+	return_value = reset_shell_fds(std_shell_fds);
 	if (builtin == ext && exit_error == success)
 	{
 		free_tree_and_vars(tree_root(curr_node), vars);
