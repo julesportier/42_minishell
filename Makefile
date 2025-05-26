@@ -54,7 +54,9 @@ SRC_EXEC := cmd_exec.c \
 				pipeline_handling.c \
 				subprocess_utils.c \
 				subshells_handling.c \
-				redirections_utils.c
+				redirections_utils.c \
+				builtins_handling.c \
+				builtins_redir_utils.c
 SRC_GENERAL_UTILS := env_utils.c \
 					 general_utils.c \
 					 paths_utils.c
