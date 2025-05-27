@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   input.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: juportie <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: ecasalin <ecasalin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 11:16:48 by juportie          #+#    #+#             */
-/*   Updated: 2025/05/21 15:34:19 by juportie         ###   ########.fr       */
+/*   Updated: 2025/05/27 14:09:22 by ecasalin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 
 // input_signal_handling.c
 int	init_sigaction(void);
+int	init_child_sigaction(void);
 // input.c
 void	input_loop(t_shell_vars *vars, t_error *error);
 

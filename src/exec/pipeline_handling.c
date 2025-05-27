@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipeline_handling.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ecasalin <ecasalin@42.fr>                  +#+  +:+       +#+        */
+/*   By: ecasalin <ecasalin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/21 14:19:24 by ecasalin          #+#    #+#             */
-/*   Updated: 2025/05/22 10:49:06 by ecasalin         ###   ########.fr       */
+/*   Updated: 2025/05/27 14:12:02 by ecasalin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 #include <stdio.h>
 #include <unistd.h>
 #include "exec.h"
+#include "../input/input.h"
 
 static int	link_pipe_to_stdout(int *pip)
 {
@@ -39,7 +40,8 @@ static int	link_pipe_to_stdin(int *pip)
 static void	continue_pipeline_left_process(t_bin_tree *curr_node, int *pip, t_shell_vars *vars, t_error *error)
 {
 	int return_value;
-
+	
+	init_child_sigaction();
 	return_value = SUCCESS;
 	if (curr_node->content->subshell == true)
 		return_value = set_input(curr_node);
@@ -61,7 +63,8 @@ static void	continue_pipeline_left_process(t_bin_tree *curr_node, int *pip, t_sh
 static void	continue_pipeline_right_process(t_bin_tree *curr_node, int *pip, t_shell_vars *vars, t_error *error)
 {
 	int return_value;
-
+	
+	init_child_sigaction();
 	return_value = SUCCESS;
 	if (curr_node->content->subshell == true)
 		return_value = set_output(curr_node);
