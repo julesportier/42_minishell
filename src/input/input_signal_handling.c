@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   input_signal_handling.c                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ecasalin <ecasalin@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ecasalin <ecasalin@42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 11:14:31 by juportie          #+#    #+#             */
-/*   Updated: 2025/05/27 14:25:04 by ecasalin         ###   ########.fr       */
+/*   Updated: 2025/05/27 18:27:31 by ecasalin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,8 @@
 #include <readline/history.h>
 #include "../../libft/src/libft.h"
 #include <sys/wait.h>
+
+#include "../signals_utils/signals_utils.h"
 
 // static int	init_mask(struct sigaction *sigact)
 // {
@@ -80,14 +82,14 @@
 
 static void	child_sigint_handler(int sig)
 {
+	g_sig = sig;
 	printf("i exit with %d\n", sig);
 	exit(sig);
 }
 
 static void	sigint_handler(int sig)
 {
-	(void)sig;
-	printf("i am the father\n");
+	g_sig = sig;
 	printf("\n");
 	rl_on_new_line();
 	rl_replace_line("", 0);
@@ -97,7 +99,7 @@ static void	sigint_handler(int sig)
 int	init_child_sigint_sigaction(void)
 {
 	struct sigaction	sigact;
-	
+
 	ft_bzero(&sigact, sizeof(struct sigaction));
 	sigact.sa_flags = SA_RESTART;
 	sigact.sa_handler = child_sigint_handler;
@@ -111,7 +113,7 @@ int	init_child_sigint_sigaction(void)
 int	init_sigint_sigaction(void)
 {
 	struct sigaction	sigact;
-	
+
 	ft_bzero(&sigact, sizeof(struct sigaction));
 	sigact.sa_flags = SA_RESTART;
 	sigact.sa_handler = sigint_handler;

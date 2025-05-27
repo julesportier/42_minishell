@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ecasalin <ecasalin@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ecasalin <ecasalin@42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 15:31:21 by juportie          #+#    #+#             */
-/*   Updated: 2025/05/23 13:22:26 by ecasalin         ###   ########.fr       */
+/*   Updated: 2025/05/27 18:17:18 by ecasalin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,10 +18,12 @@
 #include "cleaning_utils/cleaning.h"
 #include "input/input.h"
 
+int	g_sig = 0;
+
 int	main(int argc, char *argv[], char *envp[])
 {
 	t_shell_vars	vars;
-	t_error	error;
+	t_error			error;
 
 	if (argc != 1)
 		return (2);

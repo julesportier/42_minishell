@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ecasalin <ecasalin@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ecasalin <ecasalin@42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/23 07:57:45 by ecasalin          #+#    #+#             */
-/*   Updated: 2025/05/23 16:32:08 by ecasalin         ###   ########.fr       */
+/*   Updated: 2025/05/27 18:07:35 by ecasalin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,10 +54,8 @@ static t_intf	atouc_flag(const char *nptr)
 
 int	ms_exit(char **args, t_shell_vars *vars, t_exit_error *exit_error)
 {
-	int		i;
 	t_intf	exit_value;
-	
-	i = 0;
+
 	if (args[1] == NULL || args[1][0] == '\0')
 	{
 		printf("exit\n");
