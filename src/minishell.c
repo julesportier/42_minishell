@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ecasalin <ecasalin@42.fr>                  +#+  +:+       +#+        */
+/*   By: ecasalin <ecasalin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 15:31:21 by juportie          #+#    #+#             */
-/*   Updated: 2025/05/27 18:17:18 by ecasalin         ###   ########.fr       */
+/*   Updated: 2025/05/28 11:54:19 by ecasalin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,5 +39,5 @@ int	main(int argc, char *argv[], char *envp[])
 	rl_clear_history();
 	if (error == critical)
 		return (EXIT_FAILURE);
-	return (EXIT_SUCCESS);
+	return (vars.last_cmd_ext_code);
 }

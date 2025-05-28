@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   input_signal_handling.c                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ecasalin <ecasalin@42.fr>                  +#+  +:+       +#+        */
+/*   By: ecasalin <ecasalin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 11:14:31 by juportie          #+#    #+#             */
-/*   Updated: 2025/05/27 18:27:31 by ecasalin         ###   ########.fr       */
+/*   Updated: 2025/05/28 11:25:24 by ecasalin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,8 +83,8 @@
 static void	child_sigint_handler(int sig)
 {
 	g_sig = sig;
-	printf("i exit with %d\n", sig);
-	exit(sig);
+	printf(" i exit with %d\n", sig);
+	// exit(9);
 }
 
 static void	sigint_handler(int sig)

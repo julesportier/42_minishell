@@ -6,7 +6,7 @@
 /*   By: ecasalin <ecasalin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 13:13:02 by ecasalin          #+#    #+#             */
-/*   Updated: 2025/05/26 13:31:06 by ecasalin         ###   ########.fr       */
+/*   Updated: 2025/05/28 15:41:34 by ecasalin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 #include "../builtins/builtins.h"
 #include "../parsing/parsing.h"
 #include "../cleaning_utils/cleaning.h"
+#include "../error_handling/errors.h"
 #include "exec.h"
 
 int	is_builtin(t_bin_tree *curr_node)
@@ -42,23 +43,35 @@ int	is_builtin(t_bin_tree *curr_node)
 	return (not_builtin);
 }
 
-int	exec_builtin(t_builtin builtin, char **cmd_array, t_shell_vars *vars, t_exit_error *exit_error)
+int	exec_builtin(t_builtin builtin, char **cmd_array, t_shell_vars *vars, t_error *error)
 {
+	int				return_value;
+	t_exit_error	exit_error;
+	
+	exit_error = no_error;
 	if (builtin == echo)
-		return (ms_echo(&cmd_array[1]));
+		return_value = ms_echo(&cmd_array[1]);
 	if (builtin == cd)
-		return (ms_cd(&cmd_array[1], vars));
+		return_value = ms_cd(&cmd_array[1], vars);
 	if (builtin == pwd)
-		return (ms_pwd());
+		return_value = ms_pwd();
 	if (builtin == env)
-		return (ms_env(vars->env));
+		return_value = ms_env(vars->env);
 	if (builtin == export)
-		return (ms_export(&cmd_array[1], vars));
+		return_value = ms_export(&cmd_array[1], vars);
 	if (builtin == unset)
-		return (ms_unset(&cmd_array[1], vars));
+		return_value = ms_unset(&cmd_array[1], vars);
 	if (builtin == ext)
-		return (ms_exit(cmd_array, vars, exit_error));
-	return (SUCCESS);
+	{
+		return_value = ms_exit(cmd_array, vars, &exit_error);
+		if (exit_error == alloc_error)
+			return (set_err_return_err(error, critical));
+		if (exit_error == not_a_digit || exit_error == too_many_args)
+			return (set_err_return_err(error, recoverable));
+	}
+	if (return_value == CRIT_ERROR)
+		return (set_err_return_err(error, critical));
+	return (return_value);
 }
 
 static int	free_array_return_perror(int return_value, char **array)
@@ -68,15 +81,13 @@ static int	free_array_return_perror(int return_value, char **array)
 	return (return_value);
 }
 
-int	prepare_builtin_exec(t_builtin builtin, t_bin_tree *curr_node, t_shell_vars *vars)
+int	prepare_builtin_exec(t_builtin builtin, t_bin_tree *curr_node, t_shell_vars *vars, t_error *error)
 {
 	int				std_shell_fds[2];
 	char			**cmd_array;
 	int				return_value;
-	t_exit_error	exit_error;
 	
-	exit_error = no_error;
-	cmd_array = create_cmd_array(curr_node->content->tokens_list);
+	cmd_array = create_cmd_array(curr_node->content->tokens_list); //on ajoute error ici
 	if (cmd_array == NULL)
 		return (CRIT_ERROR);
 	if (save_shell_fds(std_shell_fds) != SUCCESS)
@@ -84,12 +95,13 @@ int	prepare_builtin_exec(t_builtin builtin, t_bin_tree *curr_node, t_shell_vars 
 	return_value = set_io_fds(curr_node);
 	if (return_value != SUCCESS)
 		return (free_array_return_perror(return_value, cmd_array));
-	return_value = exec_builtin(builtin, cmd_array, vars, &exit_error);
+	return_value = exec_builtin(builtin, cmd_array, vars, error);
 	free_array(cmd_array);
-	if (return_value == CRIT_ERROR)
+	if (*error == critical)
 		return (CRIT_ERROR);
-	return_value = reset_shell_fds(std_shell_fds);
-	if (builtin == ext && exit_error == success)
+	if (reset_shell_fds(std_shell_fds) == ERROR)
+		return (ERROR);
+	if (builtin == ext && *error == success)
 	{
 		free_tree_and_vars(tree_root(curr_node), vars);
 		exit(return_value);

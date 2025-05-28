@@ -31,7 +31,8 @@ typedef enum	e_exit_error
 {
 	no_error,
 	not_a_digit,
-	too_many_args
+	too_many_args,
+	alloc_error,
 }				t_exit_error;
 
 typedef struct s_intf

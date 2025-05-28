@@ -51,8 +51,8 @@ int		wait_child(void);
 
 /*BUILTINS HANDLING*/
 int		is_builtin(t_bin_tree *curr_node);
-int		exec_builtin(t_builtin builtin, char **cmd_array, t_shell_vars *vars, t_exit_error *exit_error);
-int		prepare_builtin_exec(t_builtin builtin, t_bin_tree *curr_node, t_shell_vars *vars);
+int		exec_builtin(t_builtin builtin, char **cmd_array, t_shell_vars *vars, t_error *error);
+int		prepare_builtin_exec(t_builtin builtin, t_bin_tree *curr_node, t_shell_vars *vars, t_error *error);
 
 /*REDIRECTIONS HANDLING*/
 int		set_input(t_bin_tree *curr_node);

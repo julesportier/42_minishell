@@ -6,7 +6,7 @@
 /*   By: ecasalin <ecasalin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2025/05/26 13:30:04 by ecasalin         ###   ########.fr       */
+/*   Updated: 2025/05/28 15:37:43 by ecasalin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,10 +63,9 @@ int	create_exec_setup(t_bin_tree *curr_node, t_shell_vars *vars, t_error *error)
 
 	// expand_args(curr_node->cmd.cmd, vars);
 	// expand_redirections(curr_node->cmd.input, curr_node->cmd.output, vars);
-	child_pid = FAILURE;
 	builtin = is_builtin(curr_node);
 	if (builtin)
-		return (prepare_builtin_exec(builtin, curr_node, vars));
+		return (prepare_builtin_exec(builtin, curr_node, vars, error));
 	paths_array = create_paths_array(vars, error);
 	if (*error != success)
 		return (*error);
