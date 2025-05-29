@@ -15,7 +15,7 @@
 
 const char	*token_type_to_str(enum e_token_type type)
 {
-	const char	*token_types_lookup[14] = {
+	const char	*token_types_lookup[16] = {
 		"null",
 		"literal",
 		"double_quotes",
@@ -29,10 +29,12 @@ const char	*token_type_to_str(enum e_token_type type)
 		"redir_output",
 		"append_output",
 		"redir_input",
-		"heredoc"
+		"heredoc",
+		"heredoc_exp",
+		"heredoc_lit"
 	};
 
-	if (type >= 0 && type <= 14)
+	if (type >= 0 && type <= 16)
 		return (token_types_lookup[type]);
 	else
 		return ("non identified");

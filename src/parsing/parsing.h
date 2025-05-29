@@ -6,7 +6,7 @@
 /*   By: juportie <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 10:24:06 by juportie          #+#    #+#             */
-/*   Updated: 2025/05/20 15:31:13 by juportie         ###   ########.fr       */
+/*   Updated: 2025/05/26 14:43:04 by juportie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,9 @@ enum	e_token_type
 	redir_output,
 	append_output,
 	redir_input,
-	heredoc
+	heredoc,
+	heredoc_exp,
+	heredoc_lit
 };
 
 typedef struct	s_token
@@ -49,9 +51,6 @@ typedef struct	s_token
 typedef struct	s_node_content
 {
 	t_bool subshell; // true for the node that enters in subshell, not inherited by childrens
-	// 01b heredoc, 00b standard file
-	// 00b no expansions on input (if delimiter inside quotes or double quotes), 10b expands. Delimiter is never expanded.
-	int	heredoc_flags;
 	t_dlst	*inputs; // NULL if no redirection
 	t_dlst	*outputs; // NULL if no redirection
 	t_dlst	*tokens_list; // Tokens list
