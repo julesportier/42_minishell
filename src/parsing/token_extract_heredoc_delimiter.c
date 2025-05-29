@@ -27,7 +27,7 @@ static t_error	extract_quoted_delimiter(t_token *token, char *line, int *pos)
 		advance(1, pos);
 	if (line[*pos] == '\0')
 		return (print_syntax_error("unclosed ", quote, recoverable));
-	token->type = double_quotes;
+	token->type = heredoc_lit;
 	token->str = ft_substr(line, start, *pos - start); // Returns "\0" for "" as input.
 	if (token->str == NULL)
 		return (critical);
@@ -45,7 +45,7 @@ static t_error	extract_unquoted_delimiter(t_token *token, char *line, int *pos)
 		&& !is_operator(&line[*pos])
 		&& line[*pos] != '\0')
 		advance(1, pos);
-	token->type = literal;
+	token->type = heredoc_exp;
 	token->str = ft_substr(line, start, *pos - start); // Returns "\0" for "" as input.
 	if (token->str == NULL)
 		return (critical);
