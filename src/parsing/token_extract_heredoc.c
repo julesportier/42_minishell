@@ -41,7 +41,7 @@ static t_bool	is_heredoc_end(char *heredoc_line, char *delimiter)
 {
 	if (heredoc_line == NULL)
 	{
-		ft_putstr_fd("minishel: warning unexpected end-of-file in heredoc", 2);
+		ft_putstr_fd("minishell: warning unexpected end-of-file in heredoc", 2);
 		return (true);
 	}
 	else if (ft_isequalstr(delimiter, heredoc_line))
@@ -51,6 +51,15 @@ static t_bool	is_heredoc_end(char *heredoc_line, char *delimiter)
 	}
 	else
 		return (false);
+}
+
+static void	remove_last_newline(char *heredoc_content)
+{
+	int		content_len;
+
+	content_len = ft_strlen(heredoc_content);
+	if (content_len > 0)
+		heredoc_content[content_len - 1] = '\0';
 }
 
 t_token	*extract_heredoc(char *line, int *pos, t_error *error)
@@ -72,6 +81,7 @@ t_token	*extract_heredoc(char *line, int *pos, t_error *error)
 		if (*error)
 			return (NULL);
 	}
+	remove_last_newline(heredoc_content);
 	free(token->str);
 	token->str = heredoc_content;
 	return (token);
