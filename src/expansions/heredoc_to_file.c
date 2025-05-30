@@ -6,7 +6,7 @@
 /*   By: juportie <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 10:25:15 by juportie          #+#    #+#             */
-/*   Updated: 2025/05/30 16:27:35 by juportie         ###   ########.fr       */
+/*   Updated: 2025/05/30 17:00:55 by juportie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,8 @@ static t_error	move_heredoc_content_to_file(t_dlst *token, t_error *error)
 		free(filename);
 		return (*error);
 	}
-	free(get_toklist_str(token));
+	if (get_toklist_str(token))
+		free(get_toklist_str(token));
 	set_toklist_str(token, filename);
 	return (success);
 }
