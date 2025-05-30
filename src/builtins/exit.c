@@ -54,10 +54,8 @@ static t_intf	atouc_flag(const char *nptr)
 
 int	ms_exit(char **args, t_shell_vars *vars, t_exit_error *exit_error)
 {
-	int		i;
 	t_intf	exit_value;
 	
-	i = 0;
 	if (args[1] == NULL || args[1][0] == '\0')
 	{
 		printf("exit\n");

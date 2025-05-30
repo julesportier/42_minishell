@@ -17,8 +17,7 @@
 #include "../minishell.h"
 #include "../parsing/parsing.h"
 #include "../exec/exec.h"
-#include "../shell_init/init.h"
-#include "../cleaning_utils/cleaning.h"
+#include "../expansions/expansions.h"
 #include "input.h"
 
 void	input_loop(t_shell_vars *vars, t_error *error)
@@ -38,10 +37,14 @@ void	input_loop(t_shell_vars *vars, t_error *error)
 		if (*line)
 			add_history(line);
 		toklist = scan_line(line, error);
+		if (DEBUG)
+		{
+			expand_toklist(&toklist, vars);
+		}
 		free(line);
 		if (*error == critical)
 			break ;
-		// print_toklist(toklist, 0);
+		print_toklist(toklist, 0);
 		if (toklist)
 		{
 			parse_tree = build_parse_tree(&toklist, error);

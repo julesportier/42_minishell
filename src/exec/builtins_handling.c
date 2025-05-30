@@ -89,7 +89,7 @@ int	prepare_builtin_exec(t_builtin builtin, t_bin_tree *curr_node, t_shell_vars 
 	if (return_value == CRIT_ERROR)
 		return (CRIT_ERROR);
 	return_value = reset_shell_fds(std_shell_fds);
-	if (builtin == ext && exit_error == success)
+	if (builtin == ext && exit_error == no_error)
 	{
 		free_tree_and_vars(tree_root(curr_node), vars);
 		exit(return_value);
