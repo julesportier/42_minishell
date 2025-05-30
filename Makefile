@@ -69,6 +69,7 @@ SRC_PARSING := lexer.c \
 			   token_extract.c \
 			   token_extract_utils.c \
 			   tokens_list_get.c \
+			   tokens_list_set.c \
 			   print_utils.c \
 			   tokens_list_print.c \
 			   tokens_list_free.c \
