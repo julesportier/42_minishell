@@ -19,6 +19,7 @@ SRC_BUILTINS_DIR := $(SRC_DIR)/builtins
 SRC_CLEANING_UTILS_DIR := $(SRC_DIR)/cleaning_utils
 SRC_ERROR_HANDLING_DIR := $(SRC_DIR)/error_handling
 SRC_EXEC_DIR := $(SRC_DIR)/exec
+SRC_EXPANSIONS_DIR := $(SRC_DIR)/expansions
 SRC_GENERAL_UTILS_DIR := $(SRC_DIR)/general_utils
 SRC_INPUT_DIR := $(SRC_DIR)/input
 SRC_PARSING_DIR := $(SRC_DIR)/parsing
@@ -28,6 +29,7 @@ vpath %.c $(SRC_DIR):\
 	$(SRC_CLEANING_UTILS_DIR):\
 	$(SRC_ERROR_HANDLING_DIR):\
 	$(SRC_EXEC_DIR):\
+	$(SRC_EXPANSIONS_DIR):\
 	$(SRC_GENERAL_UTILS_DIR):\
 	$(SRC_INPUT_DIR):\
 	$(SRC_PARSING_DIR):\
@@ -58,6 +60,14 @@ SRC_EXEC := cmd_exec.c \
 				redirections_utils.c \
 				builtins_handling.c \
 				builtins_redir_utils.c
+
+SRC_EXPANSIONS := expansions.c \
+				  expansions_utils.c \
+				  expansions_toklist_utils.c \
+				  expansions_variable.c \
+				  expansions_double_quotes.c \
+				  expansions_wildcard.c \
+				  heredoc_to_file.c
 SRC_GENERAL_UTILS := env_utils.c \
 					 general_utils.c \
 					 paths_utils.c
@@ -92,6 +102,7 @@ SRC := minishell.c \
 	   $(SRC_CLEANING_UTILS) \
 	   $(SRC_ERROR_HANDLING) \
 	   $(SRC_EXEC) \
+	   $(SRC_EXPANSIONS) \
 	   $(SRC_GENERAL_UTILS) \
 	   $(SRC_INPUT) \
 	   $(SRC_PARSING) \
