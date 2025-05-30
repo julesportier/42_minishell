@@ -6,14 +6,13 @@
 /*   By: juportie <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 10:25:15 by juportie          #+#    #+#             */
-/*   Updated: 2025/05/30 15:40:47 by juportie         ###   ########.fr       */
+/*   Updated: 2025/05/30 17:05:32 by juportie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../libft/src/libft.h"
 #include "../minishell.h"
 #include "../parsing/parsing.h"
-#include "../parsing/lexer.h"
 
 t_error	replace_token_content(
 	t_token *token,
@@ -29,37 +28,6 @@ t_error	replace_token_content(
 	return (*error);
 }
 
-t_dlst	*insert_expanded_token(t_dlst *token, char *str, t_error *error)
-{
-	t_token	*new_token;
-	t_dlst	*new_node;
-
-	new_token = alloc_token(error);
-	if (*error)
-		return (NULL);
-	if (replace_token_content(new_token, literal, str, error))
-		return (NULL);
-	new_node = ft_dlstnew(new_token);
-	if (!new_node)
-	{
-		*error = critical;
-		return (NULL);
-	}
-	ft_dlstinsert_next(&token, new_node);
-	return (token->next);
-}
-
-void	remove_token(t_dlst **token, t_dlst **toklist)
-{
-	t_dlst	*temp_node;
-
-	if (toklist && *toklist == *token)
-		*toklist = (*toklist)->next;
-	temp_node = *token;
-	*token = (*token)->next;
-	ft_dlstremove(temp_node, free_token_content, free);
-}
-	
 static t_error	merge_next_token(t_dlst *token, t_error *error)
 {
 	set_toklist_str(

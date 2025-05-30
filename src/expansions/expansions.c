@@ -6,7 +6,7 @@
 /*   By: juportie <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 10:25:15 by juportie          #+#    #+#             */
-/*   Updated: 2025/05/30 16:22:40 by juportie         ###   ########.fr       */
+/*   Updated: 2025/05/30 16:53:11 by juportie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ t_dlst	*expand_token(
 		token = expand_variable(token, toklist, shell_vars, error);
 	else if (get_toklist_type(token) == double_quotes
 		|| get_toklist_type(token) == heredoc_exp)
-		token = expand_double_quotes(token, toklist, shell_vars, error);
+		token = expand_double_quotes(token, shell_vars, error);
 	else
 		token = token->next;
 	return (token);
