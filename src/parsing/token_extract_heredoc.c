@@ -53,14 +53,14 @@ static t_bool	is_heredoc_end(char *heredoc_line, char *delimiter)
 		return (false);
 }
 
-static void	remove_last_newline(char *heredoc_content)
-{
-	int		content_len;
-
-	content_len = ft_strlen(heredoc_content);
-	if (content_len > 0)
-		heredoc_content[content_len - 1] = '\0';
-}
+// static void	remove_last_newline(char *heredoc_content)
+// {
+// 	int		content_len;
+//
+// 	content_len = ft_strlen(heredoc_content);
+// 	if (content_len > 0)
+// 		heredoc_content[content_len - 1] = '\0';
+// }
 
 t_token	*extract_heredoc(char *line, int *pos, t_error *error)
 {
@@ -81,7 +81,7 @@ t_token	*extract_heredoc(char *line, int *pos, t_error *error)
 		if (*error)
 			return (NULL);
 	}
-	remove_last_newline(heredoc_content);
+	// remove_last_newline(heredoc_content);
 	free(token->str);
 	token->str = heredoc_content;
 	return (token);
