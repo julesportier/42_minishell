@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pwd.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ecasalin <ecasalin@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ecasalin <ecasalin@42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 07:50:53 by ecasalin          #+#    #+#             */
-/*   Updated: 2025/05/15 11:35:21 by ecasalin         ###   ########.fr       */
+/*   Updated: 2025/05/31 00:25:11 by ecasalin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,6 @@ int	ms_pwd(void)
 	temp = printf("%s\n", cwd);
 	free(cwd);
 	if (temp < 0)
-		return (return_perror("minishell: pwd", ERROR));
+		return (ERROR);
 	return (SUCCESS);
 }

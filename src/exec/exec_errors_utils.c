@@ -6,7 +6,7 @@
 /*   By: ecasalin <ecasalin@42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2025/05/30 22:49:38 by ecasalin         ###   ########.fr       */
+/*   Updated: 2025/05/30 23:42:30 by ecasalin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 #include <string.h>
 #include "../error_handling/errors.h"
 #include "../general_utils/utils.h"
+#include "../cleaning_utils/cleaning.h"
 #include "../../libft/src/libft.h"
 #include "../minishell.h"
 

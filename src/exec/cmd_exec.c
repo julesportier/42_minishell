@@ -6,7 +6,7 @@
 /*   By: ecasalin <ecasalin@42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2025/05/30 23:20:21 by ecasalin         ###   ########.fr       */
+/*   Updated: 2025/05/30 23:41:50 by ecasalin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,7 +107,7 @@ int	exec_relative_path_cmd(char **paths_array, char **cmd_array, t_shell_vars *v
 	char	*temp_line;
 	t_error	error;
 
-	error == success;
+	error = success;
 	i = 0;
 	while (paths_array[i] != NULL)
 	{
@@ -129,7 +129,7 @@ int	exec_relative_path_cmd(char **paths_array, char **cmd_array, t_shell_vars *v
 	exit(127);
 }
 
-int	free_array_return_err(char *array)
+int	free_array_return_err(char **array)
 {
 	free_array(array);
 	return (ERROR);
@@ -146,11 +146,11 @@ void	prepare_to_exec(t_bin_tree *curr_node, char **paths_array, t_shell_vars *va
 	cmd_array = create_cmd_array(curr_node->content->tokens_list, error);
 	if (*error)
 		free_all_exit_err(paths_array, NULL, curr_node, vars);
-	else if (paths_array != NULL && paths_array[0] != NULL
+	if (paths_array != NULL && paths_array[0] != NULL
 		&& cmd_array[0] != NULL
 		&& ft_strnstr(cmd_array[0], "/", ft_strlen(cmd_array[0])) == NULL)
 		exit_value = exec_relative_path_cmd(paths_array, cmd_array, vars, curr_node);
-	else if (cmd_array != NULL)
+	else
 		exit_value = exec_cmd(cmd_array[0], cmd_array, vars);
 	exit_value = print_exec_error(cmd_array[0], exit_value, error);
 	free_arrays_tree_and_vars(paths_array, cmd_array, curr_node, vars);
