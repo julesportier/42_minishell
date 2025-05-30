@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirections_utils.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ecasalin <ecasalin@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ecasalin <ecasalin@42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 08:35:28 by ecasalin          #+#    #+#             */
-/*   Updated: 2025/05/30 16:31:29 by ecasalin         ###   ########.fr       */
+/*   Updated: 2025/05/30 22:52:37 by ecasalin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ int	set_output(t_bin_tree *curr_node, t_error *error)
 		else if (get_toklist_type(temp_head->prev) == append_output)
 			fd = open(file_name, O_CREAT | O_APPEND | O_WRONLY, 0644);
 		if (fd == FAILURE)
-			return (print_exec_error(file_name, ERROR));
+			return (print_exec_error(file_name, ERROR, error));
 		if (dup2(fd, STDOUT_FILENO) == FAILURE)
 			return (close_return_perror(fd));
 		close(fd);
@@ -68,7 +68,7 @@ int	set_input(t_bin_tree *curr_node, t_error *error)
 		file_name = get_toklist_str(temp_head);
 		fd = open(file_name, O_RDONLY);
 		if (fd == FAILURE)
-			return (print_exec_error(file_name, ERROR));
+			return (print_exec_error(file_name, ERROR, error));
 		if (dup2(fd, STDIN_FILENO == FAILURE))
 			return (close_return_perror(fd));
 		close(fd);//Faudra unlink si c'est un heredock

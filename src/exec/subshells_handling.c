@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   subshells_handling.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ecasalin <ecasalin@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ecasalin <ecasalin@42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 21:13:38 by ecasalin          #+#    #+#             */
-/*   Updated: 2025/05/27 14:10:14 by ecasalin         ###   ########.fr       */
+/*   Updated: 2025/05/30 23:07:59 by ecasalin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,8 +30,7 @@ static void	continue_in_subshell(t_bin_tree *curr_node, t_shell_vars *vars, t_er
 int	fork_subshell(t_bin_tree *curr_node, t_shell_vars *vars, t_error *error)
 {
 	pid_t	pid;
-	int		exit_value;
-
+	
 	curr_node->content->subshell = false;
 	pid = fork();
 	if (pid == FAILURE)
@@ -39,11 +38,11 @@ int	fork_subshell(t_bin_tree *curr_node, t_shell_vars *vars, t_error *error)
 	if (pid == CHILD)
 	{
 		init_child_sigaction();
-		exit_value = set_io_fds(curr_node);
-		if (exit_value != SUCCESS)
+		set_io_fds(curr_node, error);
+		if (*error)
 		{
 			free_tree_and_vars(tree_root(curr_node), vars);
-			exit(exit_value);
+			exit(ERROR);
 		}
 		continue_in_subshell(curr_node, vars, error);
 	}

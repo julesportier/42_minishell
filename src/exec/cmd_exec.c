@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd_exec.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ecasalin <ecasalin@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ecasalin <ecasalin@42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2025/05/30 16:38:47 by ecasalin         ###   ########.fr       */
+/*   Updated: 2025/05/30 23:20:21 by ecasalin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,7 +106,7 @@ int	exec_relative_path_cmd(char **paths_array, char **cmd_array, t_shell_vars *v
 	int		i;
 	char	*temp_line;
 	t_error	error;
-	
+
 	error == success;
 	i = 0;
 	while (paths_array[i] != NULL)
@@ -140,13 +140,9 @@ void	prepare_to_exec(t_bin_tree *curr_node, char **paths_array, t_shell_vars *va
 	int		exit_value;
 	char	**cmd_array;
 
-	exit_value = set_io_fds(curr_node);
-	if (exit_value == ERROR)
-	{
-		free_array(paths_array);
-		free_tree_and_vars(tree_root(curr_node), vars);
-		exit(ERROR);
-	}
+	set_io_fds(curr_node, error);
+	if (*error)
+		free_all_exit_err(paths_array, NULL, curr_node, vars);
 	cmd_array = create_cmd_array(curr_node->content->tokens_list, error);
 	if (*error)
 		free_all_exit_err(paths_array, NULL, curr_node, vars);

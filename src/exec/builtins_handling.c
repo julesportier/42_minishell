@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins_handling.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ecasalin <ecasalin@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ecasalin <ecasalin@42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 13:13:02 by ecasalin          #+#    #+#             */
-/*   Updated: 2025/05/30 16:30:01 by ecasalin         ###   ########.fr       */
+/*   Updated: 2025/05/30 23:16:00 by ecasalin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ int	exec_builtin(t_builtin builtin, char **cmd_array, t_shell_vars *vars, t_erro
 {
 	int				return_value;
 	t_exit_error	exit_error;
-	
+
 	exit_error = no_error;
 	if (builtin == echo)
 		return_value = ms_echo(&cmd_array[1]);
@@ -87,21 +87,21 @@ int	prepare_builtin_exec(t_builtin builtin, t_bin_tree *curr_node, t_shell_vars 
 	int		std_shell_fds[2];
 	char	**cmd_array;
 	int		return_value;
-	
+
 	cmd_array = create_cmd_array(curr_node->content->tokens_list, error);
 	if (*error)
 		return (ERROR);
-	if (save_shell_fds(std_shell_fds) != SUCCESS)
+	if (save_shell_fds(std_shell_fds) == ERROR)
 		return (free_array_set_err(error, recoverable, cmd_array));
-	return_value = set_io_fds(curr_node, error);
-	if (return_value != SUCCESS)
-		return (free_array_return_perror(return_value, cmd_array));
+	set_io_fds(curr_node, error);
+	if (*error)
+		return (free_array_set_err(error, *error, cmd_array));
 	return_value = exec_builtin(builtin, cmd_array, vars, error);
 	free_array(cmd_array);
-	if (*error == critical)
-		return (CRIT_ERROR);
-	if (reset_shell_fds(std_shell_fds) == ERROR)
+	if (*error)
 		return (ERROR);
+	if (restore_shell_fds(std_shell_fds) == ERROR)
+		return (free_array_set_err(error, recoverable, cmd_array));
 	if (builtin == ext && *error == success)
 	{
 		free_tree_and_vars(tree_root(curr_node), vars);

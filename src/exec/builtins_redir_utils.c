@@ -6,7 +6,7 @@
 /*   By: ecasalin <ecasalin@42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 13:15:02 by ecasalin          #+#    #+#             */
-/*   Updated: 2025/05/27 18:13:07 by ecasalin         ###   ########.fr       */
+/*   Updated: 2025/05/30 23:15:39 by ecasalin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ int	save_shell_fds(int std_shell_fds[2])
 	return (SUCCESS);
 }
 
-int	reset_shell_fds(int std_shell_fds[2])
+int	restore_shell_fds(int std_shell_fds[2])
 {
 	int	return_value;
 	int	temp1;

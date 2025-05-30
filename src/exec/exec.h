@@ -57,11 +57,11 @@ int		exec_builtin(t_builtin builtin, char **cmd_array, t_shell_vars *vars, t_err
 int		prepare_builtin_exec(t_builtin builtin, t_bin_tree *curr_node, t_shell_vars *vars, t_error *error);
 
 /*REDIRECTIONS HANDLING*/
-int		set_input(t_bin_tree *curr_node);
-int		set_output(t_bin_tree *curr_node);
-int		set_io_fds(t_bin_tree *curr_node);
+int		set_input(t_bin_tree *curr_node, t_error *error);
+int		set_output(t_bin_tree *curr_node, t_error *error);
+int		set_io_fds(t_bin_tree *curr_node, t_error *error);
 int		save_shell_fds(int std_shell_fds[2]);
-int		reset_shell_fds(int std_shell_fds[2]);
+int		restore_shell_fds(int std_shell_fds[2]);
 
 /*TEST AND DEBUG*/
 // t_bin_tree *hardcoded_tree(void);

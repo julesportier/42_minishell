@@ -6,7 +6,7 @@
 /*   By: ecasalin <ecasalin@42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 06:55:11 by ecasalin          #+#    #+#             */
-/*   Updated: 2025/05/27 18:24:15 by ecasalin         ###   ########.fr       */
+/*   Updated: 2025/05/30 22:54:33 by ecasalin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ static int	recurse_right_side(t_bin_tree *curr_node, t_shell_vars *vars, t_error
 
 static int	check_right_cmd_conditions(t_bin_tree *curr_node, t_error *error, t_shell_vars *vars)
 {
-	if (*error != success)
+	if (*error == critical)
 		return (0);
 	if (g_sig != 0)
 		return (0);
@@ -47,8 +47,8 @@ static int	check_right_cmd_conditions(t_bin_tree *curr_node, t_error *error, t_s
 
 int	exec_cmd_tree(t_bin_tree *curr_node, t_shell_vars *vars, t_error *error)
 {
-	if (*error != success)
-		return (*error);
+	if (*error)
+		return (ERROR);
 	if (curr_node->operator == pipeline)
 		return (fork_pipeline_sides(curr_node, vars, error));
 	if (curr_node->content->subshell == true)
