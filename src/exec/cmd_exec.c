@@ -6,7 +6,7 @@
 /*   By: ecasalin <ecasalin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2025/05/28 15:37:43 by ecasalin         ###   ########.fr       */
+/*   Updated: 2025/05/30 16:38:47 by ecasalin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@
 // 	// set_redirections(curr_node->cmd.input, curr_node->cmd.output);
 // }
 
-char	**create_cmd_array(t_dlst *args)
+char	**create_cmd_array(t_dlst *args, t_error *error)
 {
 	char	**cmd_array;
 	int		lst_len;
@@ -40,14 +40,18 @@ char	**create_cmd_array(t_dlst *args)
 	lst_len = ft_dlstsize(args);
 	cmd_array = ft_calloc(lst_len + 1, sizeof(char *));
 	if (cmd_array == NULL)
-		return (NULL);
+	{
+		perror("minishell: execution: critical error");
+		return (set_err_return_null(error, critical));
+	}
 	while (args != NULL)
 	{
 		cmd_array[i] = ft_strdup(get_toklist_str(args));
 		if (cmd_array[i] == NULL)
 		{
 			free_array(cmd_array);
-			return (NULL);
+			perror("minishell: execution: critical error");
+			return (set_err_return_null(error, critical));
 		}
 		i++;
 		args = args->next;
@@ -68,18 +72,18 @@ int	create_exec_setup(t_bin_tree *curr_node, t_shell_vars *vars, t_error *error)
 		return (prepare_builtin_exec(builtin, curr_node, vars, error));
 	paths_array = create_paths_array(vars, error);
 	if (*error != success)
-		return (*error);
+		return (ERROR);
 	if (curr_node->parent && curr_node->parent->operator == pipeline)
-		prepare_to_exec(curr_node, paths_array, vars);
+		prepare_to_exec(curr_node, paths_array, vars, error);
 	child_pid = fork();
 	if (child_pid == FAILURE)
 		*error = recoverable;
 	if (child_pid == CHILD)
-		prepare_to_exec(curr_node, paths_array, vars);
+		prepare_to_exec(curr_node, paths_array, vars, error);
 	free_array(paths_array);
 	if (*error == success && child_pid != CHILD)
 		return (wait_child());
-	return (*error);
+	return (ERROR);
 }
 
 
@@ -100,26 +104,38 @@ static int	exec_cmd(char *cmd_name, char **array2, t_shell_vars *vars)
 int	exec_relative_path_cmd(char **paths_array, char **cmd_array, t_shell_vars *vars, t_bin_tree *curr_node)
 {
 	int		i;
-	int		exit_value;
 	char	*temp_line;
-
+	t_error	error;
+	
+	error == success;
 	i = 0;
 	while (paths_array[i] != NULL)
 	{
 		temp_line = free_strjoin(paths_array[i], cmd_array[0], true, false);
 		if (temp_line == NULL)
-			return (CRIT_ERROR);
+		{
+			perror("minishell: execution: critical error");
+			free_all_exit_err(paths_array, cmd_array, curr_node, vars);
+		}
 		paths_array[i] = temp_line;
 		if (access(paths_array[i], F_OK) == 0)
 			return (exec_cmd(paths_array[i], cmd_array, vars));
 		i++;
 	}
-	exit_value = print_cmd_exec_issue(cmd_array[0], NULL, ": command not found\n", 127);
+	print_joined_cmd_error(cmd_array[0], NULL, ": command not found\n", &error);
 	free_arrays_tree_and_vars(paths_array, cmd_array, curr_node, vars);
-	exit(exit_value);
+	if (error)
+		exit_perror("minishell: execution: critical error", ERROR);
+	exit(127);
 }
 
-void	prepare_to_exec(t_bin_tree *curr_node, char **paths_array, t_shell_vars *vars)
+int	free_array_return_err(char *array)
+{
+	free_array(array);
+	return (ERROR);
+}
+
+void	prepare_to_exec(t_bin_tree *curr_node, char **paths_array, t_shell_vars *vars, t_error *error)
 {
 	int		exit_value;
 	char	**cmd_array;
@@ -131,19 +147,16 @@ void	prepare_to_exec(t_bin_tree *curr_node, char **paths_array, t_shell_vars *va
 		free_tree_and_vars(tree_root(curr_node), vars);
 		exit(ERROR);
 	}
-	cmd_array = create_cmd_array(curr_node->content->tokens_list);
-	if (cmd_array == NULL)
-		exit_value = CRIT_ERROR;
+	cmd_array = create_cmd_array(curr_node->content->tokens_list, error);
+	if (*error)
+		free_all_exit_err(paths_array, NULL, curr_node, vars);
 	else if (paths_array != NULL && paths_array[0] != NULL
 		&& cmd_array[0] != NULL
 		&& ft_strnstr(cmd_array[0], "/", ft_strlen(cmd_array[0])) == NULL)
 		exit_value = exec_relative_path_cmd(paths_array, cmd_array, vars, curr_node);
 	else if (cmd_array != NULL)
 		exit_value = exec_cmd(cmd_array[0], cmd_array, vars);
-	if (exit_value == CRIT_ERROR)
-		exit_value = print_exec_error(NULL, exit_value);
-	else
-		exit_value = print_exec_error(cmd_array[0], exit_value);
+	exit_value = print_exec_error(cmd_array[0], exit_value, error);
 	free_arrays_tree_and_vars(paths_array, cmd_array, curr_node, vars);
 	exit(exit_value);
 }

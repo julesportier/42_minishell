@@ -6,7 +6,7 @@
 /*   By: ecasalin <ecasalin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/24 09:30:22 by erik              #+#    #+#             */
-/*   Updated: 2025/05/26 13:27:09 by ecasalin         ###   ########.fr       */
+/*   Updated: 2025/05/30 15:28:51 by ecasalin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,4 +44,12 @@ void	free_arrays_tree_and_vars(char **paths_array, char **cmd_array, t_bin_tree 
 	free_array(paths_array);
 	free_array(cmd_array);
 	free_tree_and_vars(tree_root(curr_node), vars);
+}
+
+void	free_all_exit_err(char **paths_array, char **cmd_array, t_bin_tree *curr_node, t_shell_vars *vars)
+{
+	free_array(paths_array);
+	free_array(cmd_array);
+	free_tree_and_vars(tree_root(curr_node), vars);
+	exit(ERROR);
 }

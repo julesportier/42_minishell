@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ecasalin <ecasalin@42.fr>                  +#+  +:+       +#+        */
+/*   By: ecasalin <ecasalin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/23 07:57:45 by ecasalin          #+#    #+#             */
-/*   Updated: 2025/05/27 18:07:35 by ecasalin         ###   ########.fr       */
+/*   Updated: 2025/05/30 16:38:47 by ecasalin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,10 +63,10 @@ int	ms_exit(char **args, t_shell_vars *vars, t_exit_error *exit_error)
 	}
 	exit_value = atouc_flag(args[1]);
 	if (exit_value.flag == ERROR)
-		*exit_error = print_cmd_exec_issue("exit: ", args[1],
+		*exit_error = print_joined_cmd_error("exit: ", args[1],
 				": numeric argument required\n", not_a_digit);
 	else if (args[2] != NULL)
-		*exit_error = print_cmd_exec_issue("exit: ", NULL,
+		*exit_error = print_joined_cmd_error("exit: ", NULL,
 				"too many arguments\n", too_many_args);
 	else
 		printf("exit\n");

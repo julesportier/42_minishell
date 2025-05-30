@@ -6,7 +6,7 @@
 /*   By: ecasalin <ecasalin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 08:35:28 by ecasalin          #+#    #+#             */
-/*   Updated: 2025/05/26 11:41:27 by ecasalin         ###   ########.fr       */
+/*   Updated: 2025/05/30 16:31:29 by ecasalin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ static int close_return_perror(int fd)
 	return (ERROR);
 }
 
-int	set_output(t_bin_tree *curr_node)
+int	set_output(t_bin_tree *curr_node, t_error *error)
 {
 	int		fd;
 	char	*file_name;
@@ -53,7 +53,7 @@ int	set_output(t_bin_tree *curr_node)
 	return (SUCCESS);
 }
 
-int	set_input(t_bin_tree *curr_node)
+int	set_input(t_bin_tree *curr_node, t_error *error)
 {
 	int		fd;
 	char	*file_name;
@@ -77,12 +77,12 @@ int	set_input(t_bin_tree *curr_node)
 	return (SUCCESS);
 }
 
-int	set_io_fds(t_bin_tree *curr_node)
+int	set_io_fds(t_bin_tree *curr_node, t_error *error)
 {
 	int	return_value;
 
-	return_value = set_input(curr_node);
-	if (return_value != SUCCESS)
-		return (return_value);
-	return (set_output(curr_node));
+	return_value = set_input(curr_node, error);
+	if (*error)
+		return (ERROR);
+	return (set_output(curr_node, error));
 }

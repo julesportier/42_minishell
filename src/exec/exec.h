@@ -26,17 +26,19 @@
 int		close_pipe_perror(char *err_msg, int return_value, int *pipe);
 int		close_pipe(int *pipe);
 void	free_arrays_tree_and_vars(char **paths_array, char **cmd_array, t_bin_tree *curr_node, t_shell_vars *vars);
+void	free_all_exit_err(char **paths_array, char **cmd_array, t_bin_tree *curr_node, t_shell_vars *vars);
 
 /*ERROR UTILS*/
-int		print_cmd_exec_issue(char *cmd_name, char *arg, char *msg, int return_value);
-int		print_exec_error(char *cmd_name, int exit_value);
+int		print_joined_cmd_error(char *cmd_name, char *arg, char *msg, t_error *error);
+int		print_exec_error(char *cmd_name, int exit_value, t_error *error);
+int		free_array_set_err(t_error *error, t_error err_value, char **array);
 
 /*ENV UTILS*/
 char	**create_paths_array(t_shell_vars *vars, t_error *error);
 
 /*EXECUTION UTILS*/
-void	prepare_to_exec(t_bin_tree *curr_node, char **paths_array, t_shell_vars *vars);
-char	**create_cmd_array(t_dlst *args);
+void	prepare_to_exec(t_bin_tree *curr_node, char **paths_array, t_shell_vars *vars, t_error *error);
+char	**create_cmd_array(t_dlst *args, t_error *error);
 int		exec_cmd_tree(t_bin_tree *curr_node, t_shell_vars *vars, t_error *error);
 int		create_exec_setup(t_bin_tree *curr_node, t_shell_vars *vars, t_error *error);
 

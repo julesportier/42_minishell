@@ -6,7 +6,7 @@
 /*   By: ecasalin <ecasalin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/25 16:35:53 by ecasalin          #+#    #+#             */
-/*   Updated: 2025/05/19 11:08:36 by ecasalin         ###   ########.fr       */
+/*   Updated: 2025/05/30 14:22:44 by ecasalin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ void *set_err_return_null(t_error *error, t_error err_value)
 int	set_err_return_err(t_error *error, t_error err_value)
 {
 	*error = err_value;
-	return (err_value);
+	return (ERROR);
 }
 
 int	return_perror(char *err_msg, int return_value)

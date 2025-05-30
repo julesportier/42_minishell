@@ -6,7 +6,7 @@
 /*   By: ecasalin <ecasalin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 13:13:02 by ecasalin          #+#    #+#             */
-/*   Updated: 2025/05/28 15:41:34 by ecasalin         ###   ########.fr       */
+/*   Updated: 2025/05/30 16:30:01 by ecasalin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,18 +81,19 @@ static int	free_array_return_perror(int return_value, char **array)
 	return (return_value);
 }
 
+
 int	prepare_builtin_exec(t_builtin builtin, t_bin_tree *curr_node, t_shell_vars *vars, t_error *error)
 {
-	int				std_shell_fds[2];
-	char			**cmd_array;
-	int				return_value;
+	int		std_shell_fds[2];
+	char	**cmd_array;
+	int		return_value;
 	
-	cmd_array = create_cmd_array(curr_node->content->tokens_list); //on ajoute error ici
-	if (cmd_array == NULL)
-		return (CRIT_ERROR);
+	cmd_array = create_cmd_array(curr_node->content->tokens_list, error);
+	if (*error)
+		return (ERROR);
 	if (save_shell_fds(std_shell_fds) != SUCCESS)
-		return (free_array_return_perror(ERROR, cmd_array));
-	return_value = set_io_fds(curr_node);
+		return (free_array_set_err(error, recoverable, cmd_array));
+	return_value = set_io_fds(curr_node, error);
 	if (return_value != SUCCESS)
 		return (free_array_return_perror(return_value, cmd_array));
 	return_value = exec_builtin(builtin, cmd_array, vars, error);
