@@ -6,7 +6,7 @@
 /*   By: juportie <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 10:25:15 by juportie          #+#    #+#             */
-/*   Updated: 2025/05/30 16:18:56 by juportie         ###   ########.fr       */
+/*   Updated: 2025/05/30 17:04:05 by juportie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,17 @@ static t_dlst	*expand_value(t_dlst *token, char *value, t_error *error)
 	free_array(splits);
 	token = token->next;
 	return (token);
+}
+
+static void	remove_token(t_dlst **token, t_dlst **toklist)
+{
+	t_dlst	*temp_node;
+
+	if (toklist && *toklist == *token)
+		*toklist = (*toklist)->next;
+	temp_node = *token;
+	*token = (*token)->next;
+	ft_dlstremove(temp_node, free_token_content, free);
 }
 
 t_dlst	*expand_variable(

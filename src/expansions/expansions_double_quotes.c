@@ -6,7 +6,7 @@
 /*   By: juportie <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 10:25:15 by juportie          #+#    #+#             */
-/*   Updated: 2025/05/30 16:21:19 by juportie         ###   ########.fr       */
+/*   Updated: 2025/05/30 17:06:35 by juportie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,6 @@ static char	*expand_quoted_variable(
 
 t_dlst	*expand_double_quotes(
 	t_dlst *token,
-	t_dlst **toklist,
 	t_shell_vars *shell_vars,
 	t_error *error)
 {
@@ -75,9 +74,7 @@ t_dlst	*expand_double_quotes(
 	int		i;
 
 	quotes_content = get_toklist_str(token);
-	if (quotes_content[0] == '\0')
-		remove_token(&token, toklist);
-	else
+	if (quotes_content && quotes_content[0])
 	{
 		new_str = NULL;
 		i = 0;
@@ -96,8 +93,8 @@ t_dlst	*expand_double_quotes(
 		}
 		free(get_toklist_str(token));
 		set_toklist_str(token, new_str);
-		set_toklist_type(token, literal);
-		token = token->next;
 	}
+	set_toklist_type(token, literal);
+	token = token->next;
 	return (token);
 }

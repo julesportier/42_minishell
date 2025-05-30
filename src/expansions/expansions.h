@@ -6,7 +6,7 @@
 /*   By: juportie <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 10:25:08 by juportie          #+#    #+#             */
-/*   Updated: 2025/05/30 16:21:50 by juportie         ###   ########.fr       */
+/*   Updated: 2025/05/30 17:05:40 by juportie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,8 +30,6 @@ t_error	replace_token_content(
 	enum e_token_type type,
 	char *str,
 	t_error *error);
-t_dlst	*insert_expanded_token(t_dlst *token, char *str, t_error *error);
-void	remove_token(t_dlst **token, t_dlst **toklist);
 t_error	concatenate_toklist(t_dlst **toklist, t_error *error);
 // expansions_variable.c
 t_dlst	*expand_variable(
@@ -42,7 +40,6 @@ t_dlst	*expand_variable(
 // expansions_double_quotes.c
 t_dlst	*expand_double_quotes(
 	t_dlst *token,
-	t_dlst **toklist,
 	t_shell_vars *shell_vars,
 	t_error *error);
 // expansions_wildcard.c
