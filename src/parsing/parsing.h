@@ -111,6 +111,10 @@ void	print_tree(t_bin_tree *tree, int level);
 enum e_token_type	get_toklist_type(t_dlst *list);
 char	*get_toklist_str(t_dlst *list);
 t_bool	get_toklist_cat_prev(t_dlst *list);
+// tokens_list_set.c
+void	set_toklist_type(t_dlst *list, enum e_token_type type);
+void	set_toklist_str(t_dlst *list, char *str);
+void	set_toklist_cat_prev(t_dlst *list, t_bool cat_prev);
 // tree_utils.c
 t_bin_tree	*tree_root(t_bin_tree *node);
 t_bin_tree	*alloc_tree_node(void);
