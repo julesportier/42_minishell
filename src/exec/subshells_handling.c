@@ -6,7 +6,7 @@
 /*   By: ecasalin <ecasalin@42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 21:13:38 by ecasalin          #+#    #+#             */
-/*   Updated: 2025/05/30 23:07:59 by ecasalin         ###   ########.fr       */
+/*   Updated: 2025/06/01 17:08:33 by ecasalin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,14 +30,13 @@ static void	continue_in_subshell(t_bin_tree *curr_node, t_shell_vars *vars, t_er
 int	fork_subshell(t_bin_tree *curr_node, t_shell_vars *vars, t_error *error)
 {
 	pid_t	pid;
-	
+
 	curr_node->content->subshell = false;
 	pid = fork();
 	if (pid == FAILURE)
 		return (return_perror_set_err("minishell: execution: fork error", error, recoverable));
 	if (pid == CHILD)
 	{
-		init_child_sigaction();
 		set_io_fds(curr_node, error);
 		if (*error)
 		{
