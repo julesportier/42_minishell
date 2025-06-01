@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ecasalin <ecasalin@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ecasalin <ecasalin@42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 16:31:37 by juportie          #+#    #+#             */
-/*   Updated: 2025/05/23 11:00:35 by ecasalin         ###   ########.fr       */
+/*   Updated: 2025/06/01 10:54:18 by ecasalin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,8 @@ typedef enum	e_error
 {
 	success = 0,
 	recoverable,
-	critical
+	critical,
+	invalid_exit_args
 }	t_error;
 
 typedef	struct s_shell_vars
@@ -40,6 +41,8 @@ typedef	struct s_shell_vars
 	int		last_cmd_ext_code;
 	char	*cwd_backup;
 	char	*prompt;
+	int		interactive_shell;
+	int		sig_interrupted;
 }				t_shell_vars;
 
 #endif // MINISHEL_H

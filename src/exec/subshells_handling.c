@@ -6,7 +6,7 @@
 /*   By: ecasalin <ecasalin@42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 21:13:38 by ecasalin          #+#    #+#             */
-/*   Updated: 2025/05/22 11:02:14 by ecasalin         ###   ########.fr       */
+/*   Updated: 2025/05/30 23:07:59 by ecasalin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,11 @@
 #include <sys/types.h>
 #include <sys/wait.h>
 #include "../minishell.h"
-#include "../parsing/parsing.h" //rajouter ifndef dans tree_build.h
+#include "../parsing/parsing.h"
 #include "../error_handling/errors.h"
 #include "../exec/exec.h"
 #include "../cleaning_utils/cleaning.h"
+#include "../input/input.h"
 
 static void	continue_in_subshell(t_bin_tree *curr_node, t_shell_vars *vars, t_error *error)
 {
@@ -29,19 +30,19 @@ static void	continue_in_subshell(t_bin_tree *curr_node, t_shell_vars *vars, t_er
 int	fork_subshell(t_bin_tree *curr_node, t_shell_vars *vars, t_error *error)
 {
 	pid_t	pid;
-	int		exit_value;
-
+	
 	curr_node->content->subshell = false;
 	pid = fork();
 	if (pid == FAILURE)
 		return (return_perror_set_err("minishell: execution: fork error", error, recoverable));
 	if (pid == CHILD)
 	{
-		exit_value = set_io_fds(curr_node);
-		if (exit_value != SUCCESS)
+		init_child_sigaction();
+		set_io_fds(curr_node, error);
+		if (*error)
 		{
 			free_tree_and_vars(tree_root(curr_node), vars);
-			exit(exit_value);
+			exit(ERROR);
 		}
 		continue_in_subshell(curr_node, vars, error);
 	}

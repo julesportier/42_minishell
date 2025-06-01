@@ -27,13 +27,6 @@ typedef enum	e_builtin
 	ext
 }				t_builtin;
 
-typedef enum	e_exit_error
-{
-	no_error,
-	not_a_digit,
-	too_many_args
-}				t_exit_error;
-
 typedef struct s_intf
 {
 	unsigned char	value;
@@ -47,7 +40,7 @@ int		ms_pwd(void);
 int		ms_cd(char **args, t_shell_vars *vars);
 int		ms_env(char **env);
 int		ms_unset(char **args, t_shell_vars *vars);
-int		ms_exit(char **args, t_shell_vars *vars, t_exit_error *exit_error);
+int		ms_exit(char **args, t_shell_vars *vars, t_error *error);
 
 /*EXPORT UTILS*/
 char	*find_biggest_env_var(char **env);

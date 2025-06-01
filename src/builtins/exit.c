@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ecasalin <ecasalin@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ecasalin <ecasalin@42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/23 07:57:45 by ecasalin          #+#    #+#             */
-/*   Updated: 2025/05/23 16:32:08 by ecasalin         ###   ########.fr       */
+/*   Updated: 2025/06/01 10:54:18 by ecasalin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,29 +52,39 @@ static t_intf	atouc_flag(const char *nptr)
 	return (nbr);
 }
 
-int	ms_exit(char **args, t_shell_vars *vars, t_exit_error *exit_error)
+static int	set_numeric_arg_error(t_error *error, char *arg)
 {
-	int		i;
-	t_intf	exit_value;
-	
-	i = 0;
+	*error = invalid_exit_args;
+	print_joined_cmd_error("exit: ", arg,
+			": numeric argument required\n", error);
+	 return (2);
+}
+
+static int	set_too_many_args_error(t_error *error)
+{
+	*error = invalid_exit_args;
+	print_joined_cmd_error("exit: ", NULL,
+			"too many arguments\n", error);
+	return (1);
+}
+
+int	ms_exit(char **args, t_shell_vars *vars, t_error *error)
+{
+	t_intf	arg_value;
+	int		return_value;
+
 	if (args[1] == NULL || args[1][0] == '\0')
 	{
 		printf("exit\n");
 		return (vars->last_cmd_ext_code);
 	}
-	exit_value = atouc_flag(args[1]);
-	if (exit_value.flag == ERROR)
-		*exit_error = print_cmd_exec_issue("exit: ", args[1],
-				": numeric argument required\n", not_a_digit);
+	arg_value = atouc_flag(args[1]);
+	return_value = arg_value.value;
+	if (arg_value.flag == ERROR)
+		return_value = set_numeric_arg_error(error, args[1]);
 	else if (args[2] != NULL)
-		*exit_error = print_cmd_exec_issue("exit: ", NULL,
-				"too many arguments\n", too_many_args);
+		return_value = set_too_many_args_error(error);
 	else
 		printf("exit\n");
-	if (*exit_error)
-		vars->last_cmd_ext_code = *exit_error;
-	else
-		vars->last_cmd_ext_code = exit_value.value;
-	return (vars->last_cmd_ext_code);
+	return (return_value);
 }

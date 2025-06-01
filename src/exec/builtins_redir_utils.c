@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins_redir_utils.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ecasalin <ecasalin@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ecasalin <ecasalin@42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 13:15:02 by ecasalin          #+#    #+#             */
-/*   Updated: 2025/05/26 13:40:05 by ecasalin         ###   ########.fr       */
+/*   Updated: 2025/05/30 23:15:39 by ecasalin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,13 +26,16 @@ int	save_shell_fds(int std_shell_fds[2])
 	return (SUCCESS);
 }
 
-int	reset_shell_fds(int std_shell_fds[2])
+int	restore_shell_fds(int std_shell_fds[2])
 {
 	int	return_value;
-	
+	int	temp1;
+	int	temp2;
+
 	return_value = SUCCESS;
-	if (dup2(std_shell_fds[0], STDIN_FILENO) == FAILURE
-		| dup2(std_shell_fds[1], STDOUT_FILENO) == FAILURE)
+	temp1 = dup2(std_shell_fds[0], STDIN_FILENO);
+	temp2 = dup2(std_shell_fds[1], STDOUT_FILENO);
+	if (temp1 == FAILURE || temp2 == FAILURE)
 	{
 		return_value = ERROR;
 		perror("minishell: execution: redirection error");

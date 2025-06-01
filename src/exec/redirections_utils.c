@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirections_utils.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ecasalin <ecasalin@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ecasalin <ecasalin@42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 08:35:28 by ecasalin          #+#    #+#             */
-/*   Updated: 2025/05/26 11:41:27 by ecasalin         ###   ########.fr       */
+/*   Updated: 2025/05/30 23:43:09 by ecasalin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ static int close_return_perror(int fd)
 	return (ERROR);
 }
 
-int	set_output(t_bin_tree *curr_node)
+int	set_output(t_bin_tree *curr_node, t_error *error)
 {
 	int		fd;
 	char	*file_name;
@@ -44,7 +44,7 @@ int	set_output(t_bin_tree *curr_node)
 		else if (get_toklist_type(temp_head->prev) == append_output)
 			fd = open(file_name, O_CREAT | O_APPEND | O_WRONLY, 0644);
 		if (fd == FAILURE)
-			return (print_exec_error(file_name, ERROR));
+			return (print_exec_error(file_name, ERROR, error));
 		if (dup2(fd, STDOUT_FILENO) == FAILURE)
 			return (close_return_perror(fd));
 		close(fd);
@@ -53,7 +53,7 @@ int	set_output(t_bin_tree *curr_node)
 	return (SUCCESS);
 }
 
-int	set_input(t_bin_tree *curr_node)
+int	set_input(t_bin_tree *curr_node, t_error *error)
 {
 	int		fd;
 	char	*file_name;
@@ -68,7 +68,7 @@ int	set_input(t_bin_tree *curr_node)
 		file_name = get_toklist_str(temp_head);
 		fd = open(file_name, O_RDONLY);
 		if (fd == FAILURE)
-			return (print_exec_error(file_name, ERROR));
+			return (print_exec_error(file_name, ERROR, error));
 		if (dup2(fd, STDIN_FILENO == FAILURE))
 			return (close_return_perror(fd));
 		close(fd);//Faudra unlink si c'est un heredock
@@ -77,12 +77,10 @@ int	set_input(t_bin_tree *curr_node)
 	return (SUCCESS);
 }
 
-int	set_io_fds(t_bin_tree *curr_node)
+int	set_io_fds(t_bin_tree *curr_node, t_error *error)
 {
-	int	return_value;
-
-	return_value = set_input(curr_node);
-	if (return_value != SUCCESS)
-		return (return_value);
-	return (set_output(curr_node));
+	set_input(curr_node, error);
+	if (*error)
+		return (ERROR);
+	return (set_output(curr_node, error));
 }
