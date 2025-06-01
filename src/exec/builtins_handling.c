@@ -6,7 +6,7 @@
 /*   By: ecasalin <ecasalin@42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 13:13:02 by ecasalin          #+#    #+#             */
-/*   Updated: 2025/06/01 10:12:30 by ecasalin         ###   ########.fr       */
+/*   Updated: 2025/06/01 10:54:18 by ecasalin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,7 @@ int	prepare_builtin_exec(t_builtin builtin, t_bin_tree *curr_node, t_shell_vars 
 		return (ERROR);
 	if (restore_shell_fds(std_shell_fds) == ERROR)
 		return (free_array_set_err(error, recoverable, cmd_array));
-	if (builtin == ext && *error != exit_failure)
+	if (builtin == ext && *error != invalid_exit_args)
 	{
 		free_tree_and_vars(tree_root(curr_node), vars);
 		exit(return_value);

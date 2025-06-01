@@ -6,7 +6,7 @@
 /*   By: ecasalin <ecasalin@42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/23 07:57:45 by ecasalin          #+#    #+#             */
-/*   Updated: 2025/05/31 00:21:14 by ecasalin         ###   ########.fr       */
+/*   Updated: 2025/06/01 10:54:18 by ecasalin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ static t_intf	atouc_flag(const char *nptr)
 
 static int	set_numeric_arg_error(t_error *error, char *arg)
 {
-	*error = exit_failure;
+	*error = invalid_exit_args;
 	print_joined_cmd_error("exit: ", arg,
 			": numeric argument required\n", error);
 	 return (2);
@@ -62,7 +62,7 @@ static int	set_numeric_arg_error(t_error *error, char *arg)
 
 static int	set_too_many_args_error(t_error *error)
 {
-	*error = exit_failure;
+	*error = invalid_exit_args;
 	print_joined_cmd_error("exit: ", NULL,
 			"too many arguments\n", error);
 	return (1);

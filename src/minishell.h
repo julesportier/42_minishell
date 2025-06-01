@@ -6,7 +6,7 @@
 /*   By: ecasalin <ecasalin@42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 16:31:37 by juportie          #+#    #+#             */
-/*   Updated: 2025/05/30 23:58:16 by ecasalin         ###   ########.fr       */
+/*   Updated: 2025/06/01 10:54:18 by ecasalin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ typedef enum	e_error
 	success = 0,
 	recoverable,
 	critical,
-	exit_failure
+	invalid_exit_args
 }	t_error;
 
 typedef	struct s_shell_vars
