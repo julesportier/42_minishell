@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ecasalin <ecasalin@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ecasalin <ecasalin@42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 15:31:21 by juportie          #+#    #+#             */
-/*   Updated: 2025/05/28 11:54:19 by ecasalin         ###   ########.fr       */
+/*   Updated: 2025/06/01 16:22:37 by ecasalin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ int	main(int argc, char *argv[], char *envp[])
 	error = success;
 	if (init_shell_vars(&vars, envp, &error) == CRIT_ERROR)
 		return (EXIT_FAILURE);
-	if (init_sigaction() == -1)
+	if (init_input_sigaction() == -1)
 		return (EXIT_FAILURE);
 	input_loop(&vars, &error);
 	free_array(vars.env);

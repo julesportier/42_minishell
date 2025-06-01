@@ -6,7 +6,7 @@
 /*   By: ecasalin <ecasalin@42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/21 14:19:24 by ecasalin          #+#    #+#             */
-/*   Updated: 2025/05/30 23:05:30 by ecasalin         ###   ########.fr       */
+/*   Updated: 2025/06/01 17:08:28 by ecasalin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,6 @@ static int	link_pipe_to_stdin(int *pip)
 
 static void	continue_pipeline_left_process(t_bin_tree *curr_node, int *pip, t_shell_vars *vars, t_error *error)
 {
-	init_child_sigaction();
 	if (curr_node->content->subshell == true)
 		set_input(curr_node, error);
 	if (*error || link_pipe_to_stdout(pip) == ERROR)
@@ -59,7 +58,6 @@ static void	continue_pipeline_left_process(t_bin_tree *curr_node, int *pip, t_sh
 
 static void	continue_pipeline_right_process(t_bin_tree *curr_node, int *pip, t_shell_vars *vars, t_error *error)
 {
-	init_child_sigaction();
 	if (curr_node->content->subshell == true)
 		set_output(curr_node, error);
 	if (*error || link_pipe_to_stdin(pip) == ERROR)
