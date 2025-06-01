@@ -6,7 +6,7 @@
 /*   By: ecasalin <ecasalin@42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 13:13:02 by ecasalin          #+#    #+#             */
-/*   Updated: 2025/05/31 00:29:21 by ecasalin         ###   ########.fr       */
+/*   Updated: 2025/06/01 10:12:30 by ecasalin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ int	is_builtin(t_bin_tree *curr_node)
 
 int	exec_builtin(t_builtin builtin, char **cmd_array, t_shell_vars *vars, t_error *error)
 {
-	int				return_value;
+	int	return_value;
 
 	return_value = SUCCESS;
 	if (builtin == echo)
@@ -66,14 +66,6 @@ int	exec_builtin(t_builtin builtin, char **cmd_array, t_shell_vars *vars, t_erro
 		return_value = ms_exit(cmd_array, vars, error);
 	return (return_value);
 }
-
-// static int	free_array_return_perror(int return_value, char **array)
-// {
-// 	perror("minishell: execution: redirection error");
-// 	free_array(array);
-// 	return (return_value);
-// }
-
 
 int	prepare_builtin_exec(t_builtin builtin, t_bin_tree *curr_node, t_shell_vars *vars, t_error *error)
 {

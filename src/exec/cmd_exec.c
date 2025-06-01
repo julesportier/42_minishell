@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: ecasalin <ecasalin@42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2025/05/30 23:41:50 by ecasalin         ###   ########.fr       */
+/*   Created: 2025/05/14 11:23:07 by ecasalin          #+#    #+#             */
+/*   Updated: 2025/06/01 10:35:34 by ecasalin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,6 @@ int	create_exec_setup(t_bin_tree *curr_node, t_shell_vars *vars, t_error *error)
 	return (ERROR);
 }
 
-
 static int	exec_cmd(char *cmd_name, char **array2, t_shell_vars *vars)
 {
 	if (cmd_name != NULL)
@@ -118,7 +117,7 @@ int	exec_relative_path_cmd(char **paths_array, char **cmd_array, t_shell_vars *v
 			free_all_exit_err(paths_array, cmd_array, curr_node, vars);
 		}
 		paths_array[i] = temp_line;
-		if (access(paths_array[i], F_OK) == 0)
+		if (access(paths_array[i], F_OK) == SUCCESS)
 			return (exec_cmd(paths_array[i], cmd_array, vars));
 		i++;
 	}
@@ -127,12 +126,6 @@ int	exec_relative_path_cmd(char **paths_array, char **cmd_array, t_shell_vars *v
 	if (error)
 		exit_perror("minishell: execution: critical error", ERROR);
 	exit(127);
-}
-
-int	free_array_return_err(char **array)
-{
-	free_array(array);
-	return (ERROR);
 }
 
 void	prepare_to_exec(t_bin_tree *curr_node, char **paths_array, t_shell_vars *vars, t_error *error)
