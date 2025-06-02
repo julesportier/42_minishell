@@ -6,7 +6,7 @@
 /*   By: ecasalin <ecasalin@42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 14:50:31 by juportie          #+#    #+#             */
-/*   Updated: 2025/06/02 15:20:20 by ecasalin         ###   ########.fr       */
+/*   Updated: 2025/06/02 18:08:50 by ecasalin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ void	input_loop(t_shell_vars *vars, t_error *error)
 		if (*error == critical)
 			break ;
 		line = set_readline_and_history(vars->prompt, error);
-		if (*error == critical)
+		if (line == NULL)
 			break ;
 		parse_tree = parse_command_line(line, error);
 		if (*error == critical)
