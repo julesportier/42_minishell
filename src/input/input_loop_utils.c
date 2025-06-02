@@ -6,7 +6,7 @@
 /*   By: ecasalin <ecasalin@42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/02 15:11:52 by ecasalin          #+#    #+#             */
-/*   Updated: 2025/06/02 15:18:59 by ecasalin         ###   ########.fr       */
+/*   Updated: 2025/06/02 18:10:30 by ecasalin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 #include <readline/history.h>
 #include "../../libft/src/libft.h"
 #include "../minishell.h"
+#include <errno.h>
 #include "../error_handling/errors.h"
 
 char	*set_readline_and_history(char *prompt, t_error *error)
@@ -24,8 +25,14 @@ char	*set_readline_and_history(char *prompt, t_error *error)
 	line = readline(prompt);
 	if (line == NULL)
 	{
-		perror("minishell: readline");
-		set_err_return_null(error, critical);
+		if (errno == ENOMEM)
+		{
+			perror("minishell: readline");
+			set_err_return_null(error, critical);
+			return (NULL);
+		}
+		else
+			return (NULL);
 	}
 	if (line[0] != '\0')
 		add_history(line);
