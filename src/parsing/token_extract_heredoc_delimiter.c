@@ -52,21 +52,11 @@ static t_error	extract_unquoted_delimiter(t_token *token, char *line, int *pos)
 	return (success);
 }
 
-t_token	*extract_delimiter(char *line, int *pos, t_error *error)
+t_error	extract_delimiter(t_token *token, char *line, int *pos, t_error *error)
 {
-	t_token	*token;
-
-	token = alloc_token(error);
-	if (*error)
-		return (NULL);
 	if (is_quote(line[*pos]))
 		*error = extract_quoted_delimiter(token, line, pos);
 	else
 		*error = extract_unquoted_delimiter(token, line, pos);
-	if (*error)
-	{
-		free(token);
-		token = NULL;
-	}
-	return (token);
+	return (*error);
 }

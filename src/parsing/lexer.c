@@ -17,15 +17,16 @@
 #include "parsing.h"
 #include "lexer.h"
 
-static t_token	*extract_token(char *line, int *pos, t_bool cat_prev, t_error *error)
+static t_token	*extract_token(char *line, int *pos, t_token *prev_token, t_error *error)
 {
 	t_token	*token;
 
 	token = alloc_token(error);
 	if (*error)
 		return (NULL);
-	token->cat_prev = cat_prev;
-	if (is_quote(line[*pos]))
+	if (prev_token != NULL && prev_token->type == heredoc)
+		*error = extract_heredoc(token, line, pos);
+	else if (is_quote(line[*pos]))
 		*error = extract_quotes(token, line, pos);
 	else if (is_operator(&line[*pos]))
 		*error = extract_operator(token, line, pos);
@@ -79,10 +80,9 @@ t_dlst	*scan_line(char *line, t_error *error)
 			cat_prev = true;
 		if (line[pos] == '\0')
 			break ;
-		if (token != NULL && token->type == heredoc)
-			token = extract_heredoc(line, &pos, error);
-		else
-			token = extract_token(line, &pos, cat_prev, error);
+		token = extract_token(line, &pos, token, error);
+		if (!*error && token)
+			token->cat_prev = cat_prev;
 		if (append_token_to_list(&tokens_list, token, error) != success)
 			return (NULL);
 	}

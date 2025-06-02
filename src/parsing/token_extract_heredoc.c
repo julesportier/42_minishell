@@ -62,27 +62,27 @@ static t_bool	is_heredoc_end(char *heredoc_line, char *delimiter)
 // 		heredoc_content[content_len - 1] = '\0';
 // }
 
-t_token	*extract_heredoc(char *line, int *pos, t_error *error)
+t_error	extract_heredoc(t_token *token, char *line, int *pos)
 {
-	t_token	*token;
 	char	*heredoc_line;
 	char	*heredoc_content;
+	t_error	error;
 
-	token = extract_delimiter(line, pos, error);
-	if (*error)
-		return (NULL);
+	error = success;
+	if (extract_delimiter(token, line, pos, &error) != success)
+		return (error);
 	heredoc_content = NULL;
 	while (1)
 	{
 		heredoc_line = readline("> ");
 		if (is_heredoc_end(heredoc_line, token->str))
 			break ;
-		heredoc_content = join_heredoc_content(heredoc_content, heredoc_line, error);
-		if (*error)
-			return (NULL);
+		heredoc_content = join_heredoc_content(heredoc_content, heredoc_line, &error);
+		if (error)
+			return (error);
 	}
 	// remove_last_newline(heredoc_content);
 	free(token->str);
 	token->str = heredoc_content;
-	return (token);
+	return (error);
 }
