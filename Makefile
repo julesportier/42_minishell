@@ -24,6 +24,7 @@ SRC_GENERAL_UTILS_DIR := $(SRC_DIR)/general_utils
 SRC_INPUT_DIR := $(SRC_DIR)/input
 SRC_PARSING_DIR := $(SRC_DIR)/parsing
 SRC_SHELL_INIT_DIR := $(SRC_DIR)/shell_init
+SRC_SIGNALS_DIR := $(SRC_DIR)/signals_utils
 vpath %.c $(SRC_DIR):\
 	$(SRC_BUILTINS_DIR):\
 	$(SRC_CLEANING_UTILS_DIR):\
@@ -33,7 +34,8 @@ vpath %.c $(SRC_DIR):\
 	$(SRC_GENERAL_UTILS_DIR):\
 	$(SRC_INPUT_DIR):\
 	$(SRC_PARSING_DIR):\
-	$(SRC_SHELL_INIT_DIR)
+	$(SRC_SHELL_INIT_DIR)\
+	$(SRC_SIGNALS_DIR)
 SRC_BUILTINS := cd.c \
 					cd_cdpath_utils.c \
 					cd_cwd_vars_utils.c \
@@ -51,7 +53,7 @@ SRC_ERROR_HANDLING := error_utils_1.c \
 						error_utils_2.c
 SRC_EXEC := cmd_exec.c \
 				exec_clean_utils.c \
-				exec_cmd_tree.c \
+				exec_command_tree.c \
 				exec_errors_utils.c \
 				path_parsing.c \
 				pipeline_handling.c \
@@ -71,8 +73,11 @@ SRC_EXPANSIONS := expansions.c \
 SRC_GENERAL_UTILS := env_utils.c \
 					 general_utils.c \
 					 paths_utils.c
-SRC_INPUT := input.c \
-			 input_signal_handling.c
+SRC_INPUT := input.c
+SRC_SIGNALS := sigaction_init.c \
+			   sigint_init.c \
+			   sigquit_init.c \
+			   signal_handlers.c
 SRC_PARSING := lexer.c \
 			   char_identity_check.c \
 			   lexer_utils.c \
@@ -106,7 +111,8 @@ SRC := minishell.c \
 	   $(SRC_GENERAL_UTILS) \
 	   $(SRC_INPUT) \
 	   $(SRC_PARSING) \
-	   $(SRC_SHELL_INIT)
+	   $(SRC_SHELL_INIT) \
+	   $(SRC_SIGNALS)
 
 BUILD_DIR := build
 OBJ := $(addprefix $(BUILD_DIR)/, $(SRC:.c=.o))

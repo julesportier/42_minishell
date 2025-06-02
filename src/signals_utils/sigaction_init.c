@@ -1,21 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   input.h                                            :+:      :+:    :+:   */
+/*   sigaction_init.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ecasalin <ecasalin@42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/21 11:16:48 by juportie          #+#    #+#             */
-/*   Updated: 2025/06/02 14:49:46 by ecasalin         ###   ########.fr       */
+/*   Created: 2025/05/27 13:29:08 by ecasalin          #+#    #+#             */
+/*   Updated: 2025/06/02 15:00:17 by ecasalin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef INPUT_H
-# define INPUT_H
+#include "../signals_utils/signals_utils.h"
 
-# include "../minishell.h"
 
-// input.c
-void	input_loop(t_shell_vars *vars, t_error *error);
+int	init_input_sigaction(void)
+{
+	if (init_sigint_input_sigaction())
+		return (-1);
+	if (init_sigquit_input_sigaction())
+		return (-1);
+	return (0);
+}
 
-#endif
+int	init_exec_sigaction(void)
+{
+	if (init_sigint_exec_sigaction())
+		return (-1);
+	if (init_sigquit_exec_sigaction())
+		return (-1);
+	return (0);
+}

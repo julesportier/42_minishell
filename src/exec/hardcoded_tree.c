@@ -129,6 +129,6 @@
 // // 	vars.env = env;
 
 // // 	tree = hardcoded_tree();
-// // 	return (exec_cmd_tree(tree, &vars));
+// // 	return (exec_command_tree(tree, &vars));
 
 // // }

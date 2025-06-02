@@ -1,21 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   input.h                                            :+:      :+:    :+:   */
+/*   signal_handlers.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ecasalin <ecasalin@42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/21 11:16:48 by juportie          #+#    #+#             */
-/*   Updated: 2025/06/02 14:49:46 by ecasalin         ###   ########.fr       */
+/*   Created: 2025/06/02 14:04:24 by ecasalin          #+#    #+#             */
+/*   Updated: 2025/06/02 15:01:28 by ecasalin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef INPUT_H
-# define INPUT_H
+#include <unistd.h>
+#include <signal.h>
+#include <readline/readline.h>
+#include "../signals_utils/signals_utils.h"
 
-# include "../minishell.h"
+void	sigint_input_handler(int sig)
+{
+	(void)sig;
+	write(1, "\n", 1);
+	rl_on_new_line();
+	rl_replace_line("", 0);
+	rl_redisplay();
+}
 
-// input.c
-void	input_loop(t_shell_vars *vars, t_error *error);
-
-#endif
+void	handler_set_g_sig(int sig)
+{
+	g_sig = sig;
+}

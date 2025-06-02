@@ -6,7 +6,7 @@
 /*   By: ecasalin <ecasalin@42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 21:13:38 by ecasalin          #+#    #+#             */
-/*   Updated: 2025/06/01 17:08:33 by ecasalin         ###   ########.fr       */
+/*   Updated: 2025/06/02 10:29:04 by ecasalin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@
 
 static void	continue_in_subshell(t_bin_tree *curr_node, t_shell_vars *vars, t_error *error)
 {
-	vars->last_cmd_ext_code = exec_cmd_tree(curr_node, vars, error);
+	vars->last_cmd_ext_code = exec_command_tree(curr_node, vars, error);
 	free_tree_and_vars(tree_root(curr_node), vars);
 	exit(vars->last_cmd_ext_code);
 }

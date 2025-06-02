@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   exec_cmd_tree.c                                    :+:      :+:    :+:   */
+/*   exec_command_tree.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ecasalin <ecasalin@42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -17,7 +17,7 @@
 static int	recurse_left_side(t_bin_tree *curr_node, t_shell_vars *vars, t_error *error)
 {
 	if (curr_node->left)
-		return (exec_cmd_tree(curr_node->left, vars, error));
+		return (exec_command_tree(curr_node->left, vars, error));
 	else
 		return (create_exec_setup(curr_node, vars, error));
 }
@@ -25,7 +25,7 @@ static int	recurse_left_side(t_bin_tree *curr_node, t_shell_vars *vars, t_error 
 static int	recurse_right_side(t_bin_tree *curr_node, t_shell_vars *vars, t_error *error)
 {
 	if (curr_node->right)
-		return (exec_cmd_tree(curr_node->right, vars, error));
+		return (exec_command_tree(curr_node->right, vars, error));
 	else
 		return (create_exec_setup(curr_node, vars, error));
 }
@@ -45,7 +45,7 @@ static int	check_right_cmd_conditions(t_bin_tree *curr_node, t_error *error, t_s
 	return (1);
 }
 
-int	exec_cmd_tree(t_bin_tree *curr_node, t_shell_vars *vars, t_error *error)
+int	exec_command_tree(t_bin_tree *curr_node, t_shell_vars *vars, t_error *error)
 {
 	if (*error)
 		return (ERROR);
@@ -60,4 +60,4 @@ int	exec_cmd_tree(t_bin_tree *curr_node, t_shell_vars *vars, t_error *error)
 			vars->last_cmd_ext_code = recurse_right_side(curr_node, vars, error);
 	}
 	return (vars->last_cmd_ext_code);
-} //en sortie finale on detruit l'arbre
+}

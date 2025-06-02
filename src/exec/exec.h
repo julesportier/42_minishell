@@ -39,7 +39,7 @@ char	**create_paths_array(t_shell_vars *vars, t_error *error);
 /*EXECUTION UTILS*/
 void	prepare_to_exec(t_bin_tree *curr_node, char **paths_array, t_shell_vars *vars, t_error *error);
 char	**create_cmd_array(t_dlst *args, t_error *error);
-int		exec_cmd_tree(t_bin_tree *curr_node, t_shell_vars *vars, t_error *error);
+int		exec_command_tree(t_bin_tree *curr_node, t_shell_vars *vars, t_error *error);
 int		create_exec_setup(t_bin_tree *curr_node, t_shell_vars *vars, t_error *error);
 
 /*PIPELINE HANDLING*/

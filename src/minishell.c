@@ -6,7 +6,7 @@
 /*   By: ecasalin <ecasalin@42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 15:31:21 by juportie          #+#    #+#             */
-/*   Updated: 2025/06/01 16:22:37 by ecasalin         ###   ########.fr       */
+/*   Updated: 2025/06/02 14:36:27 by ecasalin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,9 +16,10 @@
 #include "minishell.h"
 #include "shell_init/init.h"
 #include "cleaning_utils/cleaning.h"
+#include "signals_utils/signals_utils.h"
 #include "input/input.h"
 
-int	g_sig = 0;
+volatile __sig_atomic_t	g_sig = 0;
 
 int	main(int argc, char *argv[], char *envp[])
 {
