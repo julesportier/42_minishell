@@ -6,7 +6,7 @@
 /*   By: ecasalin <ecasalin@42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/02 15:11:52 by ecasalin          #+#    #+#             */
-/*   Updated: 2025/06/02 18:10:30 by ecasalin         ###   ########.fr       */
+/*   Updated: 2025/06/02 18:20:16 by ecasalin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,7 @@ char	*set_readline_and_history(char *prompt, t_error *error)
 		if (errno == ENOMEM)
 		{
 			perror("minishell: readline");
-			set_err_return_null(error, critical);
-			return (NULL);
+			return (set_err_return_null(error, critical));
 		}
 		else
 			return (NULL);
