@@ -45,8 +45,8 @@ t_error	extract_expanding(t_token *token, char *line, int *pos);
 // token_extract_grouping.c
 t_error	extract_grouping(t_token *token, char *line, int *pos);
 // token_extract_heredoc.c
-t_token	*extract_heredoc(char *line, int *pos, t_error *error);
+t_error	extract_heredoc(t_token *token, char *line, int *pos);
 // token_extract_heredoc_delimiter.c
-t_token	*extract_delimiter(char *line, int *pos, t_error *error);
+t_error	extract_delimiter(t_token *token, char *line, int *pos, t_error *error);
 
 #endif
