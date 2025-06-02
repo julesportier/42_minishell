@@ -73,7 +73,8 @@ SRC_EXPANSIONS := expansions.c \
 SRC_GENERAL_UTILS := env_utils.c \
 					 general_utils.c \
 					 paths_utils.c
-SRC_INPUT := input.c
+SRC_INPUT := input.c \
+			 input_loop_utils.c
 SRC_SIGNALS := sigaction_init.c \
 			   sigint_init.c \
 			   sigquit_init.c \
