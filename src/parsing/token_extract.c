@@ -111,6 +111,11 @@ t_error	extract_expanding(t_token *token, char *line, int *pos)
 	if (line[*pos] == '$')
 		return (extract_variable_identifier(token, line, pos));
 	else if (line[*pos] == '*')
+	{
 		extract_one_char(token, wildcard, pos);
+		token->str = ft_strdup("*");
+		if (token->str == NULL)
+			return (critical);
+	}
 	return (success);
 }
