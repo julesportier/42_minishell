@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   subshells_handling.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ecasalin <ecasalin@42.fr>                  +#+  +:+       +#+        */
+/*   By: ecasalin <ecasalin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 21:13:38 by ecasalin          #+#    #+#             */
-/*   Updated: 2025/06/02 10:29:04 by ecasalin         ###   ########.fr       */
+/*   Updated: 2025/06/03 11:27:59 by ecasalin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 #include "../exec/exec.h"
 #include "../cleaning_utils/cleaning.h"
 #include "../input/input.h"
+#include "../expansions/expansions.h"
 
 static void	continue_in_subshell(t_bin_tree *curr_node, t_shell_vars *vars, t_error *error)
 {
@@ -37,6 +38,8 @@ int	fork_subshell(t_bin_tree *curr_node, t_shell_vars *vars, t_error *error)
 		return (return_perror_set_err("minishell: execution: fork error", error, recoverable));
 	if (pid == CHILD)
 	{
+		expand_toklist(&curr_node->content->inputs, vars);
+		expand_toklist(&curr_node->content->outputs, vars);
 		set_io_fds(curr_node, error);
 		if (*error)
 		{
