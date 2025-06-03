@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd_exec.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ecasalin <ecasalin@42.fr>                  +#+  +:+       +#+        */
+/*   By: ecasalin <ecasalin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 11:23:07 by ecasalin          #+#    #+#             */
-/*   Updated: 2025/06/01 10:35:34 by ecasalin         ###   ########.fr       */
+/*   Updated: 2025/06/03 13:46:24 by ecasalin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,13 +22,7 @@
 #include "../builtins/builtins.h"
 #include "exec.h"
 #include "../minishell.h"
-
-// int	prepare_to_exec(t_node *curr_node, char **paths_array, t_shell_vars *vars)
-// {
-// 	// expand_args(curr_node->cmd.cmd, vars);
-// 	// expand_redirections(curr_node->cmd.input, curr_node->cmd.output, vars);
-// 	// set_redirections(curr_node->cmd.input, curr_node->cmd.output);
-// }
+#include "../expansions/expansions.h"
 
 char	**create_cmd_array(t_dlst *args, t_error *error)
 {
@@ -65,8 +59,9 @@ int	create_exec_setup(t_bin_tree *curr_node, t_shell_vars *vars, t_error *error)
 	pid_t	child_pid;
 	int		builtin;
 
-	// expand_args(curr_node->cmd.cmd, vars);
-	// expand_redirections(curr_node->cmd.input, curr_node->cmd.output, vars);
+	expand_toklist(&curr_node->content->tokens_list, vars);
+	expand_toklist(&curr_node->content->inputs, vars);
+	expand_toklist(&curr_node->content->outputs, vars);
 	builtin = is_builtin(curr_node);
 	if (builtin)
 		return (prepare_builtin_exec(builtin, curr_node, vars, error));

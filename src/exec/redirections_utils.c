@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirections_utils.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ecasalin <ecasalin@42.fr>                  +#+  +:+       +#+        */
+/*   By: ecasalin <ecasalin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 08:35:28 by ecasalin          #+#    #+#             */
-/*   Updated: 2025/05/30 23:43:09 by ecasalin         ###   ########.fr       */
+/*   Updated: 2025/06/03 13:57:31 by ecasalin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <fcntl.h>
+#include <errno.h>
 #include "../parsing/parsing.h"
 #include "../error_handling/errors.h"
 #include "exec.h"
@@ -48,6 +49,7 @@ int	set_output(t_bin_tree *curr_node, t_error *error)
 		if (dup2(fd, STDOUT_FILENO) == FAILURE)
 			return (close_return_perror(fd));
 		close(fd);
+		errno = SUCCESS;
 		temp_head = temp_head->next;
 	}
 	return (SUCCESS);
@@ -58,7 +60,7 @@ int	set_input(t_bin_tree *curr_node, t_error *error)
 	int		fd;
 	char	*file_name;
 	t_dlst	*temp_head;
-
+	
 	if (curr_node->content->inputs == NULL)
 		return (SUCCESS);
 	temp_head = curr_node->content->inputs;
@@ -71,7 +73,11 @@ int	set_input(t_bin_tree *curr_node, t_error *error)
 			return (print_exec_error(file_name, ERROR, error));
 		if (dup2(fd, STDIN_FILENO == FAILURE))
 			return (close_return_perror(fd));
-		close(fd);//Faudra unlink si c'est un heredock
+		if (get_toklist_type(temp_head->prev) == heredoc)
+			if (unlink(file_name) == FAILURE)
+				perror("minishell: warning: heredoc unlink");
+		close(fd);
+		errno = SUCCESS;
 		temp_head = temp_head->next;
 	}
 	return (SUCCESS);
