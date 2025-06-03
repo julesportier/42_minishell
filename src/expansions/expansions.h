@@ -6,7 +6,7 @@
 /*   By: juportie <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 10:25:08 by juportie          #+#    #+#             */
-/*   Updated: 2025/05/30 17:05:40 by juportie         ###   ########.fr       */
+/*   Updated: 2025/06/05 14:47:58 by juportie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@ t_error	replace_token_content(
 	enum e_token_type type,
 	char *str,
 	t_error *error);
+t_error	merge_next_token(t_dlst *token, t_error *error);
 t_error	concatenate_toklist(t_dlst **toklist, t_error *error);
 // expansions_variable.c
 t_dlst	*expand_variable(
@@ -43,7 +44,8 @@ t_dlst	*expand_double_quotes(
 	t_shell_vars *shell_vars,
 	t_error *error);
 // expansions_wildcard.c
-t_dlst	*expand_wildcard(t_dlst *token, t_dlst **toklist, t_error *error);
+void	sort_list(t_dlst **cwd_content_list);
+t_dlst	*expand_wildcards(t_dlst **toklist, t_error *error);
 // heredoc_to_file.c
 t_error	populate_heredocs_files(t_dlst *toklist, t_error *error);
 // expansions.c

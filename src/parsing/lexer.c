@@ -42,7 +42,7 @@ static t_token	*extract_token(char *line, int *pos, t_token *prev_token, t_error
 	return (token);
 }
 
-static t_error	append_token_to_list(t_dlst **tokens_list, t_token *token, t_error *error)
+t_error	append_token_to_list(t_dlst **tokens_list, t_token *token, t_error *error)
 {
 	t_dlst	*new_node;
 

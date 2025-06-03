@@ -6,7 +6,7 @@
 /*   By: ecasalin <ecasalin@42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 14:50:31 by juportie          #+#    #+#             */
-/*   Updated: 2025/06/02 18:08:50 by ecasalin         ###   ########.fr       */
+/*   Updated: 2025/06/02 15:20:20 by ecasalin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,20 +34,20 @@ static void	print_signal_reception(void)
 		printf("\n");
 }
 
-static t_bin_tree	*parse_command_line(char *line, t_error *error)
-{
-	t_dlst		*toklist;
-	t_bin_tree	*parse_tree;
-
-	toklist = scan_line(line, error);
-	free(line);
-	if (*error == critical)
-		return (NULL);
-	if (toklist)
-		return (parse_tree = build_parse_tree(&toklist, error));
-	else
-		return (NULL);
-}
+// static t_bin_tree	*parse_command_line(char *line, t_error *error)
+// {
+// 	t_dlst		*toklist;
+// 	t_bin_tree	*parse_tree;
+//
+// 	toklist = scan_line(line, error);
+// 	free(line);
+// 	if (*error == critical)
+// 		return (NULL);
+// 	if (toklist)
+// 		return (parse_tree = build_parse_tree(&toklist, error));
+// 	else
+// 		return (NULL);
+// }
 
 static void	switch_to_exec_mode(t_bin_tree *parse_tree, t_shell_vars *vars, t_error *error)
 {
@@ -63,13 +63,13 @@ static void	reset_flag_vars(t_error *error)
 	errno = SUCCESS;
 }
 
-// #include "../expansions/expansions.h"
+#include "../expansions/expansions.h"
 void	input_loop(t_shell_vars *vars, t_error *error)
 {
 	char		*line;
 	t_bin_tree	*parse_tree;
+	t_dlst		*toklist;
 
-	// t_dlst		*toklist = NULL;
 	while (1)
 	{
 		reset_flag_vars(error);
@@ -77,24 +77,22 @@ void	input_loop(t_shell_vars *vars, t_error *error)
 		if (*error == critical)
 			break ;
 		line = set_readline_and_history(vars->prompt, error);
-		if (line == NULL)
+		if (line)
+		{
+			toklist = scan_line(line, error);
+			free(line);
+			print_toklist(toklist, 0);
+		}
+		if (*error == critical)
 			break ;
+		if (toklist)
+			*error = expand_toklist(&toklist, vars);
+		if (!*error && toklist)
+			parse_tree = build_parse_tree(&toklist, error);
+		else
+			parse_tree = NULL;
 
-		// toklist = scan_line(line, error);
-		// free(line);
-		// // print_toklist(toklist, 0);
-		// if (*error == critical)
-		// 	break ;
-		// if (toklist)
-		// 	*error = expand_toklist(&toklist, vars);
-		// if (!*error && toklist)
-		// 	parse_tree = build_parse_tree(&toklist, error);
-		// else
-		// 	parse_tree = NULL;
-
-		if (line == NULL)
-			break ;
-		parse_tree = parse_command_line(line, error);
+		// parse_tree = parse_command_line(line, error);
 		if (*error == critical)
 			break ;
 		if (parse_tree)
