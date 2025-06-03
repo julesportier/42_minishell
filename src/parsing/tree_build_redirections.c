@@ -41,8 +41,7 @@ static t_error	set_redir_couple(t_bin_tree *tree_node, t_dlst **toklist, t_dlst 
 			"illformed redirection, unexpected ", get_toklist_type(*token), recoverable));
 	}
 	else if (get_toklist_type(*token) == redir_output
-		|| get_toklist_type(*token) == append_output
-		|| get_toklist_type(*token) == heredoc)
+		|| get_toklist_type(*token) == append_output)
 	{
 		target = &(tree_node->content->outputs);
 	}
