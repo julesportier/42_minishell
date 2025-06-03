@@ -69,6 +69,7 @@ SRC_EXPANSIONS := expansions.c \
 				  expansions_variable.c \
 				  expansions_double_quotes.c \
 				  expansions_wildcard.c \
+				  expansions_wildcard_sort.c \
 				  heredoc_to_file.c
 SRC_GENERAL_UTILS := env_utils.c \
 					 general_utils.c \

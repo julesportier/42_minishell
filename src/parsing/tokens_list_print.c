@@ -50,16 +50,17 @@ void	print_toklist(t_dlst *list, int indent)
 		if (list->content)
 		{
 			print_indent(indent);
-			printf("token %d: %s, '%s', cat_prev: %s\n",
+			printf("token %d: %s, '%s', cat_prev: %s, addr: %p\n",
 				i,
 				token_type_to_str(get_toklist_type(list)),
 				get_toklist_str(list),
-				bool_to_str(get_toklist_cat_prev(list)));
+				bool_to_str(get_toklist_cat_prev(list)),
+				list);
 		}
 		else
 		{
 			print_indent(indent);
-			printf("token %d: content == NULL\n", i);
+			printf("token %d: content == NULL, addr: %p\n", i, list);
 		}
 		list = list->next;
 		++i;

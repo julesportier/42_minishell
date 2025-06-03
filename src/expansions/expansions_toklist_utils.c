@@ -28,7 +28,7 @@ t_error	replace_token_content(
 	return (*error);
 }
 
-static t_error	merge_next_token(t_dlst *token, t_error *error)
+t_error	merge_next_token(t_dlst *token, t_error *error)
 {
 	set_toklist_str(
 		token,
