@@ -6,7 +6,7 @@
 /*   By: ecasalin <ecasalin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 11:23:07 by ecasalin          #+#    #+#             */
-/*   Updated: 2025/06/03 13:46:24 by ecasalin         ###   ########.fr       */
+/*   Updated: 2025/06/04 14:23:32 by ecasalin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,19 @@ char	**create_cmd_array(t_dlst *args, t_error *error)
 	}
 	return (cmd_array);
 }
+
+// int	check_redirections(t_bin_tree *curr_node, t_error *recoverable)
+// {
+// 	t_dlst	*temp_head;
+	
+// 	temp_head = curr_node->content->inputs;
+// 	while (temp_head != NULL)
+// 	{
+// 		if (get_toklist_type(temp_head) != literal && temp_head->next == NULL)
+// 			return (ERROR);
+			
+// 	}
+// }
 
 int	create_exec_setup(t_bin_tree *curr_node, t_shell_vars *vars, t_error *error)
 {
