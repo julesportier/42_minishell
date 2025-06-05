@@ -1,0 +1,13 @@
+ 
+ Command: cat < test/tester/redirs/a1
+-bash: line 1: test/tester/redirs/a1: No such file or directory
+-Exit value: 1
++minishell: test/tester/redirs/a1: No such file or directory
++Exit value: 0
+ 
+ Command: echo test >> test/tester/redirs/a1
+ 
+ Command: cat <<'EOF'
+-bash: line 1: warning: here-document at line 1 delimited by end-of-file (wanted `EOF')
+ Exit value: 0
+ 

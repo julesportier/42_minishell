@@ -1,0 +1,40 @@
+Command: echo hello
+hello
+Exit value: 0
+
+Command: echo world > test/tester/redirs/a1
+Exit value: 0
+New files ↓
+test/tester/redirs/a1 : world$
+
+Command: cat < test/tester/redirs/a1
+minishell: test/tester/redirs/a1: No such file or directory
+Exit value: 0
+
+Command: echo test >> test/tester/redirs/a1
+Exit value: 0
+New files ↓
+test/tester/redirs/a1 : test$
+
+Command: echo chain && echo next
+chain
+next
+Exit value: 0
+
+Command: echo fail || echo recover
+fail
+Exit value: 0
+
+Command: echo part1 && echo part2 || echo fallback
+part1
+part2
+Exit value: 0
+
+Command: cat <<EOF
+one
+two 0
+Exit value: 0
+
+Command: cat <<'EOF'
+Exit value: 0
+

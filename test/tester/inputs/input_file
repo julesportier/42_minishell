@@ -1,0 +1,12 @@
+echo hello
+echo world > test/tester/redirs/a1
+cat < test/tester/redirs/a1
+echo test >> test/tester/redirs/a1
+echo chain && echo next
+echo fail || echo recover
+echo part1 && echo part2 || echo fallback
+cat <<EOF
+one
+two $?
+EOF
+cat <<'EOF'
