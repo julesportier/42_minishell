@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirections_utils.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ecasalin <ecasalin@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ecasalin <ecasalin@42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 08:35:28 by ecasalin          #+#    #+#             */
-/*   Updated: 2025/06/03 13:57:31 by ecasalin         ###   ########.fr       */
+/*   Updated: 2025/06/05 21:00:04 by ecasalin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ int	set_input(t_bin_tree *curr_node, t_error *error)
 	int		fd;
 	char	*file_name;
 	t_dlst	*temp_head;
-	
+
 	if (curr_node->content->inputs == NULL)
 		return (SUCCESS);
 	temp_head = curr_node->content->inputs;
@@ -85,8 +85,13 @@ int	set_input(t_bin_tree *curr_node, t_error *error)
 
 int	set_io_fds(t_bin_tree *curr_node, t_error *error)
 {
-	set_input(curr_node, error);
+	if (set_input(curr_node, error) == ERROR && *error == success)
+		*error = recoverable;
 	if (*error)
 		return (ERROR);
-	return (set_output(curr_node, error));
+	if (set_output(curr_node, error) == ERROR && *error == success)
+		*error = recoverable;
+	if (*error)
+		return (ERROR);
+	return (SUCCESS);
 }
