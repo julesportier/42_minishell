@@ -14,13 +14,22 @@ rm -f $redir_folder/*
 
 while IFS='' read -r cmd || [ -n "$cmd" ]; do
 	printf 'Command: %s\n' "$cmd" >>$ms_output_file
-	if [[ "$cmd" == *"<<"* ]]; then
+	 if [[ "$cmd" == *"<<"* ]]; then
 		limiter=$(printf '%s' "$cmd" | grep -oP '<<\s*\K([^\s]+)')
+		if [[ "$limiter" =~ ^\'.*\'$ ]]; then
+			limiter="${limiter#\'}"
+			limiter="${limiter%\'}"
+		elif [[ "$limiter" =~ ^\".*\"$ ]]; then
+			limiter="${limiter#\"}"
+			limiter="${limiter%\"}"
+		fi
 		printf '%s\n' "$cmd"
 		while read -r cmd; do
 			printf '%s\n' "$cmd"
+			printf '%s\n' "$cmd" >>$ms_output_file
 			if [[ "$cmd" == "$limiter" ]]; then
-			break
+				echo ↓ >>$ms_output_file
+				break;
 			fi
 		done
 	else
@@ -44,13 +53,22 @@ rm -f $redir_folder/*
 
 while IFS='' read -r cmd || [ -n "$cmd" ]; do
 	printf 'Command: %s\n' "$cmd" >>$bash_output_file
-	if [[ "$cmd" == *"<<"* ]]; then
+	 if [[ "$cmd" == *"<<"* ]]; then
 		limiter=$(printf '%s' "$cmd" | grep -oP '<<\s*\K([^\s]+)')
+		if [[ "$limiter" =~ ^\'.*\'$ ]]; then
+			limiter="${limiter#\'}"
+			limiter="${limiter%\'}"
+		elif [[ "$limiter" =~ ^\".*\"$ ]]; then
+			limiter="${limiter#\"}"
+			limiter="${limiter%\"}"
+		fi
 		printf '%s\n' "$cmd"
 		while read -r cmd; do
 			printf '%s\n' "$cmd"
+			printf '%s\n' "$cmd" >>$bash_output_file
 			if [[ "$cmd" == "$limiter" ]]; then
-			break
+				echo ↓ >>$bash_output_file
+				break;
 			fi
 		done
 	else
@@ -71,7 +89,7 @@ while IFS='' read -r cmd || [ -n "$cmd" ]; do
 done <$input_file
 
 #diff -U 2 --label '' --label '' $bash_output_file $ms_output_file > $diff_log
-diff -U 2 "$bash_output_file" "$ms_output_file" | grep -vE '^(---|\+\+\+|@@ )' > "$diff_log"
+diff -U 5 "$bash_output_file" "$ms_output_file" | grep -vE '^(---|\+\+\+|@@ )' > "$diff_log"
 
 if [ ${PIPESTATUS[0]} -eq 0 ]; then
 	echo Success

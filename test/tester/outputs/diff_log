@@ -1,3 +1,6 @@
+ Exit value: 0
+ New files ↓
+ test/tester/redirs/a1 : world$
  
  Command: cat < test/tester/redirs/a1
 -bash: line 1: test/tester/redirs/a1: No such file or directory
@@ -6,8 +9,131 @@
 +Exit value: 0
  
  Command: echo test >> test/tester/redirs/a1
- 
- Command: cat <<'EOF'
--bash: line 1: warning: here-document at line 1 delimited by end-of-file (wanted `EOF')
  Exit value: 0
+ New files ↓
+ test/tester/redirs/a1 : test$
+ Command: cat test/tester/redirs/a1 | grep test
+ cat: test/tester/redirs/a1: No such file or directory
+ Exit value: 1
  
+ Command: cat < test/tester/redirs/a1 | grep test
+-bash: line 1: test/tester/redirs/a1: No such file or directory
++minishell: test/tester/redirs/a1: No such file or directory
+ Exit value: 1
+ 
+ Command: echo alpha > test/tester/redirs/a2 | cat
+ Exit value: 0
+ New files ↓
+ New files ↓
+ test/tester/redirs/a8 : a$
+ b$
+ 
+ Command: cat < test/tester/redirs/a8 | grep b
+-bash: line 1: test/tester/redirs/a8: No such file or directory
++minishell: test/tester/redirs/a8: No such file or directory
+ Exit value: 1
+ 
+ Command: echo append >> test/tester/redirs/a8 && cat test/tester/redirs/a8
+ append
+ Exit value: 0
+ test/tester/redirs/a8 : append$
+ 
+ Command: echo * > test/tester/redirs/a9
+ Exit value: 0
+ New files ↓
+-test/tester/redirs/a9 : build libft Makefile minishell PROUST runtests split src test$
++test/tester/redirs/a9 : PROUST libft runtests test minishell src build split Makefile$
+ 
+ Command: cat test/tester/redirs/* | grep a
+-cat: 'test/tester/redirs/*': No such file or directory
+-Exit value: 1
++cat: test/tester/redirs/PROUST: No such file or directory
++cat: libft: Is a directory
++cat: test: Is a directory
++cat: grep: src(standard input): binary file matches
++: Is a directory
++cat: build: Is a directory
++Exit value: 0
+ 
+ Command: (echo * && echo files) | grep tester
+ Exit value: 1
+ 
+ Command: echo something | (cat && grep s)
+ 
+ Command: echo * | grep redirs
+ Exit value: 1
+ 
+ Command: ls test/tester/redirs/* | grep a
+-ls: cannot access 'test/tester/redirs/*': No such file or directory
+-Exit value: 1
++ls: cannot access 'test/tester/redirs/PROUST': No such file or directory
++Makefile
++builtins_handling.d
++builtins_handling.o
++cd_cdpath_utils.d
++cd_cdpath_utils.o
++cd_cwd_vars_utils.d
++cd_cwd_vars_utils.o
++char_identity_check.d
++char_identity_check.o
++cleaning_utils_1.d
++cleaning_utils_1.o
++exec_clean_utils.d
++exec_clean_utils.o
++exec_command_tree.d
++exec_command_tree.o
++expansions.d
++expansions_double_quotes.d
++expansions_double_quotes.o
++expansions.o
++expansions_toklist_utils.d
++expansions_toklist_utils.o
++expansions_utils.d
++expansions_utils.o
++expansions_variable.d
++expansions_variable.o
++expansions_wildcard.d
++expansions_wildcard.o
++general_utils.d
++general_utils.o
++parenthesis_handling_utils.d
++parenthesis_handling_utils.o
++path_parsing.d
++path_parsing.o
++paths_utils.d
++paths_utils.o
++pipeline_handling.d
++pipeline_handling.o
++sigaction_init.d
++sigaction_init.o
++signal_handlers.d
++signal_handlers.o
++subshells_handling.d
++subshells_handling.o
++token_extract.d
++token_extract_grouping.d
++token_extract_grouping.o
++token_extract_heredoc.d
++token_extract_heredoc_delimiter.d
++token_extract_heredoc_delimiter.o
++token_extract_heredoc.o
++token_extract.o
++token_extract_utils.d
++token_extract_utils.o
++tree_build_binary_op.d
++tree_build_binary_op.o
++libft.a
++Makefile
++cleaning_utils
++error_handling
++expansions
++general_utils
++parsing
++signals_utils
++parsing
++Exit value: 0
+ 
+ Command: (echo check && echo pass) > test/tester/redirs/a18
+ Exit value: 0
+ New files ↓
+ test/tester/redirs/a18 : check$

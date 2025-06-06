@@ -32,10 +32,366 @@ Exit value: 0
 
 Command: cat <<EOF
 one
+two $?
+EOF
+↓
+one
 two 0
 Exit value: 0
 
 Command: cat <<'EOF'
-bash: line 1: warning: here-document at line 1 delimited by end-of-file (wanted `EOF')
+literal $? stays
+EOF
+↓
+literal $? stays
 Exit value: 0
+
+Command: (echo a && echo b)
+a
+b
+Exit value: 0
+
+Command: (echo a || echo b)
+a
+Exit value: 0
+
+Command: (echo a && echo b) && echo done
+a
+b
+done
+Exit value: 0
+
+Command: (echo a || echo b) || echo alt
+a
+Exit value: 0
+
+Command: echo hello | cat
+hello
+Exit value: 0
+
+Command: echo foo | grep o
+foo
+Exit value: 0
+
+Command: (echo test && echo line) | grep line
+line
+Exit value: 0
+
+Command: cat test/tester/redirs/a1 | grep test
+cat: test/tester/redirs/a1: No such file or directory
+Exit value: 1
+
+Command: cat < test/tester/redirs/a1 | grep test
+bash: line 1: test/tester/redirs/a1: No such file or directory
+Exit value: 1
+
+Command: echo alpha > test/tester/redirs/a2 | cat
+Exit value: 0
+New files ↓
+test/tester/redirs/a2 : alpha$
+
+Command: echo beta >> test/tester/redirs/a2 | grep beta
+Exit value: 1
+New files ↓
+test/tester/redirs/a2 : beta$
+
+Command: cat test/tester/redirs/a2 > test/tester/redirs/a3
+cat: test/tester/redirs/a2: No such file or directory
+Exit value: 1
+New files ↓
+test/tester/redirs/a3 : 
+
+Command: (echo foo > test/tester/redirs/a4 && echo bar >> test/tester/redirs/a4)
+Exit value: 0
+New files ↓
+test/tester/redirs/a4 : foo$
+bar$
+
+Command: (echo done) >> test/tester/redirs/a4
+Exit value: 0
+New files ↓
+test/tester/redirs/a4 : done$
+
+Command: cat test/tester/redirs/a4 | grep bar
+cat: test/tester/redirs/a4: No such file or directory
+Exit value: 1
+
+Command: cat <<EOF > test/tester/redirs/a5
+first
+second $?
+EOF
+↓
+Exit value: 0
+New files ↓
+test/tester/redirs/a5 : first$
+second 0$
+
+Command: cat test/tester/redirs/a5
+cat: test/tester/redirs/a5: No such file or directory
+Exit value: 1
+
+Command: cat <<EOF >> test/tester/redirs/a5
+third
+fourth
+EOF
+↓
+Exit value: 0
+New files ↓
+test/tester/redirs/a5 : third$
+fourth$
+
+Command: cat test/tester/redirs/a5 | grep third
+cat: test/tester/redirs/a5: No such file or directory
+Exit value: 1
+
+Command: echo one && (echo two && echo three)
+one
+two
+three
+Exit value: 0
+
+Command: (echo X && echo Y) || echo fallback
+X
+Y
+Exit value: 0
+
+Command: (echo X || echo Y) && echo done
+X
+done
+Exit value: 0
+
+Command: (echo pre && echo mid) | (grep pre)
+pre
+Exit value: 0
+
+Command: echo 1 | grep 1 && echo found
+1
+found
+Exit value: 0
+
+Command: echo miss | grep hit || echo not found
+not found
+Exit value: 0
+
+Command: (echo a && echo b) > test/tester/redirs/a6 | grep b
+Exit value: 1
+New files ↓
+test/tester/redirs/a6 : a$
+b$
+
+Command: echo new > test/tester/redirs/a7 && cat < test/tester/redirs/a7
+new
+Exit value: 0
+New files ↓
+test/tester/redirs/a7 : new$
+
+Command: (echo a && echo b) | cat > test/tester/redirs/a8
+Exit value: 0
+New files ↓
+test/tester/redirs/a8 : a$
+b$
+
+Command: cat < test/tester/redirs/a8 | grep b
+bash: line 1: test/tester/redirs/a8: No such file or directory
+Exit value: 1
+
+Command: echo append >> test/tester/redirs/a8 && cat test/tester/redirs/a8
+append
+Exit value: 0
+New files ↓
+test/tester/redirs/a8 : append$
+
+Command: echo * > test/tester/redirs/a9
+Exit value: 0
+New files ↓
+test/tester/redirs/a9 : build libft Makefile minishell PROUST runtests split src test$
+
+Command: cat test/tester/redirs/* | grep a
+cat: 'test/tester/redirs/*': No such file or directory
+Exit value: 1
+
+Command: (echo * && echo files) | grep tester
+Exit value: 1
+
+Command: echo something | (cat && grep s)
+something
+Exit value: 1
+
+Command: (echo 1 && echo 2) | grep 2
+2
+Exit value: 0
+
+Command: (echo x && echo y) | grep y > test/tester/redirs/a10
+Exit value: 0
+New files ↓
+test/tester/redirs/a10 : y$
+
+Command: echo test > test/tester/redirs/a11 && echo again >> test/tester/redirs/a11
+Exit value: 0
+New files ↓
+test/tester/redirs/a11 : test$
+again$
+
+Command: cat test/tester/redirs/a11
+cat: test/tester/redirs/a11: No such file or directory
+Exit value: 1
+
+Command: cat test/tester/redirs/a11 | grep test && echo match
+cat: test/tester/redirs/a11: No such file or directory
+Exit value: 1
+
+Command: cat <<EOF > test/tester/redirs/a12
+line1
+line2
+line3 $?
+EOF
+↓
+Exit value: 0
+New files ↓
+test/tester/redirs/a12 : line1$
+line2$
+line3 0$
+
+Command: cat test/tester/redirs/a12 | grep line2
+cat: test/tester/redirs/a12: No such file or directory
+Exit value: 1
+
+Command: cat test/tester/redirs/a12 > test/tester/redirs/a13
+cat: test/tester/redirs/a12: No such file or directory
+Exit value: 1
+New files ↓
+test/tester/redirs/a13 : 
+
+Command: echo duplicated >> test/tester/redirs/a13
+Exit value: 0
+New files ↓
+test/tester/redirs/a13 : duplicated$
+
+Command: cat test/tester/redirs/a13
+cat: test/tester/redirs/a13: No such file or directory
+Exit value: 1
+
+Command: (echo foo && echo bar) >> test/tester/redirs/a13
+Exit value: 0
+New files ↓
+test/tester/redirs/a13 : foo$
+bar$
+
+Command: (echo deep && echo shell) > test/tester/redirs/a14
+Exit value: 0
+New files ↓
+test/tester/redirs/a14 : deep$
+shell$
+
+Command: cat test/tester/redirs/a14 | grep shell
+cat: test/tester/redirs/a14: No such file or directory
+Exit value: 1
+
+Command: (echo inline > test/tester/redirs/a15 && echo tail >> test/tester/redirs/a15) && cat test/tester/redirs/a15
+inline
+tail
+Exit value: 0
+New files ↓
+test/tester/redirs/a15 : inline$
+tail$
+
+Command: (echo one | grep o) && echo done
+one
+done
+Exit value: 0
+
+Command: (echo find | grep i) || echo lost
+find
+Exit value: 0
+
+Command: (echo redir > test/tester/redirs/a16) | grep redir
+Exit value: 1
+New files ↓
+test/tester/redirs/a16 : redir$
+
+Command: cat test/tester/redirs/a16 > test/tester/redirs/a17
+cat: test/tester/redirs/a16: No such file or directory
+Exit value: 1
+New files ↓
+test/tester/redirs/a17 : 
+
+Command: (echo A && echo B) | (grep A && grep B)
+A
+Exit value: 1
+
+Command: cat test/tester/redirs/a17 | grep A
+cat: test/tester/redirs/a17: No such file or directory
+Exit value: 1
+
+Command: cat test/tester/redirs/a17 | grep Z || echo missing
+cat: test/tester/redirs/a17: No such file or directory
+missing
+Exit value: 0
+
+Command: echo * | grep redirs
+Exit value: 1
+
+Command: ls test/tester/redirs/* | grep a
+ls: cannot access 'test/tester/redirs/*': No such file or directory
+Exit value: 1
+
+Command: (echo check && echo pass) > test/tester/redirs/a18
+Exit value: 0
+New files ↓
+test/tester/redirs/a18 : check$
+pass$
+
+Command: cat test/tester/redirs/a18 | grep pass
+cat: test/tester/redirs/a18: No such file or directory
+Exit value: 1
+
+Command: echo okay > test/tester/redirs/a19 && (cat < test/tester/redirs/a19 | grep okay)
+okay
+Exit value: 0
+New files ↓
+test/tester/redirs/a19 : okay$
+
+Command: (echo this && echo that) > test/tester/redirs/a20 && cat test/tester/redirs/a20
+this
+that
+Exit value: 0
+New files ↓
+test/tester/redirs/a20 : this$
+that$
+
+Command: echo a > test/tester/redirs/a21 && echo b >> test/tester/redirs/a21 && cat test/tester/redirs/a21
+a
+b
+Exit value: 0
+New files ↓
+test/tester/redirs/a21 : a$
+b$
+
+Command: cat <<"EOF" > test/tester/redirs/a22
+multiple
+heredoc
+lines $?
+EOF
+↓
+Exit value: 0
+New files ↓
+test/tester/redirs/a22 : multiple$
+heredoc$
+lines $?$
+
+Command: cat test/tester/redirs/a22 | grep lines
+cat: test/tester/redirs/a22: No such file or directory
+Exit value: 1
+
+Command: (echo one | cat) | grep o
+one
+Exit value: 0
+
+Command: (echo start > test/tester/redirs/a23 && echo end >> test/tester/redirs/a23) && cat test/tester/redirs/a23
+start
+end
+Exit value: 0
+New files ↓
+test/tester/redirs/a23 : start$
+end$
 
