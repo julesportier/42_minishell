@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   token_extract_heredoc.c                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: juportie <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: ecasalin <ecasalin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 11:14:52 by juportie          #+#    #+#             */
-/*   Updated: 2025/05/22 11:19:52 by juportie         ###   ########.fr       */
+/*   Updated: 2025/06/07 10:06:52 by ecasalin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ static t_bool	is_heredoc_end(char *heredoc_line, char *delimiter)
 {
 	if (heredoc_line == NULL)
 	{
-		ft_putstr_fd("minishell: warning unexpected end-of-file in heredoc", 2);
+		ft_putstr_fd("minishell: warning unexpected end-of-file in heredoc\n", 2);
 		return (true);
 	}
 	else if (ft_isequalstr(delimiter, heredoc_line))

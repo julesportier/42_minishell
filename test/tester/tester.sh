@@ -125,9 +125,9 @@ for ((i=1; i<=max_blocks; i++)); do
 
     if ! diff -q "$f1" "$f2" > /dev/null; then
         echo "Difference in block $i:" >> "$diff_log"
-        echo "---- file1 ----" >> "$diff_log"
+        echo "---- minishell ----" >> "$diff_log"
         cat "$f1" >> "$diff_log"
-        echo "---- file2 ----" >> "$diff_log"
+        echo "------ bash -------" >> "$diff_log"
         cat "$f2" >> "$diff_log"
         echo "-----------------------------" >> "$diff_log"
         echo "" >> "$diff_log"
