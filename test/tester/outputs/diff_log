@@ -1,0 +1,490 @@
+Difference in block 2:
+---- file1 ----
+Command: echo world > test/tester/redirs/a1
+minishell: test/tester/redirs/a1: No such file or directory
+Exit value: 1
+---- file2 ----
+Command: echo world > test/tester/redirs/a1
+bash: line 1: test/tester/redirs/a1: No such file or directory
+Exit value: 1
+-----------------------------
+
+Difference in block 3:
+---- file1 ----
+Command: cat < test/tester/redirs/a1
+minishell: test/tester/redirs/a1: No such file or directory
+Exit value: 1
+---- file2 ----
+Command: cat < test/tester/redirs/a1
+bash: line 1: test/tester/redirs/a1: No such file or directory
+Exit value: 1
+-----------------------------
+
+Difference in block 4:
+---- file1 ----
+Command: echo test >> test/tester/redirs/a1
+minishell: test/tester/redirs/a1: No such file or directory
+Exit value: 1
+---- file2 ----
+Command: echo test >> test/tester/redirs/a1
+bash: line 1: test/tester/redirs/a1: No such file or directory
+Exit value: 1
+-----------------------------
+
+Difference in block 18:
+---- file1 ----
+Command: cat < test/tester/redirs/a1 | grep test
+minishell: test/tester/redirs/a1: No such file or directory
+Exit value: 1
+---- file2 ----
+Command: cat < test/tester/redirs/a1 | grep test
+bash: line 1: test/tester/redirs/a1: No such file or directory
+Exit value: 1
+-----------------------------
+
+Difference in block 19:
+---- file1 ----
+Command: echo alpha > test/tester/redirs/a2 | cat
+minishell: test/tester/redirs/a2: No such file or directory
+Exit value: 0
+---- file2 ----
+Command: echo alpha > test/tester/redirs/a2 | cat
+bash: line 1: test/tester/redirs/a2: No such file or directory
+Exit value: 0
+-----------------------------
+
+Difference in block 20:
+---- file1 ----
+Command: echo beta >> test/tester/redirs/a2 | grep beta
+minishell: test/tester/redirs/a2: No such file or directory
+Exit value: 1
+---- file2 ----
+Command: echo beta >> test/tester/redirs/a2 | grep beta
+bash: line 1: test/tester/redirs/a2: No such file or directory
+Exit value: 1
+-----------------------------
+
+Difference in block 21:
+---- file1 ----
+Command: cat test/tester/redirs/a2 > test/tester/redirs/a3
+minishell: test/tester/redirs/a3: No such file or directory
+Exit value: 1
+---- file2 ----
+Command: cat test/tester/redirs/a2 > test/tester/redirs/a3
+bash: line 1: test/tester/redirs/a3: No such file or directory
+Exit value: 1
+-----------------------------
+
+Difference in block 22:
+---- file1 ----
+Command: (echo foo > test/tester/redirs/a4 && echo bar >> test/tester/redirs/a4)
+minishell: test/tester/redirs/a4: No such file or directory
+Exit value: 1
+---- file2 ----
+Command: (echo foo > test/tester/redirs/a4 && echo bar >> test/tester/redirs/a4)
+bash: line 1: test/tester/redirs/a4: No such file or directory
+Exit value: 1
+-----------------------------
+
+Difference in block 23:
+---- file1 ----
+Command: (echo done) >> test/tester/redirs/a4
+minishell: test/tester/redirs/a4: No such file or directory
+Exit value: 1
+---- file2 ----
+Command: (echo done) >> test/tester/redirs/a4
+bash: line 1: test/tester/redirs/a4: No such file or directory
+Exit value: 1
+-----------------------------
+
+Difference in block 25:
+---- file1 ----
+Command: cat <<EOF > test/tester/redirs/a5
+first
+second $?
+EOF
+↓
+minishell: test/tester/redirs/a5: No such file or directory
+Exit value: 1
+---- file2 ----
+Command: cat <<EOF > test/tester/redirs/a5
+first
+second $?
+EOF
+↓
+bash: line 1: test/tester/redirs/a5: No such file or directory
+Exit value: 1
+-----------------------------
+
+Difference in block 27:
+---- file1 ----
+Command: cat <<EOF >> test/tester/redirs/a5
+third
+fourth
+EOF
+↓
+minishell: test/tester/redirs/a5: No such file or directory
+Exit value: 1
+---- file2 ----
+Command: cat <<EOF >> test/tester/redirs/a5
+third
+fourth
+EOF
+↓
+bash: line 1: test/tester/redirs/a5: No such file or directory
+Exit value: 1
+-----------------------------
+
+Difference in block 35:
+---- file1 ----
+Command: (echo a && echo b) > test/tester/redirs/a6 | grep b
+minishell: test/tester/redirs/a6: No such file or directory
+Exit value: 1
+---- file2 ----
+Command: (echo a && echo b) > test/tester/redirs/a6 | grep b
+bash: line 1: test/tester/redirs/a6: No such file or directory
+Exit value: 1
+-----------------------------
+
+Difference in block 36:
+---- file1 ----
+Command: echo new > test/tester/redirs/a7 && cat < test/tester/redirs/a7
+minishell: test/tester/redirs/a7: No such file or directory
+Exit value: 1
+---- file2 ----
+Command: echo new > test/tester/redirs/a7 && cat < test/tester/redirs/a7
+bash: line 1: test/tester/redirs/a7: No such file or directory
+Exit value: 1
+-----------------------------
+
+Difference in block 37:
+---- file1 ----
+Command: (echo a && echo b) | cat > test/tester/redirs/a8
+minishell: test/tester/redirs/a8: No such file or directory
+Exit value: 1
+---- file2 ----
+Command: (echo a && echo b) | cat > test/tester/redirs/a8
+bash: line 1: test/tester/redirs/a8: No such file or directory
+Exit value: 1
+-----------------------------
+
+Difference in block 38:
+---- file1 ----
+Command: cat < test/tester/redirs/a8 | grep b
+minishell: test/tester/redirs/a8: No such file or directory
+Exit value: 1
+---- file2 ----
+Command: cat < test/tester/redirs/a8 | grep b
+bash: line 1: test/tester/redirs/a8: No such file or directory
+Exit value: 1
+-----------------------------
+
+Difference in block 39:
+---- file1 ----
+Command: echo append >> test/tester/redirs/a8 && cat test/tester/redirs/a8
+minishell: test/tester/redirs/a8: No such file or directory
+Exit value: 1
+---- file2 ----
+Command: echo append >> test/tester/redirs/a8 && cat test/tester/redirs/a8
+bash: line 1: test/tester/redirs/a8: No such file or directory
+Exit value: 1
+-----------------------------
+
+Difference in block 40:
+---- file1 ----
+Command: echo * > test/tester/redirs/a9
+minishell: test/tester/redirs/a9: No such file or directory
+Exit value: 1
+---- file2 ----
+Command: echo * > test/tester/redirs/a9
+bash: line 1: test/tester/redirs/a9: No such file or directory
+Exit value: 1
+-----------------------------
+
+Difference in block 41:
+---- file1 ----
+Command: cat test/tester/redirs/* | grep a
+cat: test/tester/redirs/PROUST: No such file or directory
+cat: libft: Is a directory
+cat: src: Is a directory
+cat: test: Is a directory
+cat: build: Is a directory
+grep: (standard input): binary file matches
+Exit value: 0
+---- file2 ----
+Command: cat test/tester/redirs/* | grep a
+cat: 'test/tester/redirs/*': No such file or directory
+Exit value: 1
+-----------------------------
+
+Difference in block 45:
+---- file1 ----
+Command: (echo x && echo y) | grep y > test/tester/redirs/a10
+minishell: test/tester/redirs/a10: No such file or directory
+Exit value: 1
+---- file2 ----
+Command: (echo x && echo y) | grep y > test/tester/redirs/a10
+bash: line 1: test/tester/redirs/a10: No such file or directory
+Exit value: 1
+-----------------------------
+
+Difference in block 46:
+---- file1 ----
+Command: echo test > test/tester/redirs/a11 && echo again >> test/tester/redirs/a11
+minishell: test/tester/redirs/a11: No such file or directory
+Exit value: 1
+---- file2 ----
+Command: echo test > test/tester/redirs/a11 && echo again >> test/tester/redirs/a11
+bash: line 1: test/tester/redirs/a11: No such file or directory
+Exit value: 1
+-----------------------------
+
+Difference in block 49:
+---- file1 ----
+Command: cat <<EOF > test/tester/redirs/a12
+line1
+line2
+line3 $?
+EOF
+↓
+minishell: test/tester/redirs/a12: No such file or directory
+Exit value: 1
+---- file2 ----
+Command: cat <<EOF > test/tester/redirs/a12
+line1
+line2
+line3 $?
+EOF
+↓
+bash: line 1: test/tester/redirs/a12: No such file or directory
+Exit value: 1
+-----------------------------
+
+Difference in block 51:
+---- file1 ----
+Command: cat test/tester/redirs/a12 > test/tester/redirs/a13
+minishell: test/tester/redirs/a13: No such file or directory
+Exit value: 1
+---- file2 ----
+Command: cat test/tester/redirs/a12 > test/tester/redirs/a13
+bash: line 1: test/tester/redirs/a13: No such file or directory
+Exit value: 1
+-----------------------------
+
+Difference in block 52:
+---- file1 ----
+Command: echo duplicated >> test/tester/redirs/a13
+minishell: test/tester/redirs/a13: No such file or directory
+Exit value: 1
+---- file2 ----
+Command: echo duplicated >> test/tester/redirs/a13
+bash: line 1: test/tester/redirs/a13: No such file or directory
+Exit value: 1
+-----------------------------
+
+Difference in block 54:
+---- file1 ----
+Command: (echo foo && echo bar) >> test/tester/redirs/a13
+minishell: test/tester/redirs/a13: No such file or directory
+Exit value: 1
+---- file2 ----
+Command: (echo foo && echo bar) >> test/tester/redirs/a13
+bash: line 1: test/tester/redirs/a13: No such file or directory
+Exit value: 1
+-----------------------------
+
+Difference in block 55:
+---- file1 ----
+Command: (echo deep && echo shell) > test/tester/redirs/a14
+minishell: test/tester/redirs/a14: No such file or directory
+Exit value: 1
+---- file2 ----
+Command: (echo deep && echo shell) > test/tester/redirs/a14
+bash: line 1: test/tester/redirs/a14: No such file or directory
+Exit value: 1
+-----------------------------
+
+Difference in block 57:
+---- file1 ----
+Command: (echo inline > test/tester/redirs/a15 && echo tail >> test/tester/redirs/a15) && cat test/tester/redirs/a15
+minishell: test/tester/redirs/a15: No such file or directory
+Exit value: 1
+---- file2 ----
+Command: (echo inline > test/tester/redirs/a15 && echo tail >> test/tester/redirs/a15) && cat test/tester/redirs/a15
+bash: line 1: test/tester/redirs/a15: No such file or directory
+Exit value: 1
+-----------------------------
+
+Difference in block 60:
+---- file1 ----
+Command: (echo redir > test/tester/redirs/a16) | grep redir
+minishell: test/tester/redirs/a16: No such file or directory
+Exit value: 1
+---- file2 ----
+Command: (echo redir > test/tester/redirs/a16) | grep redir
+bash: line 1: test/tester/redirs/a16: No such file or directory
+Exit value: 1
+-----------------------------
+
+Difference in block 61:
+---- file1 ----
+Command: cat test/tester/redirs/a16 > test/tester/redirs/a17
+minishell: test/tester/redirs/a17: No such file or directory
+Exit value: 1
+---- file2 ----
+Command: cat test/tester/redirs/a16 > test/tester/redirs/a17
+bash: line 1: test/tester/redirs/a17: No such file or directory
+Exit value: 1
+-----------------------------
+
+Difference in block 66:
+---- file1 ----
+Command: ls test/tester/redirs/* | grep a
+ls: cannot access 'test/tester/redirs/PROUST': No such file or directory
+Makefile
+builtins_handling.d
+builtins_handling.o
+cd_cdpath_utils.d
+cd_cdpath_utils.o
+cd_cwd_vars_utils.d
+cd_cwd_vars_utils.o
+char_identity_check.d
+char_identity_check.o
+cleaning_utils_1.d
+cleaning_utils_1.o
+exec_clean_utils.d
+exec_clean_utils.o
+exec_command_tree.d
+exec_command_tree.o
+expansions.d
+expansions_double_quotes.d
+expansions_double_quotes.o
+expansions.o
+expansions_toklist_utils.d
+expansions_toklist_utils.o
+expansions_utils.d
+expansions_utils.o
+expansions_variable.d
+expansions_variable.o
+expansions_wildcard.d
+expansions_wildcard.o
+general_utils.d
+general_utils.o
+parenthesis_handling_utils.d
+parenthesis_handling_utils.o
+path_parsing.d
+path_parsing.o
+paths_utils.d
+paths_utils.o
+pipeline_handling.d
+pipeline_handling.o
+sigaction_init.d
+sigaction_init.o
+signal_handlers.d
+signal_handlers.o
+subshells_handling.d
+subshells_handling.o
+token_extract.d
+token_extract_grouping.d
+token_extract_grouping.o
+token_extract_heredoc.d
+token_extract_heredoc_delimiter.d
+token_extract_heredoc_delimiter.o
+token_extract_heredoc.o
+token_extract.o
+token_extract_utils.d
+token_extract_utils.o
+tree_build_binary_op.d
+tree_build_binary_op.o
+libft.a
+Makefile
+cleaning_utils
+error_handling
+expansions
+general_utils
+parsing
+signals_utils
+parsing
+Exit value: 0
+---- file2 ----
+Command: ls test/tester/redirs/* | grep a
+ls: cannot access 'test/tester/redirs/*': No such file or directory
+Exit value: 1
+-----------------------------
+
+Difference in block 67:
+---- file1 ----
+Command: (echo check && echo pass) > test/tester/redirs/a18
+minishell: test/tester/redirs/a18: No such file or directory
+Exit value: 1
+---- file2 ----
+Command: (echo check && echo pass) > test/tester/redirs/a18
+bash: line 1: test/tester/redirs/a18: No such file or directory
+Exit value: 1
+-----------------------------
+
+Difference in block 69:
+---- file1 ----
+Command: echo okay > test/tester/redirs/a19 && (cat < test/tester/redirs/a19 | grep okay)
+minishell: test/tester/redirs/a19: No such file or directory
+Exit value: 1
+---- file2 ----
+Command: echo okay > test/tester/redirs/a19 && (cat < test/tester/redirs/a19 | grep okay)
+bash: line 1: test/tester/redirs/a19: No such file or directory
+Exit value: 1
+-----------------------------
+
+Difference in block 70:
+---- file1 ----
+Command: (echo this && echo that) > test/tester/redirs/a20 && cat test/tester/redirs/a20
+minishell: test/tester/redirs/a20: No such file or directory
+Exit value: 1
+---- file2 ----
+Command: (echo this && echo that) > test/tester/redirs/a20 && cat test/tester/redirs/a20
+bash: line 1: test/tester/redirs/a20: No such file or directory
+Exit value: 1
+-----------------------------
+
+Difference in block 71:
+---- file1 ----
+Command: echo a > test/tester/redirs/a21 && echo b >> test/tester/redirs/a21 && cat test/tester/redirs/a21
+minishell: test/tester/redirs/a21: No such file or directory
+Exit value: 1
+---- file2 ----
+Command: echo a > test/tester/redirs/a21 && echo b >> test/tester/redirs/a21 && cat test/tester/redirs/a21
+bash: line 1: test/tester/redirs/a21: No such file or directory
+Exit value: 1
+-----------------------------
+
+Difference in block 72:
+---- file1 ----
+Command: cat <<"EOF" > test/tester/redirs/a22
+multiple
+heredoc
+lines $?
+EOF
+↓
+minishell: test/tester/redirs/a22: No such file or directory
+Exit value: 1
+---- file2 ----
+Command: cat <<"EOF" > test/tester/redirs/a22
+multiple
+heredoc
+lines $?
+EOF
+↓
+bash: line 1: test/tester/redirs/a22: No such file or directory
+Exit value: 1
+-----------------------------
+
+Difference in block 75:
+---- file1 ----
+Command: (echo start > test/tester/redirs/a23 && echo end >> test/tester/redirs/a23) && cat test/tester/redirs/a23
+minishell: test/tester/redirs/a23: No such file or directory
+Exit value: 1
+---- file2 ----
+Command: (echo start > test/tester/redirs/a23 && echo end >> test/tester/redirs/a23) && cat test/tester/redirs/a23
+bash: line 1: test/tester/redirs/a23: No such file or directory
+Exit value: 1
+-----------------------------
+
