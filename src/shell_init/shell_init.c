@@ -6,7 +6,7 @@
 /*   By: ecasalin <ecasalin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 08:01:52 by ecasalin          #+#    #+#             */
-/*   Updated: 2025/05/27 12:08:37 by ecasalin         ###   ########.fr       */
+/*   Updated: 2025/06/07 10:26:43 by ecasalin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,8 +69,6 @@ char	*init_cwd_backup(void)
 
 int	init_shell_vars(t_shell_vars *vars, char **envp, t_error *error)
 {
-	vars->sig_interrupted = 0;
-	vars->interactive_shell = 1;
 	vars->prompt = NULL;
 	vars->last_cmd_ext_code = SUCCESS;
 	vars->env = init_env_array(envp, error);

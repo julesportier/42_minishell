@@ -6,7 +6,7 @@
 /*   By: ecasalin <ecasalin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 21:13:38 by ecasalin          #+#    #+#             */
-/*   Updated: 2025/06/03 11:27:59 by ecasalin         ###   ########.fr       */
+/*   Updated: 2025/06/07 09:37:42 by ecasalin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,9 +38,8 @@ int	fork_subshell(t_bin_tree *curr_node, t_shell_vars *vars, t_error *error)
 		return (return_perror_set_err("minishell: execution: fork error", error, recoverable));
 	if (pid == CHILD)
 	{
-		expand_toklist(&curr_node->content->inputs, vars);
-		expand_toklist(&curr_node->content->outputs, vars);
-		set_io_fds(curr_node, error);
+		if (expand_redirections(curr_node, vars, error) == SUCCESS)
+			set_io_fds(curr_node, error);
 		if (*error)
 		{
 			free_tree_and_vars(tree_root(curr_node), vars);

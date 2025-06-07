@@ -9,3 +9,5 @@ minishell
 # bear output
 compile_commands.json
 .cache/
+test/tester/outputs/
+.vscode

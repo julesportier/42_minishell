@@ -6,7 +6,7 @@
 /*   By: ecasalin <ecasalin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 11:23:07 by ecasalin          #+#    #+#             */
-/*   Updated: 2025/06/03 13:46:24 by ecasalin         ###   ########.fr       */
+/*   Updated: 2025/06/07 09:23:50 by ecasalin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,9 +59,8 @@ int	create_exec_setup(t_bin_tree *curr_node, t_shell_vars *vars, t_error *error)
 	pid_t	child_pid;
 	int		builtin;
 
-	expand_toklist(&curr_node->content->tokens_list, vars);
-	expand_toklist(&curr_node->content->inputs, vars);
-	expand_toklist(&curr_node->content->outputs, vars);
+	if (perform_expansions(curr_node, vars, error) == ERROR)
+		return (ERROR);
 	builtin = is_builtin(curr_node);
 	if (builtin)
 		return (prepare_builtin_exec(builtin, curr_node, vars, error));

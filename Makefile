@@ -60,6 +60,7 @@ SRC_EXEC := cmd_exec.c \
 				subprocess_utils.c \
 				subshells_handling.c \
 				redirections_utils.c \
+				redirs_expansion_utils.c \
 				builtins_handling.c \
 				builtins_redir_utils.c
 
