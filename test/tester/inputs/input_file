@@ -3,3 +3,12 @@ echo 23 <<$test
 $test
 echo 23 <<"$test"
 $test
+(cat) << EOF
+ok
+EOF
+(cat) << 'EOF'
+ok
+EOF
+cat << EOF
+ok
+EOF
