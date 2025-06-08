@@ -48,7 +48,7 @@ static int	check_right_cmd_conditions(t_bin_tree *curr_node, t_error *error, t_s
 int	exec_command_tree(t_bin_tree *curr_node, t_shell_vars *vars, t_error *error)
 {
 	if (*error)
-		return (ERROR);
+	return (ERROR);
 	if (curr_node->operator == pipeline)
 		return (fork_pipeline_sides(curr_node, vars, error));
 	if (curr_node->content->subshell == true)
