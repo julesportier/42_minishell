@@ -6,7 +6,7 @@
 /*   By: ecasalin <ecasalin@42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/21 14:19:24 by ecasalin          #+#    #+#             */
-/*   Updated: 2025/06/02 10:29:04 by ecasalin         ###   ########.fr       */
+/*   Updated: 2025/06/07 23:30:51 by ecasalin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@
 #include <unistd.h>
 #include "exec.h"
 #include "../input/input.h"
+#include "../expansions/expansions.h"
 
 static int	link_pipe_to_stdout(int *pip)
 {
@@ -40,7 +41,14 @@ static int	link_pipe_to_stdin(int *pip)
 static void	continue_pipeline_left_process(t_bin_tree *curr_node, int *pip, t_shell_vars *vars, t_error *error)
 {
 	if (curr_node->content->subshell == true)
-		set_input(curr_node, error);
+	{
+		expand_toklist(&curr_node->content->inputs, vars);
+		if (iterate_redir_list(curr_node->content->inputs, error) == ERROR)
+			ft_putstr_fd("minishell: syntax error: ill-formed redirection, "
+				"unexpected `redir_input'\n", 2);
+		if (set_input(curr_node, error) == ERROR && *error == success)
+			*error = recoverable;
+	}
 	if (*error || link_pipe_to_stdout(pip) == ERROR)
 	{
 		free_tree_and_vars(tree_root(curr_node), vars);
@@ -59,7 +67,14 @@ static void	continue_pipeline_left_process(t_bin_tree *curr_node, int *pip, t_sh
 static void	continue_pipeline_right_process(t_bin_tree *curr_node, int *pip, t_shell_vars *vars, t_error *error)
 {
 	if (curr_node->content->subshell == true)
-		set_output(curr_node, error);
+	{
+		expand_toklist(&curr_node->content->outputs, vars);
+		if (iterate_redir_list(curr_node->content->outputs, error) == ERROR)
+			ft_putstr_fd("minishell: syntax error: ill-formed redirection, "
+				"unexpected `redir_output'\n", 2);
+		if (set_output(curr_node, error) == ERROR && *error == success)
+			*error = recoverable;
+	}
 	if (*error || link_pipe_to_stdin(pip) == ERROR)
 	{
 		free_tree_and_vars(tree_root(curr_node), vars);

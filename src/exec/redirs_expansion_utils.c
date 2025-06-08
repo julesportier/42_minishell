@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirs_expansion_utils.c                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ecasalin <ecasalin@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ecasalin <ecasalin@42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/07 09:23:28 by ecasalin          #+#    #+#             */
-/*   Updated: 2025/06/07 12:45:55 by ecasalin         ###   ########.fr       */
+/*   Updated: 2025/06/07 23:16:05 by ecasalin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ static int is_word(t_dlst *temp_head)
 	return (0);
 }
 
-static int	iterate_redir_list(t_dlst *temp_head, t_error *error)
+int	iterate_redir_list(t_dlst *temp_head, t_error *error)
 {
 	if (temp_head != NULL && is_word(temp_head))
 		return (set_err_return_err(error, recoverable));

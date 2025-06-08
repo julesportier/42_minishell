@@ -14,3 +14,4 @@ ok
 EOF
 (((echo alpha > test/tester/outputs/y1 && cat < test/tester/outputs/y1) | (tr a-z A-Z > test/tester/outputs/y2 && cat test/tester/outputs/y2)) | ((cat < test/tester/outputs/y2 | grep A) && echo found > test/tester/outputs/y3)) | (((cat < test/tester/outputs/y3 && echo again >> test/tester/outputs/y3) | sort > test/tester/outputs/y4) && (cat test/tester/outputs/y4 >> test/tester/outputs/y5)) | ((cat < test/tester/outputs/y5 | uniq > test/tester/outputs/y6) && echo done > test/tester/outputs/y7)
 (((cat) << FIRST) | ((cat) << SECOND) > out) << ZERO
+(((export MSG=world && echo hello $MSG > test/tester/outputs/f1) | grep world > test/tester/outputs/f2) && echo status:$? > test/tester/outputs/f3) | (export NEWVAR=done && echo $NEWVAR:$? > test/tester/outputs/f4)
