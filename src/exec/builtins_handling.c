@@ -6,7 +6,7 @@
 /*   By: ecasalin <ecasalin@42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 13:13:02 by ecasalin          #+#    #+#             */
-/*   Updated: 2025/06/09 09:19:20 by ecasalin         ###   ########.fr       */
+/*   Updated: 2025/06/09 14:22:21 by ecasalin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,21 +51,36 @@ int	exec_builtin(t_builtin builtin, char **cmd_array,
 	return_value = SUCCESS;
 	if (builtin == echo)
 		return_value = ms_echo(&cmd_array[1]);
-	if (builtin == cd)
+	else if (builtin == cd)
 		return_value = ms_cd(&cmd_array[1], vars);
-	if (builtin == pwd)
+	else if (builtin == pwd)
 		return_value = ms_pwd();
-	if (builtin == env)
+	else if (builtin == env)
 		return_value = ms_env(vars->env);
-	if (builtin == export)
+	else if (builtin == export)
 		return_value = ms_export(&cmd_array[1], vars);
-	if (builtin == unset)
+	else if (builtin == unset)
 		return_value = ms_unset(&cmd_array[1], vars);
-	else if (return_value == CRIT_ERROR)
+	if (return_value == CRIT_ERROR)
 		return (set_err_return_err(error, critical));
 	if (builtin == ext)
 		return_value = ms_exit(cmd_array, vars, error);
 	return (return_value);
+}
+
+static int	restore_fds_free_array(int std_shell_fds[2],
+			char **array, t_error *error)
+{
+	if (array != NULL)
+		free_array(array);
+	if (*error == recoverable)
+		restore_shell_fds(std_shell_fds);
+	else
+	{
+		close(std_shell_fds[0]);
+		close(std_shell_fds[1]);
+	}
+	return (ERROR);
 }
 
 int	prepare_builtin_exec(t_builtin builtin, t_bin_tree *curr_node,
@@ -82,13 +97,13 @@ int	prepare_builtin_exec(t_builtin builtin, t_bin_tree *curr_node,
 		return (free_array_set_err(error, recoverable, cmd_array));
 	set_io_fds(curr_node, error);
 	if (*error)
-		return (free_array_set_err(error, *error, cmd_array));
+		return (restore_fds_free_array(std_shell_fds, cmd_array, error));
 	return_value = exec_builtin(builtin, cmd_array, vars, error);
 	free_array(cmd_array);
 	if (*error == recoverable || *error == critical)
-		return (ERROR);
+		return (restore_fds_free_array(std_shell_fds, NULL, error));
 	if (restore_shell_fds(std_shell_fds) == ERROR)
-		return (free_array_set_err(error, recoverable, cmd_array));
+		return (set_err_return_err(error, recoverable));
 	if (builtin == ext && *error != invalid_exit_args)
 	{
 		free_tree_and_vars(tree_root(curr_node), vars);
