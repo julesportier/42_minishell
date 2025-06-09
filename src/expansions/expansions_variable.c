@@ -6,7 +6,7 @@
 /*   By: juportie <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 10:25:15 by juportie          #+#    #+#             */
-/*   Updated: 2025/05/30 17:04:05 by juportie         ###   ########.fr       */
+/*   Updated: 2025/06/09 17:53:36 by juportie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,8 @@ static t_dlst	*expand_value(t_dlst *token, char *value, t_error *error)
 	i = 0;
 	while (splits[i])
 	{
-		if (place_expansion_result(&token, variable, splits[i], error) != success)
+		if (place_expansion_result(
+				&token, variable, splits[i], error) != success)
 			return (NULL);
 		++i;
 	}
