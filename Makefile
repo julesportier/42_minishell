@@ -69,6 +69,15 @@ SRC_EXPANSIONS := expansions.c \
 				  expansions_toklist_utils.c \
 				  expansions_variable.c \
 				  expansions_double_quotes.c \
+				  expansions_wildcard_identity_check.c \
+				  expansions_wildcard_sort_cmp.c \
+				  expansions_wildcard_sort.c \
+				  expansions_wildcard_junk_utils.c \
+				  expansions_wildcard_append_junk.c \
+				  expansions_wildcard_create_cwd_list.c \
+				  expansions_wildcard_glob_utils.c \
+				  expansions_wildcard_glob.c \
+				  expansions_wildcard_concatenate.c \
 				  expansions_wildcard.c \
 				  heredoc_to_file.c
 SRC_GENERAL_UTILS := env_utils.c \

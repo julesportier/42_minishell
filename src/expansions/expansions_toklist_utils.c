@@ -6,12 +6,14 @@
 /*   By: juportie <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 10:25:15 by juportie          #+#    #+#             */
-/*   Updated: 2025/05/30 17:05:32 by juportie         ###   ########.fr       */
+/*   Updated: 2025/06/09 17:51:16 by juportie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../libft/src/libft.h"
 #include "../minishell.h"
+#include "../general_utils/utils.h"
+#include "../error_handling/errors.h"
 #include "../parsing/parsing.h"
 
 t_error	replace_token_content(
@@ -28,23 +30,21 @@ t_error	replace_token_content(
 	return (*error);
 }
 
-static t_error	merge_next_token(t_dlst *token, t_error *error)
+t_error	merge_next_token(t_dlst *token, t_error *error)
 {
 	set_toklist_str(
 		token,
-		ft_strjoin(get_toklist_str(token), get_toklist_str(token->next)));
+		free_strjoin(
+			get_toklist_str(token), get_toklist_str(token->next), true, false));
 	if (get_toklist_str(token) == NULL)
-	{
-		*error = critical;
-		return (critical);
-	}
+		set_err_return_err_enun(error, critical);
 	ft_dlstremove(token->next, free_token_content, free);
 	return (success);
 }
 
 t_error	concatenate_toklist(t_dlst **toklist, t_error *error)
 {
-	t_dlst *token;
+	t_dlst	*token;
 
 	if (!toklist)
 		return (success);
