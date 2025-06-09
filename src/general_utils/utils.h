@@ -3,21 +3,22 @@
 /*                                                        :::      ::::::::   */
 /*   utils.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ecasalin <ecasalin@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ecasalin <ecasalin@42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/25 17:00:23 by kura              #+#    #+#             */
-/*   Updated: 2025/05/12 15:10:12 by ecasalin         ###   ########.fr       */
+/*   Updated: 2025/06/09 09:44:44 by ecasalin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef UTILS_H
 # define UTILS_H
 
-#include "../minishell.h"
+# include "../minishell.h"
 
 /*GENERAL UTILS*/
 int		count_array_len(char **array);
 char	*free_strjoin(char *s1, char *s2, t_bool free_s1, t_bool free_s2);
+char	get_last_char(char *str);
 
 /*ENV UTILS*/
 int		is_var_value_present(char *var);

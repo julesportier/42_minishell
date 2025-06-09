@@ -6,7 +6,7 @@
 /*   By: ecasalin <ecasalin@42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/02 14:09:03 by ecasalin          #+#    #+#             */
-/*   Updated: 2025/06/02 14:59:49 by ecasalin         ###   ########.fr       */
+/*   Updated: 2025/06/09 09:46:26 by ecasalin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ int	init_sigint_exec_sigaction(void)
 	sigact.sa_flags = SA_RESTART;
 	sigact.sa_handler = handler_set_g_sig;
 	if (sigemptyset(&sigact.sa_mask) == -1)
-	return (-1);
+		return (-1);
 	if (sigaction(SIGINT, &sigact, NULL) == -1)
 		return (-1);
 	return (0);

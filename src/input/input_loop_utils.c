@@ -6,7 +6,7 @@
 /*   By: ecasalin <ecasalin@42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/02 15:11:52 by ecasalin          #+#    #+#             */
-/*   Updated: 2025/06/02 18:20:16 by ecasalin         ###   ########.fr       */
+/*   Updated: 2025/06/09 09:50:32 by ecasalin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,8 @@ char	*set_readline_and_history(char *prompt, t_error *error)
 	return (line);
 }
 
-void	create_prompt(t_shell_vars *vars, char *personalized_prompt, t_error *error)
+void	create_prompt(t_shell_vars *vars,
+			char *personalized_prompt, t_error *error)
 {
 	vars->prompt = ft_strjoin(vars->cwd_backup, personalized_prompt);
 	if (vars->prompt == NULL)

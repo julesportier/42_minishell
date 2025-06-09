@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   unset.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ecasalin <ecasalin@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ecasalin <ecasalin@42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 07:54:32 by ecasalin          #+#    #+#             */
-/*   Updated: 2025/05/21 14:16:04 by ecasalin         ###   ########.fr       */
+/*   Updated: 2025/06/09 09:11:29 by ecasalin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,10 +18,10 @@
 
 static int	get_env_var_index(char *var_name, char **env, int env_len)
 {
-	int		i;
+	int	i;
 
 	i = 0;
-	if (var_name[ft_strlen(var_name) - 1] == '=') // ICI AUSSI ON PEUT UTILISER GET_LAST_CHAR
+	if (get_last_char(var_name) == '=')
 		return (-1);
 	while (i < env_len)
 	{
@@ -92,26 +92,3 @@ int	ms_unset(char **args, t_shell_vars *vars)
 		return (CRIT_ERROR);
 	return (SUCCESS);
 }
-
-// #include "../shell_init/init.h"
-// #include <stdio.h>
-// #include "../cleaning_utils/cleaning.h"
-// int	main(int ac, char *av[], char *envp[])
-// {
-// 	t_error	error;
-// 	int	ret;
-// 	int	i = 0;
-// 	t_shell_vars	vars;
-
-// 	if (ac < 2)
-// 		return (0);
-// 	vars.env = init_env_array(envp, &error);
-// 	ret = ms_unset(&av[2], &vars);
-// 	while (vars.env[i])
-// 	{
-// 		printf("%s --> %d\n", vars.env[i], i);
-// 		i++;
-// 	}
-// 	free_array(vars.env);
-// 	return (ret);
-// }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   subprocess_utils.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ecasalin <ecasalin@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ecasalin <ecasalin@42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/21 14:20:47 by ecasalin          #+#    #+#             */
-/*   Updated: 2025/05/28 11:15:54 by ecasalin         ###   ########.fr       */
+/*   Updated: 2025/06/09 09:33:03 by ecasalin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 #include <sys/wait.h>
 #include "exec.h"
 
-#include <stdio.h>
 int	get_exit_code(int child_exit_status)
 {
 	if (!WIFEXITED(child_exit_status))

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env_utils.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ecasalin <ecasalin@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ecasalin <ecasalin@42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 18:52:27 by ecasalin          #+#    #+#             */
-/*   Updated: 2025/05/21 13:56:14 by ecasalin         ###   ########.fr       */
+/*   Updated: 2025/06/09 09:44:33 by ecasalin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,8 @@ char	*get_env_var(char *var_name, char **env)
 	i = 0;
 	while (env[i])
 	{
-		if (compare_env_var_names(var_name, env[i], get_var_name_len(var_name)) == SUCCESS)
+		if (compare_env_var_names(var_name, env[i],
+				get_var_name_len(var_name)) == SUCCESS)
 			return (env[i]);
 		i++;
 	}

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   shell_init.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ecasalin <ecasalin@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ecasalin <ecasalin@42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 08:01:52 by ecasalin          #+#    #+#             */
-/*   Updated: 2025/06/07 10:26:43 by ecasalin         ###   ########.fr       */
+/*   Updated: 2025/06/09 09:53:42 by ecasalin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,11 +48,10 @@ char	**init_env_array(char **env, t_error *error)
 	return (env_array);
 }
 
-/*Dans le main faudra bien free env et se barrer si ca return NULL*/
 char	*init_cwd_backup(void)
 {
 	char		*cwd;
-	
+
 	cwd = getcwd(NULL, 0);
 	if (errno == ENOMEM)
 		return (NULL);
@@ -61,7 +60,8 @@ char	*init_cwd_backup(void)
 		cwd = ft_strdup_s("/");
 		if (cwd == NULL)
 			return (NULL);
-		ft_putstr_fd("minishell: current working directory is unlinked: setting internal backup cwd to /\n", 2);
+		ft_putstr_fd("minishell: current working directory is unlinked: "
+			"setting internal backup cwd to /\n", 2);
 		errno = 0;
 	}
 	return (cwd);
@@ -82,37 +82,3 @@ int	init_shell_vars(t_shell_vars *vars, char **envp, t_error *error)
 	}
 	return (SUCCESS);
 }
-
-// #include <stdio.h>
-// int	main(int ac, char *av[], char *envp[])
-// {
-// 	char	**env_array;
-// 	t_error	error;
-// 	int		i;
-
-// 	i = 0;
-// 	env_array = init_env_array(envp, &error);
-// 	if (env_array == NULL)
-// 		return (printf("ENV = NULL"), 0);
-// 	printf("ENVP:\n\n");
-// 	while (envp[i])
-// 	{
-// 		printf("%s\n", envp[i]);
-// 		i++;
-// 	}
-// 	// env_array = add_var_to_env(env_array, "VAR=TEST");
-// 	// env_array = add_var_to_env(env_array, "VAR2=TEST2");
-// 	// if (env_array == NULL)
-// 	// 	return (printf("VAR_ADD: FAIL\n"));
-// 	printf("\n\nENV_ARRAY:\n\n");
-// 	i = 0;
-// 	while (env_array[i])
-// 	{
-// 		printf("%s\n", env_array[i]);
-// 		i++;
-// 	}
-// 	printf("\n%s\n", get_env_var("GJS_DEBUG_TOPICS=", env_array));
-// 	printf("%s\n", get_env_var_value("CDPATH=", env_array));
-// 	return (0);
-// }
-

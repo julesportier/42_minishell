@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ecasalin <ecasalin@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ecasalin <ecasalin@42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/25 15:41:16 by ecasalin          #+#    #+#             */
-/*   Updated: 2025/05/26 08:09:56 by ecasalin         ###   ########.fr       */
+/*   Updated: 2025/06/09 08:46:27 by ecasalin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,6 @@ static int	is_valid_var_name(char *var)
 	return (SUCCESS);
 }
 
-// /*POUR RAJOUTER DU PIQUANT, SI VAR = NULL CA SEGFAULT*/
 char	**add_var_to_env(char *var, char **env)
 {
 	int		i;
@@ -131,19 +130,3 @@ int	ms_export(char **args, t_shell_vars *vars)
 		return (ERROR);
 	return (SUCCESS);
 }
-
-// #include <stdio.h>
-// int	main(int ac, char *av[], char *envp[])
-// {
-// 	t_shell_vars	vars;
-// 	t_error	error;
-// 	int		temp;
-
-// 	vars.env = init_env_array(envp, &error);
-// 	temp = ms_export(&av[2], &vars);
-// 	if (ac >= 3)
-// 		print_sorted_env(vars.env);
-// 	free_array(vars.env);
-// 	return (temp);
-// }
-	

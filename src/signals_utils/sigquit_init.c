@@ -6,7 +6,7 @@
 /*   By: ecasalin <ecasalin@42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/02 14:13:30 by ecasalin          #+#    #+#             */
-/*   Updated: 2025/06/02 15:00:31 by ecasalin         ###   ########.fr       */
+/*   Updated: 2025/06/09 09:47:44 by ecasalin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,9 @@
 #include "../../libft/src/libft.h"
 #include "../signals_utils/signals_utils.h"
 
-int init_sigquit_exec_sigaction(void)
+int	init_sigquit_exec_sigaction(void)
 {
-	struct sigaction sigact;
+	struct sigaction	sigact;
 
 	ft_bzero(&sigact, sizeof(struct sigaction));
 	sigact.sa_flags = SA_RESTART;
@@ -29,9 +29,9 @@ int init_sigquit_exec_sigaction(void)
 	return (0);
 }
 
-int init_sigquit_input_sigaction(void)
+int	init_sigquit_input_sigaction(void)
 {
-	struct sigaction sigact;
+	struct sigaction	sigact;
 
 	ft_bzero(&sigact, sizeof(struct sigaction));
 	sigact.sa_flags = SA_RESTART;

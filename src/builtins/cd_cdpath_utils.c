@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd_cdpath_utils.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ecasalin <ecasalin@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ecasalin <ecasalin@42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 10:50:49 by ecasalin          #+#    #+#             */
-/*   Updated: 2025/05/26 16:40:23 by ecasalin         ###   ########.fr       */
+/*   Updated: 2025/06/09 08:43:13 by ecasalin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,13 +52,13 @@ static int	iter_cdpath(char *path, char *cdpath, t_shell_vars *vars)
 		temp_path = ft_strjoin(cdpath_array[i], path);
 		if (temp_path == NULL)
 			return_value = CRIT_ERROR;
-		if (return_value != CRIT_ERROR && chdir_update_wd_vars(temp_path, vars) == SUCCESS)
-			return_value = SUCCESS;
+		if (return_value != CRIT_ERROR)
+			return_value = chdir_update_wd(temp_path, vars);
 		if (return_value == SUCCESS)
 			printf("%s\n", temp_path);
 		free(temp_path);
 		if (return_value != ERROR)
-			break;
+			break ;
 	}
 	free_array(cdpath_array);
 	return (return_value);
@@ -72,7 +72,7 @@ static int	cd_in_curr_dir(char *path, t_shell_vars *vars)
 	temp_path = ft_strjoin("./", path);
 	if (temp_path == NULL)
 		return (CRIT_ERROR);
-	return_value = chdir_update_wd_vars(temp_path, vars);
+	return_value = chdir_update_wd(temp_path, vars);
 	free(temp_path);
 	return (return_value);
 }
