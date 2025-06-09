@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: ecasalin <ecasalin@42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2025/05/30 23:42:30 by ecasalin         ###   ########.fr       */
+/*   Created: 2025/05/30 23:42:30 by ecasalin          #+#    #+#             */
+/*   Updated: 2025/06/09 09:41:09 by ecasalin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ int	free_array_set_err(t_error *error, t_error err_value, char **array)
 	return (set_err_return_err(error, err_value));
 }
 
-int print_joined_cmd_error(char *cmd_name, char *arg, char *msg, t_error *error)
+int	print_joined_cmd_error(char *cmd_name, char *arg, char *msg, t_error *error)
 {
 	char	*error_msg;
 
@@ -51,14 +51,15 @@ int print_joined_cmd_error(char *cmd_name, char *arg, char *msg, t_error *error)
 	return (SUCCESS);
 }
 
-static char *create_errno_msg(t_error *error)
+static char	*create_errno_msg(t_error *error)
 {
 	char	*formatted_strerror;
 
 	formatted_strerror = ft_strdup(": ");
 	if (formatted_strerror == NULL)
 		return (set_err_return_null(error, critical));
-	formatted_strerror = free_strjoin(formatted_strerror, strerror(errno), true, false);
+	formatted_strerror = free_strjoin(formatted_strerror,
+			strerror(errno), true, false);
 	if (formatted_strerror == NULL)
 		return (set_err_return_null(error, critical));
 	formatted_strerror = free_strjoin(formatted_strerror, "\n", true, false);
@@ -77,11 +78,13 @@ int	print_exec_error(char *cmd_name, int return_value, t_error *error)
 	{
 		formatted_strerror = create_errno_msg(error);
 		if (*error)
-			return (return_perror("minishell: execution: critical error", ERROR));
+			return (return_perror("minishell: execution: "
+					"critical error", ERROR));
 		print_joined_cmd_error(cmd_name, NULL, formatted_strerror, error);
 		free(formatted_strerror);
 		if (*error)
-			return (return_perror("minishell: execution: critical error", ERROR));
+			return (return_perror("minishell: execution: "
+					"critical error", ERROR));
 		return (return_value);
 	}
 }

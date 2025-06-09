@@ -5,17 +5,17 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: ecasalin <ecasalin@42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/25 18:41:28 by ecasalin              #+#    #+#             */
-/*   Updated: 2025/05/02 14:23:45 by ecasalin         ###   ########.fr       */
+/*   Created: 2025/04/25 18:41:28 by ecasalin          #+#    #+#             */
+/*   Updated: 2025/06/09 08:44:25 by ecasalin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef BUILTINS_H
 # define BUILTINS_H
 
-#include "../parsing/parsing.h"
+# include "../parsing/parsing.h"
 
-typedef enum	e_builtin
+typedef enum e_builtin
 {
 	not_builtin,
 	echo,
@@ -61,6 +61,6 @@ char	*concat_path_and_cwd_backup(char *cwd_backup, char *path);
 int		update_wd_vars(t_shell_vars *vars);
 int		chdir_unlinked_cwd(char *path, t_shell_vars *vars);
 int		is_path_syntax_valid(char *path);
-int		chdir_update_wd_vars(char *path, t_shell_vars *vars);
+int		chdir_update_wd(char *path, t_shell_vars *vars);
 
 #endif

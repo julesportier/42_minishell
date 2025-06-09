@@ -6,7 +6,7 @@
 /*   By: ecasalin <ecasalin@42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 10:53:03 by ecasalin          #+#    #+#             */
-/*   Updated: 2025/05/18 16:12:45 by ecasalin         ###   ########.fr       */
+/*   Updated: 2025/06/09 09:07:48 by ecasalin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,8 @@ char	*concat_path_and_cwd_backup(char *cwd_backup, char *path)
 	formatted_path = ft_strdup_s(cwd_backup);
 	if (formatted_path == NULL)
 		return (NULL);
-	if (ft_strncmp(formatted_path, "/", 2) != SUCCESS && formatted_path[ft_strlen(formatted_path)] != '/') // ON PEUT UTILISER GET_LAST_CHAR DANS GENREAL_UTILS->PATH_UTILS
+	if (ft_strncmp(formatted_path, "/", 2) != SUCCESS
+		&& get_last_char(formatted_path) != '/')
 		formatted_path = free_strjoin(formatted_path, "/", true, false);
 	if (formatted_path == NULL)
 		return (NULL);
@@ -93,9 +94,10 @@ int	update_wd_vars(t_shell_vars *vars)
 		return (CRIT_ERROR);
 	if (temp_wd == NULL)
 		return (ERROR);
-	if (set_wd_var("OLDPWD", get_env_var_value("PWD", vars->env), vars) == CRIT_ERROR ||
-		set_wd_var("PWD", temp_wd, vars) == CRIT_ERROR ||
-		update_cwd_backup(temp_wd, vars) == CRIT_ERROR)
+	if (set_wd_var("OLDPWD", get_env_var_value("PWD", vars->env),
+			vars) == CRIT_ERROR || set_wd_var("PWD", temp_wd,
+			vars) == CRIT_ERROR || update_cwd_backup(temp_wd,
+			vars) == CRIT_ERROR)
 		return_value = CRIT_ERROR;
 	free(temp_wd);
 	return (return_value);

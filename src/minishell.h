@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ecasalin <ecasalin@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ecasalin <ecasalin@42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 16:31:37 by juportie          #+#    #+#             */
-/*   Updated: 2025/06/07 10:26:48 by ecasalin         ###   ########.fr       */
+/*   Updated: 2025/06/09 09:49:09 by ecasalin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,13 +21,13 @@
 #  define PROMPT "🤖> "
 # endif // PROMPT
 
-typedef enum	e_bool
+typedef enum e_bool
 {
 	false = 0,
 	true = 1
 }	t_bool;
 
-typedef enum	e_error
+typedef enum e_error
 {
 	success = 0,
 	recoverable,
@@ -35,7 +35,7 @@ typedef enum	e_error
 	invalid_exit_args
 }	t_error;
 
-typedef	struct s_shell_vars
+typedef struct s_shell_vars
 {
 	char	**env;
 	int		last_cmd_ext_code;

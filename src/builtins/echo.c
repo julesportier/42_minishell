@@ -6,7 +6,7 @@
 /*   By: ecasalin <ecasalin@42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 07:07:22 by ecasalin          #+#    #+#             */
-/*   Updated: 2025/05/22 15:35:28 by ecasalin         ###   ########.fr       */
+/*   Updated: 2025/06/09 08:47:25 by ecasalin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,18 +82,9 @@ int	ms_echo(char **args)
 			i++;
 		}
 		else
-			break;
+			break ;
 	}
 	if (fill_buffer(args, i, &buffer, n_flag) == CRIT_ERROR)
 		return (return_perror("minishell: echo", CRIT_ERROR));
 	return (write_and_free_buffer(buffer));
 }
-
-// #include <stdio.h>
-// int	main(int ac, char *av[])
-// {
-// 	int	return_val;
-
-// 	return_val = ms_echo(&av[1]);
-// 	printf("\n%d\n", return_val);
-// }

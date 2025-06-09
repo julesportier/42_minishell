@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   cmd_exec.c                                         :+:      :+:    :+:   */
+/*   exec_command.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ecasalin <ecasalin@42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 11:23:07 by ecasalin          #+#    #+#             */
-/*   Updated: 2025/06/09 07:16:24 by ecasalin         ###   ########.fr       */
+/*   Updated: 2025/06/09 09:42:03 by ecasalin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,7 +94,8 @@ static int	exec_command(char *cmd_name, char **array2, t_shell_vars *vars)
 		return (1);
 }
 
-int	exec_relative_path_cmd(char **paths_array, char **cmd_array, t_shell_vars *vars, t_bin_tree *curr_node)
+int	exec_relative_path_cmd(char **paths_array,
+			char **cmd_array, t_shell_vars *vars, t_bin_tree *curr_node)
 {
 	int		i;
 	char	*temp_line;
@@ -122,7 +123,8 @@ int	exec_relative_path_cmd(char **paths_array, char **cmd_array, t_shell_vars *v
 	exit(127);
 }
 
-void	prepare_to_exec(t_bin_tree *curr_node, char **paths_array, t_shell_vars *vars, t_error *error)
+void	prepare_to_exec(t_bin_tree *curr_node,
+			char **paths_array, t_shell_vars *vars, t_error *error)
 {
 	int		exit_value;
 	char	**cmd_array;
@@ -136,7 +138,8 @@ void	prepare_to_exec(t_bin_tree *curr_node, char **paths_array, t_shell_vars *va
 	if (paths_array != NULL && paths_array[0] != NULL
 		&& cmd_array[0] != NULL
 		&& ft_strnstr(cmd_array[0], "/", ft_strlen(cmd_array[0])) == NULL)
-		exit_value = exec_relative_path_cmd(paths_array, cmd_array, vars, curr_node);
+		exit_value = exec_relative_path_cmd(paths_array,
+				cmd_array, vars, curr_node);
 	else
 		exit_value = exec_command(cmd_array[0], cmd_array, vars);
 	exit_value = print_exec_error(cmd_array[0], exit_value, error);

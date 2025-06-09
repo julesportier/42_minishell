@@ -6,7 +6,7 @@
 /*   By: ecasalin <ecasalin@42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 13:13:02 by ecasalin          #+#    #+#             */
-/*   Updated: 2025/06/01 10:54:18 by ecasalin         ###   ########.fr       */
+/*   Updated: 2025/06/09 09:19:20 by ecasalin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,8 @@ int	is_builtin(t_bin_tree *curr_node)
 	return (not_builtin);
 }
 
-int	exec_builtin(t_builtin builtin, char **cmd_array, t_shell_vars *vars, t_error *error)
+int	exec_builtin(t_builtin builtin, char **cmd_array,
+		t_shell_vars *vars, t_error *error)
 {
 	int	return_value;
 
@@ -67,7 +68,8 @@ int	exec_builtin(t_builtin builtin, char **cmd_array, t_shell_vars *vars, t_erro
 	return (return_value);
 }
 
-int	prepare_builtin_exec(t_builtin builtin, t_bin_tree *curr_node, t_shell_vars *vars, t_error *error)
+int	prepare_builtin_exec(t_builtin builtin, t_bin_tree *curr_node,
+		t_shell_vars *vars, t_error *error)
 {
 	int		std_shell_fds[2];
 	char	**cmd_array;

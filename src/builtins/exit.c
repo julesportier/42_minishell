@@ -6,7 +6,7 @@
 /*   By: ecasalin <ecasalin@42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/23 07:57:45 by ecasalin          #+#    #+#             */
-/*   Updated: 2025/06/01 10:54:18 by ecasalin         ###   ########.fr       */
+/*   Updated: 2025/06/09 07:36:43 by ecasalin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,8 @@ static int	ft_isspace(char c)
 
 static t_intf	atouc_flag(const char *nptr)
 {
-	int	i;
-	int	sign;
+	int		i;
+	int		sign;
 	t_intf	nbr;
 
 	nbr = (t_intf){0, 0};
@@ -56,15 +56,15 @@ static int	set_numeric_arg_error(t_error *error, char *arg)
 {
 	*error = invalid_exit_args;
 	print_joined_cmd_error("exit: ", arg,
-			": numeric argument required\n", error);
-	 return (2);
+		": numeric argument required\n", error);
+	return (2);
 }
 
 static int	set_too_many_args_error(t_error *error)
 {
 	*error = invalid_exit_args;
 	print_joined_cmd_error("exit: ", NULL,
-			"too many arguments\n", error);
+		"too many arguments\n", error);
 	return (1);
 }
 

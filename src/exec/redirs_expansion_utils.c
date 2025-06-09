@@ -6,7 +6,7 @@
 /*   By: ecasalin <ecasalin@42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/07 09:23:28 by ecasalin          #+#    #+#             */
-/*   Updated: 2025/06/09 07:19:26 by ecasalin         ###   ########.fr       */
+/*   Updated: 2025/06/09 09:18:22 by ecasalin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 #include "../error_handling/errors.h"
 #include "../expansions/expansions.h"
 
-static int is_word(t_dlst *temp_head)
+static int	is_word(t_dlst *temp_head)
 {
 	if (temp_head == NULL)
 		return (0);

@@ -6,7 +6,7 @@
 /*   By: ecasalin <ecasalin@42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 08:35:28 by ecasalin          #+#    #+#             */
-/*   Updated: 2025/06/05 21:00:04 by ecasalin         ###   ########.fr       */
+/*   Updated: 2025/06/09 09:35:40 by ecasalin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@
 #include "../error_handling/errors.h"
 #include "exec.h"
 
-static int close_return_perror(int fd)
+static int	close_return_perror(int fd)
 {
 	perror("minishell: execution: redirection error");
 	close(fd);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   paths_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ecasalin <ecasalin@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ecasalin <ecasalin@42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/09 09:18:40 by ecasalin          #+#    #+#             */
-/*   Updated: 2025/05/09 09:25:09 by ecasalin         ###   ########.fr       */
+/*   Updated: 2025/06/09 08:49:43 by ecasalin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 #include <unistd.h>
 #include "../minishell.h"
 
-static char	get_last_char(char *str)
+char	get_last_char(char *str)
 {
 	if (str == NULL)
 		return ('\0');
@@ -30,7 +30,7 @@ int	add_slash_to_paths(char **array)
 	i = 0;
 	while (array[i] != NULL)
 	{
-		line_last_char = get_last_char(array[i]); 
+		line_last_char = get_last_char(array[i]);
 		if (line_last_char != '\0' && line_last_char != '/')
 		{
 			slashed_line = ft_strjoin(array[i], "/");

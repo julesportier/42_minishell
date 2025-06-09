@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd_utils.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ecasalin <ecasalin@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ecasalin <ecasalin@42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 10:49:58 by ecasalin          #+#    #+#             */
-/*   Updated: 2025/05/21 13:46:54 by ecasalin         ###   ########.fr       */
+/*   Updated: 2025/06/09 09:10:42 by ecasalin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,11 +20,11 @@
 
 int	is_path_syntax_valid(char *path)
 {
-	if (ft_strncmp(path, "./", 2) == SUCCESS ||
-		ft_strncmp(path, "../", 3) == SUCCESS ||
-		ft_strncmp(path, "..", 3) == SUCCESS ||
-		ft_strncmp(path, ".", 2) == SUCCESS ||
-		ft_strncmp(path, "/", 1) == SUCCESS)
+	if (ft_strncmp(path, "./", 2) == SUCCESS
+		|| ft_strncmp(path, "../", 3) == SUCCESS
+		|| ft_strncmp(path, "..", 3) == SUCCESS
+		|| ft_strncmp(path, ".", 2) == SUCCESS
+		|| ft_strncmp(path, "/", 1) == SUCCESS)
 		return (SUCCESS);
 	return (ERROR);
 }
@@ -49,15 +49,15 @@ static int	is_valid_relative_path(char *path)
 static char	*parse_relative_path(char *path)
 {
 	int	i;
-	
+
 	i = 0;
 	while (path[i])
 	{
-		if (ft_strncmp(&path[i], "./", 2) == SUCCESS ||
-		ft_strncmp(&path[i], "../", 3) == SUCCESS ||
-		ft_strncmp(&path[i], "..", 3) == SUCCESS ||
-		ft_strncmp(&path[i], ".", 2) == SUCCESS)
-			break;
+		if (ft_strncmp(&path[i], "./", 2) == SUCCESS
+			|| ft_strncmp(&path[i], "../", 3) == SUCCESS
+			|| ft_strncmp(&path[i], "..", 3) == SUCCESS
+			|| ft_strncmp(&path[i], ".", 2) == SUCCESS)
+			break ;
 		i++;
 	}
 	if (path[i] == '\0')
@@ -82,7 +82,7 @@ static t_bool	is_dir_unlinked(char *path)
 /*Path is not a mallocked var --> no leaks*/
 int	chdir_unlinked_cwd(char *path, t_shell_vars *vars)
 {
-	int			return_value;
+	int	return_value;
 
 	return_value = ERROR;
 	if (is_valid_relative_path(path) == SUCCESS)
@@ -90,8 +90,8 @@ int	chdir_unlinked_cwd(char *path, t_shell_vars *vars)
 		path = concat_path_and_cwd_backup(vars->cwd_backup, path);
 		if (path == NULL)
 			return (CRIT_ERROR);
-		if (!is_dir_unlinked(parse_relative_path(path)) &&
-				chdir(parse_relative_path(path)) == SUCCESS)
+		if (!is_dir_unlinked(parse_relative_path(path))
+			&& chdir(parse_relative_path(path)) == SUCCESS)
 			return_value = update_wd_vars(vars);
 		else
 		{

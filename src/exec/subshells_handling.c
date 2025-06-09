@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   subshells_handling.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ecasalin <ecasalin@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ecasalin <ecasalin@42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 21:13:38 by ecasalin          #+#    #+#             */
-/*   Updated: 2025/06/07 13:46:02 by ecasalin         ###   ########.fr       */
+/*   Updated: 2025/06/09 09:35:11 by ecasalin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,8 @@
 #include "../input/input.h"
 #include "../expansions/expansions.h"
 
-static void	continue_in_subshell(t_bin_tree *curr_node, t_shell_vars *vars, t_error *error)
+static void	continue_in_subshell(t_bin_tree *curr_node,
+		t_shell_vars *vars, t_error *error)
 {
 	vars->last_cmd_ext_code = exec_command_tree(curr_node, vars, error);
 	free_tree_and_vars(tree_root(curr_node), vars);
@@ -35,7 +36,8 @@ int	fork_subshell(t_bin_tree *curr_node, t_shell_vars *vars, t_error *error)
 	curr_node->content->subshell = false;
 	pid = fork();
 	if (pid == FAILURE)
-		return (return_perror_set_err("minishell: execution: fork error", error, recoverable));
+		return (return_perror_set_err("minishell: execution: "
+				"fork error", error, recoverable));
 	if (pid == CHILD)
 	{
 		if (curr_node->left)
@@ -50,4 +52,3 @@ int	fork_subshell(t_bin_tree *curr_node, t_shell_vars *vars, t_error *error)
 	}
 	return (wait_child());
 }
-
