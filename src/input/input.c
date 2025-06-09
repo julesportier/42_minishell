@@ -6,7 +6,7 @@
 /*   By: ecasalin <ecasalin@42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 14:50:31 by juportie          #+#    #+#             */
-/*   Updated: 2025/06/02 18:08:50 by ecasalin         ###   ########.fr       */
+/*   Updated: 2025/06/09 11:08:03 by ecasalin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,8 @@ static t_bin_tree	*parse_command_line(char *line, t_error *error)
 		return (NULL);
 }
 
-static void	switch_to_exec_mode(t_bin_tree *parse_tree, t_shell_vars *vars, t_error *error)
+static void	switch_to_exec_mode(t_bin_tree *parse_tree,
+			t_shell_vars *vars, t_error *error)
 {
 	init_exec_sigaction();
 	exec_command_tree(parse_tree, vars, error);
@@ -71,7 +72,7 @@ void	input_loop(t_shell_vars *vars, t_error *error)
 	while (1)
 	{
 		reset_flag_vars(error);
-		create_prompt(vars, PROMPT, error);
+		create_prompt(vars, error);
 		if (*error == critical)
 			break ;
 		line = set_readline_and_history(vars->prompt, error);
@@ -88,5 +89,5 @@ void	input_loop(t_shell_vars *vars, t_error *error)
 		print_signal_reception();
 		free(vars->prompt);
 	}
-		free(vars->prompt);
+	free(vars->prompt);
 }

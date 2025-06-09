@@ -6,7 +6,7 @@
 /*   By: ecasalin <ecasalin@42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/02 15:11:52 by ecasalin          #+#    #+#             */
-/*   Updated: 2025/06/09 09:50:32 by ecasalin         ###   ########.fr       */
+/*   Updated: 2025/06/09 10:52:08 by ecasalin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 #include "../minishell.h"
 #include <errno.h>
 #include "../error_handling/errors.h"
+#include "input.h"
 
 char	*set_readline_and_history(char *prompt, t_error *error)
 {
@@ -38,10 +39,12 @@ char	*set_readline_and_history(char *prompt, t_error *error)
 	return (line);
 }
 
-void	create_prompt(t_shell_vars *vars,
-			char *personalized_prompt, t_error *error)
+void	create_prompt(t_shell_vars *vars, t_error *error)
 {
-	vars->prompt = ft_strjoin(vars->cwd_backup, personalized_prompt);
+	if (vars->last_cmd_ext_code == SUCCESS)
+		vars->prompt = ft_strjoin(vars->cwd_backup, PROMPT_SUCCESS);
+	else
+		vars->prompt = ft_strjoin(vars->cwd_backup, PROMPT_FAILURE);
 	if (vars->prompt == NULL)
 	{
 		perror("minishell: prompt creation");

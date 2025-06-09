@@ -6,7 +6,7 @@
 /*   By: ecasalin <ecasalin@42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 16:31:37 by juportie          #+#    #+#             */
-/*   Updated: 2025/06/09 09:49:09 by ecasalin         ###   ########.fr       */
+/*   Updated: 2025/06/09 10:51:12 by ecasalin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,9 +17,6 @@
 # define SUCCESS 0
 # define ERROR 1
 # define CRIT_ERROR 2
-# ifndef PROMPT
-#  define PROMPT "🤖> "
-# endif // PROMPT
 
 typedef enum e_bool
 {
