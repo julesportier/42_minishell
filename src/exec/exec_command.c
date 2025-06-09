@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd_exec.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ecasalin <ecasalin@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ecasalin <ecasalin@42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 11:23:07 by ecasalin          #+#    #+#             */
-/*   Updated: 2025/06/07 09:23:50 by ecasalin         ###   ########.fr       */
+/*   Updated: 2025/06/09 07:16:24 by ecasalin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,7 @@ int	create_exec_setup(t_bin_tree *curr_node, t_shell_vars *vars, t_error *error)
 	return (ERROR);
 }
 
-static int	exec_cmd(char *cmd_name, char **array2, t_shell_vars *vars)
+static int	exec_command(char *cmd_name, char **array2, t_shell_vars *vars)
 {
 	if (cmd_name != NULL)
 		execve(cmd_name, array2, vars->env);
@@ -112,7 +112,7 @@ int	exec_relative_path_cmd(char **paths_array, char **cmd_array, t_shell_vars *v
 		}
 		paths_array[i] = temp_line;
 		if (access(paths_array[i], F_OK) == SUCCESS)
-			return (exec_cmd(paths_array[i], cmd_array, vars));
+			return (exec_command(paths_array[i], cmd_array, vars));
 		i++;
 	}
 	print_joined_cmd_error(cmd_array[0], NULL, ": command not found\n", &error);
@@ -138,7 +138,7 @@ void	prepare_to_exec(t_bin_tree *curr_node, char **paths_array, t_shell_vars *va
 		&& ft_strnstr(cmd_array[0], "/", ft_strlen(cmd_array[0])) == NULL)
 		exit_value = exec_relative_path_cmd(paths_array, cmd_array, vars, curr_node);
 	else
-		exit_value = exec_cmd(cmd_array[0], cmd_array, vars);
+		exit_value = exec_command(cmd_array[0], cmd_array, vars);
 	exit_value = print_exec_error(cmd_array[0], exit_value, error);
 	free_arrays_tree_and_vars(paths_array, cmd_array, curr_node, vars);
 	exit(exit_value);

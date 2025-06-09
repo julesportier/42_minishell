@@ -64,6 +64,6 @@ int		save_shell_fds(int std_shell_fds[2]);
 int		restore_shell_fds(int std_shell_fds[2]);
 int		expand_redirections(t_bin_tree *curr_node, t_shell_vars *vars, t_error *error);
 int		perform_expansions(t_bin_tree *curr_node, t_shell_vars *vars, t_error *error);
-int		iterate_redir_list(t_dlst *temp_head, t_error *error);
+int		check_redir_list(t_dlst *temp_head, t_error *error);
 
 #endif
