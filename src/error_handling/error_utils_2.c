@@ -24,3 +24,9 @@ int	set_err_return_err(t_error *error, t_error err_value)
 	*error = err_value;
 	return (ERROR);
 }
+
+t_error	set_err_return_err_enun(t_error *error, t_error err_value)
+{
+	*error = err_value;
+	return (err_value);
+}
