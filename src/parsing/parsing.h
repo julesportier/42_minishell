@@ -69,6 +69,7 @@ typedef struct	s_bin_tree
  * LEXING *
  * ********/
 // lexer.c
+t_error	append_token_to_list(t_dlst **tokens_list, t_token *token, t_error *error);
 t_dlst	*scan_line(char *line, t_error *error);
 
 /***********
