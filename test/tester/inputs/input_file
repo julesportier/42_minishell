@@ -1,17 +1,328 @@
 echo hello
-echo 23 <<$test
-$test
-echo 23 <<"$test"
-$test
-(cat) << EOF
-ok
-EOF
-(cat) << 'EOF'
-ok
-EOF
-cat << EOF
-ok
-EOF
 (((echo alpha > test/tester/outputs/y1 && cat < test/tester/outputs/y1) | (tr a-z A-Z > test/tester/outputs/y2 && cat test/tester/outputs/y2)) | ((cat < test/tester/outputs/y2 | grep A) && echo found > test/tester/outputs/y3)) | (((cat < test/tester/outputs/y3 && echo again >> test/tester/outputs/y3) | sort > test/tester/outputs/y4) && (cat test/tester/outputs/y4 >> test/tester/outputs/y5)) | ((cat < test/tester/outputs/y5 | uniq > test/tester/outputs/y6) && echo done > test/tester/outputs/y7)
-(((cat) << FIRST) | ((cat) << SECOND) > out) << ZERO
 (((export MSG=world && echo hello $MSG > test/tester/outputs/f1) | grep world > test/tester/outputs/f2) && echo status:$? > test/tester/outputs/f3) | (export NEWVAR=done && echo $NEWVAR:$? > test/tester/outputs/f4)
+:
+!
+>
+<
+>>
+<<
+<>
+>>>>>
+>>>>>>>>>>>>>>>
+<<<<<
+<<<<<<<<<<<<<<<<
+> > > >
+>> >> >> >>
+>>>> >> >> >>
+/
+//
+/.
+/./../../../../..
+///////
+\\
+\\\\
+\\\\\\\\
+-
+|
+| hola
+| | |
+||
+|||||
+|||||||||||||
+>>|><
+&&
+&&&&&
+&&&&&&&&&&&&&&
+()
+( ( ) )
+( ( ( ( ) ) ) )
+""
+"hola"
+'hola'
+''
+*
+*/*
+*/*
+.
+..
+~
+ABC=hola
+4ABC=hola
+a
+hola que tal
+Makefile
+echo
+echo -n
+echo Hola
+echoHola
+echo-nHola
+echo -n Hola
+echo "-n" Hola
+echo -nHola
+echo Hola -n
+echo Hola Que Tal
+echo         Hola
+echo    Hola     Que    Tal
+echo      \n hola
+echo "         " | cat -e
+echo           | cat -e
+""''echo hola""'''' que""'' tal""''
+echo -n -n
+echo -n -n Hola Que
+echo -p
+echo -nnnnn
+echo -n -nnn -nnnn
+echo -n-nnn -nnnn
+echo -n -nnn hola -nnnn
+echo -n -nnn-nnnn
+echo --------n
+echo -nnn --------n
+echo -nnn -----nn---nnnn
+echo -nnn --------nnnn
+echo $
+echo $?
+echo $?$
+echo $? | echo $? | echo $?
+echo $:$= | cat -e
+echo " $ " | cat -e
+echo ' $ ' | cat -e
+echo $HOME
+echo \$HOME
+echo my shit terminal is [$TERM]
+echo my shit terminal is [$TERM4
+echo my shit terminal is [$TERM4]
+echo $UID
+echo $HOME9
+echo $9HOME
+echo $HOME%
+echo $UID$HOME
+echo Le path de mon HOME est $HOME
+echo $USER$var\$USER$USER\$USERtest$USER
+echo $hola*
+echo -nnnn $hola
+echo > <
+echo | |
+EechoE
+.echo.
+>echo>
+<echo<
+>>echo>>
+|echo|
+|echo -n hola
+echo *
+echo '*'
+echo D*
+echo *Z
+echo *t hola
+echo *t
+echo $*
+echo hola*hola *
+echo $hola*
+echo $HOME*
+echo $""
+echo "$"""
+echo '$'''
+echo $"HOME"
+echo $''HOME
+echo $""HOME
+echo "$HO"ME
+echo '$HO'ME
+echo "$HO""ME"
+echo '$HO''ME'
+echo "'$HO''ME'"
+echo ""$HOME
+echo "" $HOME
+echo ''$HOME
+echo '' $HOME
+echo $"HO""ME"
+echo $'HO''ME'
+echo $'HOME'
+echo "$"HOME
+echo $=HOME
+echo $"HOLA"
+echo $'HOLA'
+echo $DONTEXIST Hola
+echo "hola"
+echo 'hola'
+echo ''hola''
+echo ''h'o'la''
+echo "''h'o'la''"
+echo "'"h'o'la"'"
+echo"'hola'"
+echo "'hola'"
+echo '"hola"'
+echo '''ho"''''l"a'''
+echo hola""""""""""""
+echo hola"''''''''''"
+echo hola''''''''''''
+echo hola'""""""""""'
+e"cho hola"
+e'cho hola'
+echo "hola     " | cat -e
+echo ""hola
+echo "" hola
+echo ""             hola
+echo ""hola
+echo "" hola
+echo hola""bonjour
+"e"'c'ho 'b'"o"nj"o"'u'r
+""e"'c'ho 'b'"o"nj"o"'u'r"
+echo "$DONTEXIST"Makefile
+echo "$DONTEXIST""Makefile"
+echo "$DONTEXIST" "Makefile"
+$?
+$?$?
+?$HOME
+$
+$HOME
+$HOMEdskjhfkdshfsd
+"$HOMEdskjhfkdshfsd"
+'$HOMEdskjhfkdshfsd'
+$DONTEXIST
+$LESS$VAR
+env
+export $DONTEXIST
+export | grep "HOME"
+export ""
+export =
+export %
+export $?
+export ?=2
+export 9HOLA=
+export HOLA9=bonjour && env
+export _HOLA=bonjour && env
+export ___HOLA=bonjour && env
+export _HO_LA_=bonjour && env
+export HOL@=bonjour
+export HOL\~A=bonjour
+export -HOLA=bonjour
+export --HOLA=bonjour
+export HOLA-=bonjour
+export HO-LA=bonjour
+export HOL.A=bonjour
+export HOL\\\$A=bonjour
+export HO\\\\LA=bonjour
+export HOL}A=bonjour
+export HOL{A=bonjour
+export HO*LA=bonjour
+export HO#LA=bonjour
+export HO@LA=bonjour
+export HO!LA=bonjour
+export HO$?LA=bonjour && env
+export +HOLA=bonjour
+export HOL+A=bonjour
+export HOLA =bonjour
+export HOLA = bonjour
+export HOLA=bon jour && env
+export HOLA=bon jour && env
+export HOLA= bonjour && env
+export HOLA=bonsoir && export HOLA=bonretour && export HOLA=bonjour && env
+export HOLA=$HOME && env
+export HOLA=bonjour$HOME && env
+export HOLA=$HOMEbonjour && env
+export HOLA=bon$jour && env
+export HOLA=bon@jour && env
+export HOLA=bon;jour && env
+export HOLA=bon!jour
+export HOLA=bon"jour" && env
+export HOLA$USER=bonjour && env
+export HOLA=bonjour=casse-toi && echo $HOLA
+export "HOLA=bonjour"=casse-toi && echo $HOLA
+export HOLA=bonjour && export BYE=casse-toi && echo $HOLA et $BYE
+export HOLA=bonjour BYE=casse-toi && echo $HOLA et $BYE
+export $HOLA=bonjour && env
+export HOLA="bonjour      "   && echo $HOLA | cat -e
+export HOLA="   -n bonjour   "   && echo $HOLA
+export HOLA="bonjour   "/ && echo $HOLA
+export HOLA='"' && echo " $HOLA " | cat -e
+export HOLA=at && c$HOLA Makefile
+export "" HOLA=bonjour && env
+export HOLA="cat Makefile | grep NAME"   && echo $HOLA
+export HOLA=hey  && echo $HOLA$HOLA$HOLA=hey$HOLA
+export HOLA="  bonjour  hey  "   && echo $HOLA | cat -e
+export HOLA="  bonjour  hey  "   && echo """$HOLA""" | cat -e
+export HOLA="  bonjour  hey  "   && echo wesh"$HOLA" | cat -e
+export HOLA="  bonjour  hey  "   && echo wesh""$HOLA.
+export HOLA="  bonjour  hey  "   && echo wesh$""HOLA.
+export HOLA="  bonjour  hey  "   && echo wesh$"HOLA HOLA".
+export HOLA=bonjour && export HOLA=" hola et $HOLA" && echo $HOLA
+export HOLA=bonjour && export HOLA=' hola et $HOLA' && echo $HOLA
+export HOLA=bonjour && export HOLA=" hola et $HOLA"$HOLA && echo $HOLA
+export HOLA="ls        -l    - a" && echo $HOLA
+export HOLA="s -la"  && l$HOLA
+export HOLA="s -la"  && l"$HOLA"
+export HOLA="s -la"  && l'$HOLA'
+export HOLA="l"  && $HOLAs
+export HOLA="l"  && "$HOLA"s
+export HOL=A=bonjour && env
+export HOLA="l"  && '$HOLA's
+export HOL=A="" && env
+export TE+S=T && env
+export ""=""
+export ''=''
+export "="="="
+export '='='='
+export HOLA=p && export BYE=w && $HOLA"BYE"d
+export HOLA=p && export BYE=w && "$HOLA"'$BYE'd
+export HOLA=p && export BYE=w && "$HOLA""$BYE"d
+export HOLA=p && export BYE=w && $"HOLA"$"BYE"d
+export HOLA=p && export BYE=w && $'HOLA'$'BYE'd
+export HOLA=-n && "echo $HOLA" hey
+export A=1 B=2 C=3 D=4 E=5 F=6 G=7 H=8 $> echo "$A'$B"'$C"$D'$E'"$F'"'$G'$H"
+export HOLA=bonjour && env && unset HOLA && env
+export HOLA=bonjour && env && unset HOLA && unset HOLA && env
+unset PATH && echo $PATH
+unset PATH && ls
+unset ""
+unset INEXISTANT
+unset PWD && env | grep PWD && pwd
+pwd && unset PWD && env | grep PWD && cd $PWD && pwd
+unset OLDPWD && env | grep OLDPWD
+unset 9HOLA
+unset HOLA9
+unset HOL?A
+unset HOLA HOL?A
+unset HOL?A HOLA
+unset HOL?A HOL.A
+unset HOLA=
+unset HOL\\\\A
+unset HOL
+unset HOL.A
+unset HOL+A
+unset HOL=A
+unset HOL{A
+unset HOL}A
+unset HOL-A
+unset -HOLA
+unset _HOLA
+unset HOL_A
+unset HOLA_
+unset HOL*A
+unset HOL#A
+unset $HOLA
+unset $PWD
+unset HOL@
+unset HOL!A
+unset HOL^A
+unset HOL$?A
+unset HOL\~A
+unset "" HOLA && env | grep HOLA
+unset PATH && echo $PATH
+unset PATH && cat Makefile
+unset =
+unset ======
+unset ++++++
+unset _______
+unset export
+unset echo
+unset pwd
+unset cd
+unset unset
+unset sudo
+export hola | unset hola | echo $?
+/bin/echo
+/bin/echo Hola Que Tal
+/bin/env
+/bin/cd Desktop
+history
