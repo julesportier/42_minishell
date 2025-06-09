@@ -6,7 +6,7 @@
 /*   By: ecasalin <ecasalin@42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/07 09:23:28 by ecasalin          #+#    #+#             */
-/*   Updated: 2025/06/07 23:16:05 by ecasalin         ###   ########.fr       */
+/*   Updated: 2025/06/09 07:19:26 by ecasalin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,8 @@
 
 static int is_word(t_dlst *temp_head)
 {
+	if (temp_head == NULL)
+		return (0);
 	if (get_toklist_type(temp_head) == literal)
 		return (1);
 	if (get_toklist_type(temp_head) == heredoc_exp)
@@ -27,7 +29,7 @@ static int is_word(t_dlst *temp_head)
 	return (0);
 }
 
-int	iterate_redir_list(t_dlst *temp_head, t_error *error)
+int	check_redir_list(t_dlst *temp_head, t_error *error)
 {
 	if (temp_head != NULL && is_word(temp_head))
 		return (set_err_return_err(error, recoverable));
@@ -49,10 +51,10 @@ int	iterate_redir_list(t_dlst *temp_head, t_error *error)
 
 static int	check_redirs_expansion(t_bin_tree *curr_node, t_error *error)
 {
-	if (iterate_redir_list(curr_node->content->inputs, error) == ERROR)
+	if (check_redir_list(curr_node->content->inputs, error) == ERROR)
 		return (return_error("minishell: syntax error: ill-formed redirection, "
 				"unexpected `redir_input'\n", ERROR));
-	if (iterate_redir_list(curr_node->content->outputs, error) == ERROR)
+	if (check_redir_list(curr_node->content->outputs, error) == ERROR)
 		return (return_error("minishell: syntax error: ill-formed redirection, "
 				"unexpected `redir_output'\n", ERROR));
 	return (SUCCESS);
