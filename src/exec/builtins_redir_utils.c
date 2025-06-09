@@ -6,7 +6,7 @@
 /*   By: ecasalin <ecasalin@42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 13:15:02 by ecasalin          #+#    #+#             */
-/*   Updated: 2025/06/09 09:19:58 by ecasalin         ###   ########.fr       */
+/*   Updated: 2025/06/09 13:39:00 by ecasalin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,11 @@ int	save_shell_fds(int std_shell_fds[2])
 				"redirection error", ERROR));
 	std_shell_fds[1] = dup(STDOUT_FILENO);
 	if (std_shell_fds[1] == FAILURE)
+	{
+		close(std_shell_fds[0]);
 		return (return_perror("minishell: execution: "
 				"redirection error", ERROR));
+	}
 	return (SUCCESS);
 }
 
