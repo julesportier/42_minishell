@@ -54,7 +54,7 @@ while IFS= read -r command || [ -n "$command" ]; do
     bash_output=$(mktemp)
 
     # Run command in minishell
-    echo "$command" | timeout 10s "$YOUR_SHELL" > "$your_output" 2>&1
+    echo "$command" | timeout 10s "$YOUR_SHELL" | grep -v '❯' > "$your_output" 2>&1
     your_exit_code=$?
 
     # Filter out colored prompts and prompt lines from minishell output
