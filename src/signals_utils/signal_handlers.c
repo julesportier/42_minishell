@@ -6,7 +6,7 @@
 /*   By: ecasalin <ecasalin@42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/02 14:04:24 by ecasalin          #+#    #+#             */
-/*   Updated: 2025/06/02 15:01:28 by ecasalin         ###   ########.fr       */
+/*   Updated: 2025/06/11 09:10:16 by juportie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,4 +27,10 @@ void	sigint_input_handler(int sig)
 void	handler_set_g_sig(int sig)
 {
 	g_sig = sig;
+}
+
+void	sigint_heredoc_handler(int sig)
+{
+	g_sig = sig;
+	close(STDIN_FILENO);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   token_extract_heredoc.c                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ecasalin <ecasalin@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ecasalin <ecasalin@42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 11:14:52 by juportie          #+#    #+#             */
-/*   Updated: 2025/06/07 10:06:52 by ecasalin         ###   ########.fr       */
+/*   Updated: 2025/06/11 14:00:02 by ecasalin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,57 +58,45 @@ static t_bool	is_heredoc_end(char *heredoc_line, char *delimiter)
 		return (false);
 }
 
-// static void	remove_last_newline(char *heredoc_content)
-// {
-// 	int		content_len;
-//
-// 	content_len = ft_strlen(heredoc_content);
-// 	if (content_len > 0)
-// 		heredoc_content[content_len - 1] = '\0';
-// }
-
-static void	sigint_heredoc_handler(int sig)
+static char	*heredoc_input_loop(t_token *token, t_error *error)
 {
-	// char	*tty;
-	// int	tty_fd;
-	//
-	// (void)sig;
-	// tty = ttyname(STDIN_FILENO);
-	// tty_fd = open(tty, O_WRONLY);
-	// // dprintf(tty_fd, "ttyname: %s\n", tty);
-	// // write(tty_fd, (char []){(char)EOF}, 1);
-	// // write(tty_fd, "\0", 1);
-	// // ioctl(tty_fd, _IOW('a', 'a', char*), "\n");
-	// // write(1, (char []){(char)-1}, 1);
-	// // rl_on_new_line();
-	// char	eof = -1;
-	//
-	// rl_replace_line(&eof, 0);
-	// rl_redisplay();
-	// // write(tty_fd, "\n", 2);
-	// close(tty_fd);
-	// // write(1, "\x04", 1);
-	// // write(1, "\n", 1);
-	g_sig = sig;
-	close(STDIN_FILENO);
-	// write(1, "in handler\n", 10);
-}
+	char	*heredoc_line;
+	char	*heredoc_content;
+	int		fd;
 
-static void	init_sigint_heredoc_sigaction(void)
-{
-	struct sigaction	sigact;
-
-	ft_bzero(&sigact, sizeof(struct sigaction));
-	sigact.sa_flags = SA_RESTART;
-	sigact.sa_handler = sigint_heredoc_handler;
-	sigemptyset(&sigact.sa_mask);
-	sigaction(SIGINT, &sigact, NULL);
-	// sigaction(SIGINT, NULL, &sigact);
+	heredoc_content = NULL;
+	fd = dup(STDIN_FILENO);
+	// if (fd == -1)
+	// 	perror(error, recoverable);
+	init_sigint_heredoc_sigaction();
+	while (1)
+	{
+		heredoc_line = readline("> ");
+		if (g_sig)
+		{
+			dup2(fd, STDIN_FILENO);
+			// SECURE IT AS ABOVE
+			// if (dup2(fd, STDIN_FILENO))
+				//critical
+			write(1, "\n", 1);
+			// rl_on_new_line();
+			// rl_replace_line("", 0);
+			free(heredoc_content);
+			close(fd);
+			return (NULL);
+		}
+		if (is_heredoc_end(heredoc_line, token->str))
+			break ;
+		heredoc_content = join_heredoc_content(heredoc_content, heredoc_line, error);
+		if (*error)
+			return (NULL);
+	}
+	close(fd);
+	return (heredoc_content);
 }
 
 t_error	extract_heredoc(t_token *token, char *line, int *pos)
 {
-	char	*heredoc_line;
 	char	*heredoc_content;
 	int		fd;
 	t_error	error;
@@ -117,28 +105,13 @@ t_error	extract_heredoc(t_token *token, char *line, int *pos)
 	error = success;
 	if (extract_delimiter(token, line, pos, &error) != success)
 		return (error);
-	heredoc_content = NULL;
-	while (1)
-	{
-		fd = dup(STDIN_FILENO);
-		heredoc_line = readline("> ");
-		// printf("heredoc_line content: '%s'\n", heredoc_line);
-		write(1, "after readline\n", 15);
-		printf("EOF == %d\n", EOF);
-		// printf("g_sig heredoc == '%d'\n", g_sig);
-		if (g_sig)
-		{
-			dup2(fd, STDIN_FILENO);
-			break ;
-		}
-		if (is_heredoc_end(heredoc_line, token->str))
-			break ;
-		heredoc_content = join_heredoc_content(heredoc_content, heredoc_line, &error);
-		if (error)
-			return (error);
-	}
-	// remove_last_newline(heredoc_content);
+	heredoc_content = heredoc_input_loop(token, &error);
+	init_sigint_input_sigaction();
+	// rl_on_new_line();
 	free(token->str);
-	token->str = heredoc_content;
+	if (!heredoc_content)
+		free(token);
+	else
+		token->str = heredoc_content;
 	return (error);
 }
