@@ -6,7 +6,7 @@
 /*   By: ecasalin <ecasalin@42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 11:14:52 by juportie          #+#    #+#             */
-/*   Updated: 2025/06/11 14:00:02 by ecasalin         ###   ########.fr       */
+/*   Updated: 2025/06/11 21:22:20 by ecasalin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,27 +62,16 @@ static char	*heredoc_input_loop(t_token *token, t_error *error)
 {
 	char	*heredoc_line;
 	char	*heredoc_content;
-	int		fd;
 
 	heredoc_content = NULL;
-	fd = dup(STDIN_FILENO);
-	// if (fd == -1)
-	// 	perror(error, recoverable);
 	init_sigint_heredoc_sigaction();
 	while (1)
 	{
 		heredoc_line = readline("> ");
 		if (g_sig)
 		{
-			dup2(fd, STDIN_FILENO);
-			// SECURE IT AS ABOVE
-			// if (dup2(fd, STDIN_FILENO))
-				//critical
-			write(1, "\n", 1);
-			// rl_on_new_line();
-			// rl_replace_line("", 0);
+			free(heredoc_line);
 			free(heredoc_content);
-			close(fd);
 			return (NULL);
 		}
 		if (is_heredoc_end(heredoc_line, token->str))
@@ -91,14 +80,12 @@ static char	*heredoc_input_loop(t_token *token, t_error *error)
 		if (*error)
 			return (NULL);
 	}
-	close(fd);
 	return (heredoc_content);
 }
 
 t_error	extract_heredoc(t_token *token, char *line, int *pos)
 {
 	char	*heredoc_content;
-	int		fd;
 	t_error	error;
 
 	init_sigint_heredoc_sigaction();
@@ -107,7 +94,6 @@ t_error	extract_heredoc(t_token *token, char *line, int *pos)
 		return (error);
 	heredoc_content = heredoc_input_loop(token, &error);
 	init_sigint_input_sigaction();
-	// rl_on_new_line();
 	free(token->str);
 	if (!heredoc_content)
 		free(token);
