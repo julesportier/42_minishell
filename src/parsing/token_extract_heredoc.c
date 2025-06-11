@@ -6,10 +6,11 @@
 /*   By: ecasalin <ecasalin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 11:14:52 by juportie          #+#    #+#             */
-/*   Updated: 2025/06/07 10:06:52 by ecasalin         ###   ########.fr       */
+/*   Updated: 2025/06/11 09:54:50 by juportie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <fcntl.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <readline/readline.h>
@@ -17,6 +18,7 @@
 #include "../../libft/src/libft.h"
 #include "../minishell.h"
 #include "../general_utils/utils.h"
+#include "../signals_utils/signals_utils.h"
 #include "parsing.h"
 #include "lexer.h"
 
@@ -53,36 +55,58 @@ static t_bool	is_heredoc_end(char *heredoc_line, char *delimiter)
 		return (false);
 }
 
-// static void	remove_last_newline(char *heredoc_content)
-// {
-// 	int		content_len;
-//
-// 	content_len = ft_strlen(heredoc_content);
-// 	if (content_len > 0)
-// 		heredoc_content[content_len - 1] = '\0';
-// }
+static char	*heredoc_input_loop(t_token *token, t_error *error)
+{
+	char	*heredoc_line;
+	char	*heredoc_content;
+	int		fd;
+
+	heredoc_content = NULL;
+	fd = dup(STDIN_FILENO);
+	// if (fd == -1)
+	// 	perror(error, recoverable);
+	init_sigint_heredoc_sigaction();
+	while (1)
+	{
+		heredoc_line = readline("> ");
+		if (g_sig)
+		{
+			dup2(fd, STDIN_FILENO);
+			// SECURE IT AS ABOVE
+			// if (dup2(fd, STDIN_FILENO))
+				//critical
+			write(1, "\n", 1);
+			// rl_on_new_line();
+			// rl_replace_line("", 0);
+			free(heredoc_content);
+			close(fd);
+			return (NULL);
+		}
+		if (is_heredoc_end(heredoc_line, token->str))
+			break ;
+		heredoc_content = join_heredoc_content(heredoc_content, heredoc_line, error);
+		if (*error)
+			return (NULL);
+	}
+	close(fd);
+	return (heredoc_content);
+}
 
 t_error	extract_heredoc(t_token *token, char *line, int *pos)
 {
-	char	*heredoc_line;
 	char	*heredoc_content;
 	t_error	error;
 
 	error = success;
 	if (extract_delimiter(token, line, pos, &error) != success)
 		return (error);
-	heredoc_content = NULL;
-	while (1)
-	{
-		heredoc_line = readline("> ");
-		if (is_heredoc_end(heredoc_line, token->str))
-			break ;
-		heredoc_content = join_heredoc_content(heredoc_content, heredoc_line, &error);
-		if (error)
-			return (error);
-	}
-	// remove_last_newline(heredoc_content);
+	heredoc_content = heredoc_input_loop(token, &error);
+	init_sigint_input_sigaction();
+	// rl_on_new_line();
 	free(token->str);
-	token->str = heredoc_content;
+	if (!heredoc_content)
+		free(token);
+	else
+		token->str = heredoc_content;
 	return (error);
 }
