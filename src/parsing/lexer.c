@@ -37,7 +37,8 @@ static t_token	*extract_token(char *line, int *pos, t_token *prev_token, t_error
 		*error = extract_literal(token, line, pos);
 	if (*error)
 	{
-		free (token);
+		free(token->str);
+		free(token);
 		return (NULL);
 	}
 	return (token);
@@ -82,14 +83,13 @@ t_dlst	*scan_line(char *line, t_error *error)
 		if (line[pos] == '\0')
 			break ;
 		token = extract_token(line, &pos, token, error);
-		if (g_sig)
+		if (g_sig || !token)
 		{
 			free_toklist(&tokens_list);
 			g_sig = 0;
 			return(NULL);
 		}
-		if (!*error && token)
-			token->cat_prev = cat_prev;
+		token->cat_prev = cat_prev;
 		if (append_token_to_list(&tokens_list, token, error) != success)
 			return (NULL);
 	}
