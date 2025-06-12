@@ -95,7 +95,7 @@ t_error	extract_heredoc(t_token *token, char *line, int *pos)
 	heredoc_content = heredoc_input_loop(token, &error);
 	init_sigint_input_sigaction();
 	free(token->str);
-	if (!heredoc_content)
+	if (g_sig || error)
 		free(token);
 	else
 		token->str = heredoc_content;
