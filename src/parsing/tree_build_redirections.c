@@ -38,7 +38,8 @@ static t_error	set_redir_couple(t_bin_tree *tree_node, t_dlst **toklist, t_dlst 
 			&& get_toklist_type((*token)->next) != heredoc_lit)))
 	{
 		return (print_syntax_error(
-			"illformed redirection, unexpected ", get_toklist_type(*token), recoverable));
+			"illformed redirection, unexpected ", get_toklist_type(*token),
+			recoverable, NULL));
 	}
 	else if (get_toklist_type(*token) == redir_output
 		|| get_toklist_type(*token) == append_output)

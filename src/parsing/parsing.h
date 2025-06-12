@@ -91,7 +91,7 @@ void	free_tree(t_bin_tree **tree);
  * ERROR HANDLING *
  * ****************/
 // error_print.c
-t_error	print_syntax_error(char *message, enum e_token_type type, t_error errnum);
+t_error	print_syntax_error(char *message, enum e_token_type type, t_error errnum, t_error *error);
 
 /************
  * PRINTING *

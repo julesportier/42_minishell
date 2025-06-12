@@ -16,23 +16,25 @@
 #include "parsing.h"
 
 // If malloc fails better not crash the full shell
-t_error	print_syntax_error(char *message, enum e_token_type type, t_error errnum)
+t_error	print_syntax_error(char *message, enum e_token_type type, t_error errnum, t_error *error)
 {
-	char *error;
+	char *error_str;
 
-	error = ft_strjoin("minishell: syntax error: ", message);
-	if (error == NULL)
+	if (error)
+		*error = errnum;
+	error_str = ft_strjoin("minishell: syntax error: ", message);
+	if (error_str == NULL)
 		return (errnum);
-	error = free_strjoin(error, "`", true, false);
-	if (error == NULL)
+	error_str = free_strjoin(error_str, "`", true, false);
+	if (error_str == NULL)
 		return (errnum);
-	error = free_strjoin(error, (char *)token_type_to_str(type), true, false);
-	if (error == NULL)
+	error_str = free_strjoin(error_str, (char *)token_type_to_str(type), true, false);
+	if (error_str == NULL)
 		return (errnum);
-	error = free_strjoin(error, "'", true, false);
-	if (error == NULL)
+	error_str = free_strjoin(error_str, "'", true, false);
+	if (error_str == NULL)
 		return (errnum);
-	ft_putendl_fd(error, 2);
-	free(error);
+	ft_putendl_fd(error_str, 2);
+	free(error_str);
 	return (errnum);
 }
