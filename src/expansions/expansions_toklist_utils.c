@@ -51,7 +51,8 @@ t_error	concatenate_toklist(t_dlst **toklist, t_error *error)
 	token = *toklist;
 	while (token && token->next)
 	{
-		if (get_toklist_type(token) == literal
+		while (token->next
+			&& get_toklist_type(token) == literal
 			&& get_toklist_type(token->next) == literal
 			&& get_toklist_cat_prev(token->next) == true)
 		{
