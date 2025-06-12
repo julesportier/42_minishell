@@ -23,13 +23,13 @@ static t_bool	is_valid_grouping(t_dlst *toklist, t_error *error)
 	last = ft_dlstlast(toklist);
 	if (get_toklist_type(toklist) != left_parenthesis)
 	{
-		print_syntax_error("illformed grouping, unexpected token ",
+		print_syntax_error("ill-formed grouping, unexpected token ",
 			get_toklist_type(toklist), recoverable, error);
 		return (false);
 	}
 	else if (get_toklist_type(last) != right_parenthesis)
 	{
-		print_syntax_error("illformed grouping, unexpected token ",
+		print_syntax_error("ill-formed grouping, unexpected token ",
 			get_toklist_type(last), recoverable, error);
 		return (false);
 	}

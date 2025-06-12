@@ -23,7 +23,7 @@ static t_dlst	*find_operator(t_bin_tree *tree_node, t_dlst **toklist, t_error *e
 	if (*toklist == NULL)
 	{
 		*error = recoverable;
-		ft_putstr_fd("minishell: syntax error: illformed input\n", 2);
+		ft_putstr_fd("minishell: syntax error: ill-formed input\n", 2);
 		return (NULL);
 	}
 	token = find_control_op(*toklist, error);
