@@ -16,6 +16,7 @@
 #include "../minishell.h"
 #include "../signals_utils/signals_utils.h"
 #include "parsing.h"
+#include "tree_build.h"
 #include "lexer.h"
 
 static t_token	*extract_token(char *line, int *pos, t_token *prev_token, t_error *error)
@@ -44,11 +45,40 @@ static t_token	*extract_token(char *line, int *pos, t_token *prev_token, t_error
 	return (token);
 }
 
+static t_error	incorrect_token_succession(
+	t_dlst **tokens_list,
+	t_token *token,
+	t_error *error)
+{
+	enum e_token_type	last_type;
+	enum e_token_type	new_type;
+
+
+	if (!*tokens_list)
+		return (success);
+	last_type = get_toklist_type(ft_dlstlast(*tokens_list));
+	new_type = token->type;
+	if ((is_redir_op(new_type) && is_redir_op(last_type))
+		|| ((is_control_op(new_type) || is_pipeline_op(new_type))
+			&& (is_control_op(last_type) || is_pipeline_op(last_type))))
+	{
+		free(token->str);
+		free(token);
+		free_toklist(tokens_list);
+		return (print_syntax_error(
+				"unexpected token ", new_type, recoverable, error));
+	}
+	else
+		return (success);
+}
+
 t_error	append_token_to_list(t_dlst **tokens_list, t_token *token, t_error *error)
 {
 	t_dlst	*new_node;
 
 	if (token == NULL)
+		return (*error);
+	if (incorrect_token_succession(tokens_list, token, error))
 		return (*error);
 	new_node = ft_dlstnew(token);
 	if (new_node == NULL)
