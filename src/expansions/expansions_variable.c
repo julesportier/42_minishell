@@ -48,6 +48,8 @@ static void	remove_token(t_dlst **token, t_dlst **toklist)
 		*toklist = (*toklist)->next;
 	temp_node = *token;
 	*token = (*token)->next;
+	if (*token)
+		set_toklist_cat_prev(*token, get_toklist_cat_prev(temp_node));
 	ft_dlstremove(temp_node, free_token_content, free);
 }
 
