@@ -89,21 +89,21 @@ t_error	extract_variable_identifier(t_token *token, char *line, int *pos)
 t_error	extract_operator(t_token *token, char *line, int *pos)
 {
 	if (match(&line[*pos], '|'))
-		extract_two_char(token, or, pos);
+		consume_two_char(token, or, pos);
 	else if (line[*pos] == '|')
-		extract_one_char(token, pipeline, pos);
+		consume_one_char(token, pipeline, pos);
 	else if (match(&line[*pos], '&'))
-		extract_two_char(token, and, pos);
+		consume_two_char(token, and, pos);
 	else if (line[*pos] == '(' || line[*pos] == ')')
 		return (extract_grouping(token, line, pos));
 	else if (match(&line[*pos], '<'))
-		extract_two_char(token, heredoc, pos);
+		consume_two_char(token, heredoc, pos);
 	else if (line[*pos] == '<')
-		extract_one_char(token, redir_input, pos);
+		consume_one_char(token, redir_input, pos);
 	else if (match(&line[*pos], '>'))
-		extract_two_char(token, append_output, pos);
+		consume_two_char(token, append_output, pos);
 	else if (line[*pos] == '>')
-		extract_one_char(token, redir_output, pos);
+		consume_one_char(token, redir_output, pos);
 	return (success);
 }
 
@@ -113,7 +113,7 @@ t_error	extract_expanding(t_token *token, char *line, int *pos)
 		return (extract_variable_identifier(token, line, pos));
 	else if (line[*pos] == '*')
 	{
-		extract_one_char(token, wildcard, pos);
+		consume_one_char(token, wildcard, pos);
 		token->str = ft_strdup("*");
 		if (token->str == NULL)
 			return (critical);

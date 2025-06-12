@@ -31,12 +31,12 @@ t_error extract_grouping(t_token *token, char *line, int *pos)
 		nesting_level = 0;
 	if (line[*pos] == '(')
 	{
-		extract_one_char(token, left_parenthesis, pos);
+		consume_one_char(token, left_parenthesis, pos);
 		++nesting_level;
 	}
 	else if (line[*pos] == ')')
 	{
-		extract_one_char(token, right_parenthesis, pos);
+		consume_one_char(token, right_parenthesis, pos);
 		--nesting_level;
 	}
 	return (check_nesting(nesting_level, line[*pos], token->type));
