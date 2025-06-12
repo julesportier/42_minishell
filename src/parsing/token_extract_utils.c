@@ -14,14 +14,14 @@
 #include "parsing.h"
 #include "lexer.h"
 
-void	extract_two_char(t_token *token, enum e_token_type type, int *pos)
+void	consume_two_char(t_token *token, enum e_token_type type, int *pos)
 {
 	advance(2, pos);
 	token->str = NULL;
 	token->type = type;
 }
 
-void	extract_one_char(t_token *token, enum e_token_type type, int *pos)
+void	consume_one_char(t_token *token, enum e_token_type type, int *pos)
 {
 	advance(1, pos);
 	token->str = NULL;

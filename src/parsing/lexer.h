@@ -34,8 +34,8 @@ t_bool	match(char *str, char c);
 t_bool	skip_spaces(char *line, int *pos);
 t_token	*alloc_token(t_error *error);
 // token_extract_utils.c
-void	extract_two_char(t_token *token, enum e_token_type type, int *pos);
-void	extract_one_char(t_token *token, enum e_token_type type, int *pos);
+void	consume_two_char(t_token *token, enum e_token_type type, int *pos);
+void	consume_one_char(t_token *token, enum e_token_type type, int *pos);
 // token_extract.c
 t_error	extract_quotes(t_token *token, char *line, int *pos);
 t_error	extract_literal(t_token *token, char *line, int *pos);
