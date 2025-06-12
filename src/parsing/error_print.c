@@ -34,7 +34,10 @@ t_error	print_syntax_error(char *message, enum e_token_type type, t_error errnum
 	error_str = free_strjoin(error_str, "'", true, false);
 	if (error_str == NULL)
 		return (errnum);
-	ft_putendl_fd(error_str, 2);
+	error_str = free_strjoin(error_str, "\n", true, false);
+	if (error_str == NULL)
+		return (errnum);
+	ft_putstr_fd(error_str, 2);
 	free(error_str);
 	return (errnum);
 }
