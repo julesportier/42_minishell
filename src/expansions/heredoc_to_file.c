@@ -31,8 +31,8 @@ static t_error	get_random_uuid(char *str, t_error *error)
 	{
 		// PRINT AN ERROR MESSAGE
 		*error = recoverable;
-		return (*error);
 	}
+	close(fd);
 	return (*error);
 }
 
