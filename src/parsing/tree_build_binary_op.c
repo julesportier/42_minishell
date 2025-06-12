@@ -52,15 +52,15 @@ t_error	divide_tokens_list(
 {
 	if (*toklist == *pivot)
 	{
-		print_syntax_error("missing operand before ", get_toklist_type(*pivot), recoverable);
 		free_toklist(toklist);
-		return (recoverable);
+		return (print_syntax_error(
+			"missing operand before ", get_toklist_type(*pivot), recoverable, NULL));
 	}
 	if (ft_dlstlast(*toklist) == *pivot)
 	{
-		print_syntax_error("missing operand after ", get_toklist_type(*pivot), recoverable);
 		free_toklist(toklist);
-		return (recoverable);
+		return (print_syntax_error(
+			"missing operand after ", get_toklist_type(*pivot), recoverable, NULL));
 	}
 	*toklist_right = ((*pivot)->next);
 	(*toklist_right)->prev = NULL;

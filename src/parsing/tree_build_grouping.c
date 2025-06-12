@@ -23,20 +23,20 @@ static t_bool	is_valid_grouping(t_dlst *toklist, t_error *error)
 	last = ft_dlstlast(toklist);
 	if (get_toklist_type(toklist) != left_parenthesis)
 	{
-		*error = print_syntax_error("illformed grouping, unexpected token ",
-			get_toklist_type(toklist), recoverable);
+		print_syntax_error("illformed grouping, unexpected token ",
+			get_toklist_type(toklist), recoverable, error);
 		return (false);
 	}
 	else if (get_toklist_type(last) != right_parenthesis)
 	{
-		*error = print_syntax_error("illformed grouping, unexpected token ",
-			get_toklist_type(last), recoverable);
+		print_syntax_error("illformed grouping, unexpected token ",
+			get_toklist_type(last), recoverable, error);
 		return (false);
 	}
 	else if (toklist->next == last)
 	{
-		*error = print_syntax_error("empty grouping, unexpected token ",
-			get_toklist_type(toklist), recoverable);
+		print_syntax_error("empty grouping, unexpected token ",
+			get_toklist_type(toklist), recoverable, error);
 		return (false);
 	}
 	return (true);
@@ -58,8 +58,8 @@ static t_bool	is_grouping(t_dlst *toklist, t_error *error)
 			parenthesis = true;
 		if (check_nesting_level(nesting_level, token) != success)
 		{
-			*error = print_syntax_error(
-				"unexpected token ", get_toklist_type(token), recoverable);
+			print_syntax_error(
+				"unexpected token ", get_toklist_type(token), recoverable, error);
 			return (false);
 		}
 		token = token->next;
