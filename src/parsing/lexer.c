@@ -6,7 +6,7 @@
 /*   By: juportie <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 10:22:36 by juportie          #+#    #+#             */
-/*   Updated: 2025/05/14 12:56:24 by juportie         ###   ########.fr       */
+/*   Updated: 2025/06/11 08:58:18 by juportie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 #include <stdio.h>
 #include "../../libft/src/libft.h"
 #include "../minishell.h"
+#include "../signals_utils/signals_utils.h"
 #include "parsing.h"
 #include "lexer.h"
 
@@ -81,6 +82,12 @@ t_dlst	*scan_line(char *line, t_error *error)
 		if (line[pos] == '\0')
 			break ;
 		token = extract_token(line, &pos, token, error);
+		if (g_sig)
+		{
+			free_toklist(&tokens_list);
+			g_sig = 0;
+			return(NULL);
+		}
 		if (!*error && token)
 			token->cat_prev = cat_prev;
 		if (append_token_to_list(&tokens_list, token, error) != success)

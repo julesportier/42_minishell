@@ -6,7 +6,7 @@
 /*   By: ecasalin <ecasalin@42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/02 14:04:24 by ecasalin          #+#    #+#             */
-/*   Updated: 2025/06/02 15:01:28 by ecasalin         ###   ########.fr       */
+/*   Updated: 2025/06/12 10:08:50 by ecasalin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,8 @@
 
 void	sigint_input_handler(int sig)
 {
-	(void)sig;
-	write(1, "\n", 1);
+	g_sig = sig;
+	rl_done = 1;
 	rl_on_new_line();
 	rl_replace_line("", 0);
 	rl_redisplay();
@@ -27,4 +27,5 @@ void	sigint_input_handler(int sig)
 void	handler_set_g_sig(int sig)
 {
 	g_sig = sig;
+	rl_done = 1;
 }

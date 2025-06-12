@@ -3,20 +3,23 @@
 /*                                                        :::      ::::::::   */
 /*   token_extract_heredoc.c                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ecasalin <ecasalin@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ecasalin <ecasalin@42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 11:14:52 by juportie          #+#    #+#             */
-/*   Updated: 2025/06/07 10:06:52 by ecasalin         ###   ########.fr       */
+/*   Updated: 2025/06/12 10:24:24 by ecasalin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <fcntl.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <readline/readline.h>
 #include <readline/history.h>
+#include <unistd.h>
 #include "../../libft/src/libft.h"
 #include "../minishell.h"
 #include "../general_utils/utils.h"
+#include "../signals_utils/signals_utils.h"
 #include "parsing.h"
 #include "lexer.h"
 
@@ -53,36 +56,45 @@ static t_bool	is_heredoc_end(char *heredoc_line, char *delimiter)
 		return (false);
 }
 
-// static void	remove_last_newline(char *heredoc_content)
-// {
-// 	int		content_len;
-//
-// 	content_len = ft_strlen(heredoc_content);
-// 	if (content_len > 0)
-// 		heredoc_content[content_len - 1] = '\0';
-// }
-
-t_error	extract_heredoc(t_token *token, char *line, int *pos)
+static char	*heredoc_input_loop(t_token *token, t_error *error)
 {
 	char	*heredoc_line;
 	char	*heredoc_content;
-	t_error	error;
 
-	error = success;
-	if (extract_delimiter(token, line, pos, &error) != success)
-		return (error);
 	heredoc_content = NULL;
 	while (1)
 	{
 		heredoc_line = readline("> ");
+		if (g_sig)
+		{
+			free(heredoc_line);
+			free(heredoc_content);
+			return (NULL);
+		}
 		if (is_heredoc_end(heredoc_line, token->str))
 			break ;
-		heredoc_content = join_heredoc_content(heredoc_content, heredoc_line, &error);
-		if (error)
-			return (error);
+		heredoc_content = join_heredoc_content(heredoc_content, heredoc_line, error);
+		if (*error)
+			return (NULL);
 	}
-	// remove_last_newline(heredoc_content);
+	return (heredoc_content);
+}
+
+t_error	extract_heredoc(t_token *token, char *line, int *pos)
+{
+	char	*heredoc_content;
+	t_error	error;
+
+	init_sigint_exec_sigaction();
+	error = success;
+	if (extract_delimiter(token, line, pos, &error) != success)
+		return (error);
+	heredoc_content = heredoc_input_loop(token, &error);
+	init_sigint_input_sigaction();
 	free(token->str);
-	token->str = heredoc_content;
+	if (g_sig || error)
+		free(token);
+	else
+		token->str = heredoc_content;
 	return (error);
 }

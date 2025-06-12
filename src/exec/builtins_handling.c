@@ -6,7 +6,7 @@
 /*   By: ecasalin <ecasalin@42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 13:13:02 by ecasalin          #+#    #+#             */
-/*   Updated: 2025/06/09 14:22:21 by ecasalin         ###   ########.fr       */
+/*   Updated: 2025/06/12 08:46:20 by ecasalin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,9 +23,9 @@ int	is_builtin(t_bin_tree *curr_node)
 {
 	char	*cmd_name;
 
-	cmd_name = get_toklist_str(curr_node->content->tokens_list);
-	if (cmd_name == NULL)
+	if (curr_node->content->tokens_list == NULL)
 		return (not_builtin);
+	cmd_name = get_toklist_str(curr_node->content->tokens_list);
 	if (ft_strncmp(cmd_name, "echo", 5) == SUCCESS)
 		return (echo);
 	if (ft_strncmp(cmd_name, "cd", 3) == SUCCESS)

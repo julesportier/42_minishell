@@ -6,7 +6,7 @@
 /*   By: ecasalin <ecasalin@42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 11:16:48 by juportie          #+#    #+#             */
-/*   Updated: 2025/06/09 10:51:36 by ecasalin         ###   ########.fr       */
+/*   Updated: 2025/06/12 10:14:34 by ecasalin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,9 @@
 
 /*INPUT LOOP*/
 void	input_loop(t_shell_vars *vars, t_error *error);
-char	*set_readline_and_history(char *prompt, t_error *error);
+char	*set_readline_and_history(char *prompt, t_error *error,
+			t_shell_vars *vars);
 void	create_prompt(t_shell_vars *vars, t_error *error);
+int		refresh_rl_vars(void);
 
 #endif

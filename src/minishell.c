@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ecasalin <ecasalin@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ecasalin <ecasalin@42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 15:31:21 by juportie          #+#    #+#             */
-/*   Updated: 2025/06/03 09:52:59 by ecasalin         ###   ########.fr       */
+/*   Updated: 2025/06/12 09:47:10 by ecasalin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,8 @@ int	main(int argc, char *argv[], char *envp[])
 	t_shell_vars	vars;
 	t_error			error;
 
+	if (!isatty(STDIN_FILENO))
+		return (EXIT_SUCCESS);
 	if (argc != 1)
 		return (2);
 	(void)argv;
