@@ -6,7 +6,7 @@
 /*   By: ecasalin <ecasalin@42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 11:14:52 by juportie          #+#    #+#             */
-/*   Updated: 2025/06/12 09:43:56 by ecasalin         ###   ########.fr       */
+/*   Updated: 2025/06/12 10:24:24 by ecasalin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,6 @@
 #include <readline/readline.h>
 #include <readline/history.h>
 #include <unistd.h>
-#include <sys/ioctl.h>
-// #include <stropts.h>
 #include "../../libft/src/libft.h"
 #include "../minishell.h"
 #include "../general_utils/utils.h"
