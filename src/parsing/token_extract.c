@@ -68,6 +68,7 @@ t_error	extract_variable_identifier(t_token *token, char *line, int *pos)
 		&& !is_quote(line[*pos])
 		&& !is_operator(&line[*pos])
 		&& !is_expanding(line[*pos])
+		&& line[*pos - 1] != '?'
 		&& line[*pos] != '\0')
 		advance(1, pos);
 	if (*pos - start > 0)
