@@ -6,7 +6,7 @@
 /*   By: ecasalin <ecasalin@42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 14:50:31 by juportie          #+#    #+#             */
-/*   Updated: 2025/06/11 21:05:56 by ecasalin         ###   ########.fr       */
+/*   Updated: 2025/06/12 09:57:20 by ecasalin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,13 +26,13 @@
 #include "../signals_utils/signals_utils.h"
 #include <signal.h>
 
-// static void	print_signal_reception(void)
-// {
-// 	if (g_sig == SIGQUIT)
-// 		printf("Quit (core dumped)\n");
-// 	else if (g_sig == SIGINT)
-// 		printf("\n");
-// }
+static void	print_signal_reception(void)
+{
+	if (g_sig == SIGQUIT)
+		printf("Quit (core dumped)\n");
+	else if (g_sig == SIGINT)
+		printf("\n");
+}
 
 static t_bin_tree	*parse_command_line(char *line, t_error *error)
 {
@@ -64,11 +64,6 @@ static void	reset_flag_vars(t_error *error)
 	errno = SUCCESS;
 }
 
-int	refresh_rl_vars(void)
-{
-	return (0);
-}
-
 void	input_loop(t_shell_vars *vars, t_error *error)
 {
 	char		*line;
@@ -81,7 +76,7 @@ void	input_loop(t_shell_vars *vars, t_error *error)
 		create_prompt(vars, error);
 		if (*error == critical)
 			break ;
-		line = set_readline_and_history(vars->prompt, error);
+		line = set_readline_and_history(vars->prompt, error, vars);
 		if (line == NULL)
 			break ;
 		parse_tree = parse_command_line(line, error);
@@ -92,7 +87,7 @@ void	input_loop(t_shell_vars *vars, t_error *error)
 		free_tree(&parse_tree);
 		if (*error == critical)
 			break ;
-		// print_signal_reception();
+		print_signal_reception();
 		free(vars->prompt);
 	}
 	free(vars->prompt);

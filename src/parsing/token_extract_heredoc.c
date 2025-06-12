@@ -6,7 +6,7 @@
 /*   By: ecasalin <ecasalin@42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 11:14:52 by juportie          #+#    #+#             */
-/*   Updated: 2025/06/11 21:22:20 by ecasalin         ###   ########.fr       */
+/*   Updated: 2025/06/12 09:43:56 by ecasalin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,6 @@ static char	*heredoc_input_loop(t_token *token, t_error *error)
 	char	*heredoc_content;
 
 	heredoc_content = NULL;
-	init_sigint_heredoc_sigaction();
 	while (1)
 	{
 		heredoc_line = readline("> ");
@@ -88,7 +87,7 @@ t_error	extract_heredoc(t_token *token, char *line, int *pos)
 	char	*heredoc_content;
 	t_error	error;
 
-	init_sigint_heredoc_sigaction();
+	init_sigint_exec_sigaction();
 	error = success;
 	if (extract_delimiter(token, line, pos, &error) != success)
 		return (error);
