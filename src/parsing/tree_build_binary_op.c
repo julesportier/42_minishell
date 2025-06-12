@@ -16,8 +16,8 @@
 
 static t_dlst	*find_binary_op(
 	t_dlst *toklist,
-	t_bool fptr_is_operator(enum e_token_type))
-//	t_error *error)
+	t_bool fptr_is_operator(enum e_token_type),
+	t_error *error)
 {
 	int	nesting_level;
 	t_dlst	*operator;
@@ -28,20 +28,29 @@ static t_dlst	*find_binary_op(
 	{
 		nesting_level = update_parenthesis_nesting_level(toklist, nesting_level);
 		if (fptr_is_operator(get_toklist_type(toklist)) && nesting_level == 0)
+		{
 			operator = toklist;
+			if (operator->prev == NULL || operator->next == NULL)
+			{
+				print_syntax_error(
+						"unexpected ", get_toklist_type(operator),
+						recoverable, error);
+				return (NULL);
+			}
+		}
 		toklist = toklist->next;
 	}
 	return (operator);
 }
 
-t_dlst	*find_control_op(t_dlst *toklist)//, t_error *error)
+t_dlst	*find_control_op(t_dlst *toklist, t_error *error)
 {
-	return (find_binary_op(toklist, is_control_op));//, error));
+	return (find_binary_op(toklist, is_control_op, error));
 }
 
-t_dlst	*find_pipeline_op(t_dlst *toklist)//, t_error *error)
+t_dlst	*find_pipeline_op(t_dlst *toklist, t_error *error)
 {
-	return (find_binary_op(toklist, is_pipeline_op));//, error));
+	return (find_binary_op(toklist, is_pipeline_op, error));
 }
 
 t_error	divide_tokens_list(
