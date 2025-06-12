@@ -24,8 +24,8 @@ t_bool	is_redir_op(enum e_token_type type);
 t_bool	is_grouping_op(enum e_token_type type);
 t_bool	is_primary(enum e_token_type type);
 // tree_build_binary_op.c
-t_dlst	*find_control_op(t_dlst *toklist);//, t_error *error)
-t_dlst	*find_pipeline_op(t_dlst *toklist);//, t_error *error)
+t_dlst	*find_control_op(t_dlst *toklist, t_error *error);
+t_dlst	*find_pipeline_op(t_dlst *toklist, t_error *error);
 t_error	divide_tokens_list(
 	t_dlst	**toklist_left,
 	t_dlst 	**toklist_right,
