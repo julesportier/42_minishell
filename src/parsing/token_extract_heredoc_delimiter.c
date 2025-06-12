@@ -13,50 +13,100 @@
 #include <stdlib.h>
 #include "../../libft/src/libft.h"
 #include "../minishell.h"
+#include "../error_handling/errors.h"
 #include "lexer.h"
+#include "../expansions/expansions.h"
 
-static t_error	extract_quoted_delimiter(t_token *token, char *line, int *pos)
+static t_bool	increment_quotes(
+	char c,
+	int *d_quotes,
+	int *s_quotes,
+	t_token *token)
 {
-	int	start;
-	char	quote;
+	if (is_quote(c))
+	{
+		if (c == '"')
+			++*d_quotes;
+		else
+			++*s_quotes;
+		token->type = heredoc_lit;
+		return (true);
+	}
+	else
+		return (false);
+}
 
-	quote = line[*pos];
-	advance(1, pos);
-	start = *pos;
-	while (line[*pos] != quote && line[*pos] != '\0')
-		advance(1, pos);
-	if (line[*pos] == '\0')
-		return (print_syntax_error("unclosed ", quote, recoverable));
-	token->type = heredoc_lit;
-	token->str = ft_substr(line, start, *pos - start); // Returns "\0" for "" as input.
-	if (token->str == NULL)
-		return (critical);
-	advance(1, pos);
+static t_error	set_empty(
+	t_token *token,
+	int d_quotes,
+	int s_quotes,
+	t_error *error)
+{
+	if (!token->str)
+	{
+		if (d_quotes || s_quotes)
+		{
+			token->str = ft_strdup("");
+			if (!token->str)
+				return (set_err_return_err_enun(error, critical));
+		}
+		else
+			return (print_syntax_error(
+					"unexpected token ", heredoc, recoverable, error));
+	}
 	return (success);
 }
 
-static t_error	extract_unquoted_delimiter(t_token *token, char *line, int *pos)
+static t_error	check_quotes(t_token *token, int d_quotes, int s_quotes)
 {
-	int	start;
+	if (d_quotes % 2 != 0 || s_quotes % 2 != 0)
+	{
+		free(token->str);
+		token->str = NULL;
+		return (recoverable);
+	}
+	return (success);
+}
 
-	start = *pos;
+static t_error	check_delimiter(
+	t_token *token,
+	int d_quotes,
+	int s_quotes,
+	t_error *error)
+{
+	if (check_quotes(token, d_quotes, s_quotes) != success)
+		return (print_syntax_error(
+				"unexpected token ", heredoc, recoverable, error));
+	if (set_empty(token, d_quotes, s_quotes, error) != success)
+		return (*error);
+	return (success);
+}
+
+t_error	extract_delimiter(
+	t_token *token,
+	char *line,
+	int *pos,
+	t_error *error)
+{
+	int	d_quotes;
+	int	s_quotes;
+
+	d_quotes = 0;
+	s_quotes = 0;
+	token->type = heredoc_exp;
 	while (!is_blank(line[*pos])
-		&& !is_quote(line[*pos])
 		&& !is_operator(&line[*pos])
 		&& line[*pos] != '\0')
+	{
+		if (!increment_quotes(line[*pos], &d_quotes, &s_quotes, token))
+		{
+			token->str = join_char_free(token->str, line[*pos]);
+			if (!token->str)
+				return (set_err_return_err_enun(error, critical));
+		}
 		advance(1, pos);
-	token->type = heredoc_exp;
-	token->str = ft_substr(line, start, *pos - start); // Returns "\0" for "" as input.
-	if (token->str == NULL)
-		return (critical);
+	}
+	if (check_delimiter(token, d_quotes, s_quotes, error) != success)
+		return (*error);
 	return (success);
-}
-
-t_error	extract_delimiter(t_token *token, char *line, int *pos, t_error *error)
-{
-	if (is_quote(line[*pos]))
-		*error = extract_quoted_delimiter(token, line, pos);
-	else
-		*error = extract_unquoted_delimiter(token, line, pos);
-	return (*error);
 }
