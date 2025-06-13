@@ -44,7 +44,9 @@ static t_token	*extract_token(
 	{
 		free(token->str);
 		free(token);
-		return (null_print_alloc(critical, error));
+		token = NULL;
+		if (*error == critical)
+			return (null_print_alloc(critical, error));
 	}
 	return (token);
 }
