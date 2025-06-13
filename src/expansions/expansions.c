@@ -36,14 +36,12 @@ static t_dlst	*expand_token(
 	return (token);
 }
 
-t_error	expand_toklist(t_dlst **toklist, t_shell_vars *shell_vars)
+t_error	expand_toklist(t_dlst **toklist, t_shell_vars *shell_vars, t_error *error)
 {
 	t_dlst	*token;
-	t_error	error;
 
 	if (!toklist)
-		return (success);
-	error = success;
+		return (*error);
 	token = *toklist;
 	// if (DEBUG)
 	// {
@@ -52,9 +50,9 @@ t_error	expand_toklist(t_dlst **toklist, t_shell_vars *shell_vars)
 	// }
 	while (token)
 	{
-		token = expand_token(token, toklist, shell_vars, &error);
-		if (error || !*toklist)
-			return (error);
+		token = expand_token(token, toklist, shell_vars, error);
+		if (*error || !*toklist)
+			return (*error);
 	}
 	token = *toklist;
 	// if (DEBUG)
@@ -62,21 +60,23 @@ t_error	expand_toklist(t_dlst **toklist, t_shell_vars *shell_vars)
 	// 	printf("- var, quotes, heredoc expanded\n");
 	// 	print_toklist(*toklist, 2);
 	// }
-	token = expand_wildcards(toklist, &error);
+	token = expand_wildcards(toklist, error);
+	if (*error)
+		return (*error);
 	// if (DEBUG)
 	// {
 	// 	printf("- wildcards expanded\n");
 	// 	print_toklist(*toklist, 3);
 	// }
-	if (concatenate_toklist(toklist, &error) != success)
-		return (error);
+	if (concatenate_toklist(toklist, error) != success)
+		return (*error);
 	// if (DEBUG)
 	// {
 	// 	printf("- concatenated list after expansions\n");
 	// 	print_toklist(*toklist, 4);
 	// }
-	if (populate_heredocs_files(*toklist, &error) != success)
-		return (error);
+	if (populate_heredocs_files(*toklist, error) != success)
+		return (*error);
 	// print_toklist(token, 3);
 	return (success);
 }
