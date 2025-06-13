@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirs_expansion_utils.c                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ecasalin <ecasalin@42.fr>                  +#+  +:+       +#+        */
+/*   By: ecasalin <ecasalin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/07 09:23:28 by ecasalin          #+#    #+#             */
-/*   Updated: 2025/06/09 09:18:22 by ecasalin         ###   ########.fr       */
+/*   Updated: 2025/06/13 10:55:14 by ecasalin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,8 +63,10 @@ static int	check_redirs_expansion(t_bin_tree *curr_node, t_error *error)
 int	expand_redirections(t_bin_tree *curr_node, t_shell_vars *vars,
 						t_error *error)
 {
-	expand_toklist(&curr_node->content->inputs, vars);
-	expand_toklist(&curr_node->content->outputs, vars);
+	if (expand_toklist(&curr_node->content->inputs, vars, error))
+		return (ERROR);
+	if (expand_toklist(&curr_node->content->outputs, vars, error))
+		return (ERROR);
 	if (check_redirs_expansion(curr_node, error) == ERROR)
 		return (ERROR);
 	return (SUCCESS);
@@ -75,6 +77,7 @@ int	perform_expansions(t_bin_tree *curr_node, t_shell_vars *vars,
 {
 	if (expand_redirections(curr_node, vars, error) == ERROR)
 		return (ERROR);
-	expand_toklist(&curr_node->content->tokens_list, vars);
+	if (expand_toklist(&curr_node->content->tokens_list, vars, error))
+		return (ERROR);
 	return (SUCCESS);
 }
