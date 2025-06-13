@@ -41,19 +41,19 @@ t_error	place_expansion_result(
 	char *new_str,
 	t_error *error)
 {
-		if (get_toklist_type(*token) == type)
-			replace_token_content(
-				(*token)->content,
-				literal, new_str, error);
-		else
-			*token = insert_expanded_token(*token, new_str, error);
-		return (*error);
+	if (get_toklist_type(*token) == type)
+		replace_token_content(
+			(*token)->content,
+			literal, new_str, error);
+	else
+		*token = insert_expanded_token(*token, new_str, error);
+	return (*error);
 }
 
 char	*join_char_free(char *str, char c, t_error *error)
 {
 	char	*new_str;
-	int	i;
+	int		i;
 
 	new_str = ft_calloc(ft_strlen(str) + 2, sizeof(char));
 	if (!new_str)
@@ -67,7 +67,7 @@ char	*join_char_free(char *str, char c, t_error *error)
 			i++;
 		}
 		new_str[i] = c;
-		new_str[i+1] = '\0';
+		new_str[i + 1] = '\0';
 	}
 	free(str);
 	return (new_str);

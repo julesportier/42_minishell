@@ -122,7 +122,5 @@ t_dlst	*create_filtered_cwd_content_list(t_dlst *token, t_error *error)
 				is_non_hidden_file, cwd_content_list);
 	else
 		cwd_content_list = remove_token_if(is_hidden_file, cwd_content_list);
-	// if (DEBUG)
-	// 	print_toklist(cwd_content_list, 0);
 	return (cwd_content_list);
 }

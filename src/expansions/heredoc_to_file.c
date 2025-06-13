@@ -41,26 +41,19 @@ static char	*get_random_filename(t_error *error)
 		return (NULL);
 	filename = ft_strjoin("/tmp/", uuid);
 	if (!filename)
-	{
-		// PRINT AN ERROR MESSAGE
-		*error = critical;
-		return (NULL);
-	}
+		return (null_perror_alloc(critical, error));
 	return (filename);
 }
 
 static t_error	write_to_file(t_dlst *token, char *filename, t_error *error)
 {
-	int	fd;
+	int		fd;
 	char	*heredoc_content;
 
 	fd = open(filename, O_WRONLY | O_CREAT | O_EXCL, S_IRUSR | S_IWUSR);
 	if (fd == -1)
-	{
-		// PRINT AN ERROR MESSAGE
-		*error = recoverable;
-		return (*error);
-	}
+		return (return_perror_set_err(
+				"minishell: write_to_file", error, recoverable));
 	heredoc_content = get_toklist_str(token);
 	if (heredoc_content == NULL)
 	{
@@ -69,8 +62,9 @@ static t_error	write_to_file(t_dlst *token, char *filename, t_error *error)
 	}
 	if (write(fd, heredoc_content, ft_strlen(heredoc_content)) == -1)
 	{
-		// PRINT AN ERROR MESSAGE
-		*error = recoverable;
+		close(fd);
+		return (return_perror_set_err(
+				"minishell: write_to_file", error, recoverable));
 	}
 	close(fd);
 	return (*error);
@@ -101,7 +95,6 @@ t_error	populate_heredocs_files(t_dlst *toklist, t_error *error)
 	{
 		if (get_toklist_type(toklist) == heredoc)
 		{
-			// print_toklist(toklist, 0);
 			toklist = toklist->next;
 			if (move_heredoc_content_to_file(toklist, error) != success)
 				return (*error);

@@ -71,7 +71,6 @@ static t_error	append_junk_to_item(
 	set_toklist_str(
 		item,
 		free_strjoin(prefix, get_toklist_str(item), false, true));
-	// Interrupt free_strjoin if malloc fails (return (NULL) and don't free nothing) ??
 	if (!get_toklist_str(item))
 		set_err_return_err_enun(error, critical);
 	set_toklist_str(

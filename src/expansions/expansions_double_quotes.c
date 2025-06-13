@@ -33,9 +33,26 @@ static int	get_var_id_len(char *var)
 	return (i);
 }
 
+static char	*handle_empty_or_special_var(
+	char *quotes_content,
+	char **str,
+	int *i,
+	t_shell_vars *shell_vars)
+{
+	if (quotes_content[*i + 1] == '?')
+	{
+		*str = join_char_free(
+				*str, shell_vars->last_cmd_ext_code + '0', NULL);
+		++*i;
+	}
+	else
+		*str = join_char_free(*str, quotes_content[*i], NULL);
+	return (*str);
+}
+
 static char	*expand_quoted_variable(
-	char	*quotes_content,
 	char	*str,
+	char	*quotes_content,
 	int		*i,
 	t_shell_vars *shell_vars)
 {
@@ -45,14 +62,7 @@ static char	*expand_quoted_variable(
 	var_id_len = get_var_id_len(&quotes_content[*i + 1]);
 	if (var_id_len == 0)
 	{
-		if (quotes_content[*i + 1] == '?')
-		{
-			str = join_char_free(str, shell_vars->last_cmd_ext_code + '0', NULL);
-			++*i;
-		}
-		else
-			str = join_char_free(str, quotes_content[*i], NULL);
-		if (!str)
+		if (!handle_empty_or_special_var(quotes_content, &str, i, shell_vars))
 			return (NULL);
 	}
 	else
@@ -87,7 +97,7 @@ t_dlst	*expand_double_quotes(
 		while (inner_quotes[i])
 		{
 			if (inner_quotes[i] == '$' && inner_quotes[i + 1] != '\0')
-				str = expand_quoted_variable(inner_quotes, str, &i, shell_vars);
+				str = expand_quoted_variable(str, inner_quotes, &i, shell_vars);
 			else
 				str = join_char_free(str, inner_quotes[i], error);
 			if (!str)

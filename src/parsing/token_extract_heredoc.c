@@ -23,7 +23,10 @@
 #include "parsing.h"
 #include "lexer.h"
 
-static char	*join_heredoc_content(char *heredoc_content, char *new_content, t_error *error)
+static char	*join_heredoc_content(
+		char *heredoc_content,
+		char *new_content,
+		t_error *error)
 {
 	heredoc_content = free_strjoin(heredoc_content, new_content, true, true);
 	if (heredoc_content == NULL)
@@ -38,7 +41,8 @@ static t_bool	is_heredoc_end(char *heredoc_line, char *delimiter)
 {
 	if (heredoc_line == NULL)
 	{
-		ft_putstr_fd("minishell: warning unexpected end-of-file in heredoc\n", 2);
+		ft_putstr_fd(
+			"minishell: warning unexpected end-of-file in heredoc\n", 2);
 		return (true);
 	}
 	else if (ft_isequalstr(delimiter, heredoc_line))
@@ -67,7 +71,8 @@ static char	*heredoc_input_loop(t_token *token, t_error *error)
 		}
 		if (is_heredoc_end(heredoc_line, token->str))
 			break ;
-		heredoc_content = join_heredoc_content(heredoc_content, heredoc_line, error);
+		heredoc_content = join_heredoc_content(
+				heredoc_content, heredoc_line, error);
 		if (*error)
 			return (NULL);
 	}

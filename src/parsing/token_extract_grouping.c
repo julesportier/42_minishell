@@ -13,17 +13,22 @@
 #include "parsing.h"
 #include "lexer.h"
 
-static t_error	check_nesting(int nesting_level, char next_char, enum e_token_type token_type)
+static t_error	check_nesting(
+		int nesting_level,
+		char next_char,
+		enum e_token_type token_type)
 {
 	if (next_char == '\0' && nesting_level != 0)
-		return (print_syntax_error("missing ", right_parenthesis, recoverable, NULL));
+		return (print_syntax_error(
+				"missing ", right_parenthesis, recoverable, NULL));
 	else if (nesting_level < 0)
-		return (print_syntax_error("unexpected ", token_type, recoverable, NULL));
+		return (print_syntax_error(
+				"unexpected ", token_type, recoverable, NULL));
 	else
 		return (success);
 }
 
-t_error extract_grouping(t_token *token, char *line, int *pos)
+t_error	extract_grouping(t_token *token, char *line, int *pos)
 {
 	static int	nesting_level;
 

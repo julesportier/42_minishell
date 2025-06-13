@@ -98,12 +98,8 @@ t_dlst	*expand_wildcards(t_dlst **toklist, t_error *error)
 	token = *toklist;
 	while (token)
 	{
-		// if (DEBUG)
-		// 	printf("check if expanding token: '%s'...\n", get_toklist_str(token));
 		if (get_toklist_type(token) == wildcard)
 		{
-			// if (DEBUG)
-			// 	printf("expanding token: '%s'...\n", get_toklist_str(token));
 			token = expand_wildcard_token(toklist, token, error);
 			if (*error)
 				return (NULL);
