@@ -19,7 +19,7 @@
 
 t_error	extract_quotes(t_token *token, char *line, int *pos)
 {
-	int	start;
+	int		start;
 	char	quote;
 
 	quote = line[*pos];
@@ -33,7 +33,7 @@ t_error	extract_quotes(t_token *token, char *line, int *pos)
 		token->type = double_quotes;
 	else
 		token->type = literal;
-	token->str = ft_substr(line, start, *pos - start); // Returns "\0" for "" as input.
+	token->str = ft_substr(line, start, *pos - start);
 	if (token->str == NULL)
 		return (err_perror_alloc(critical, NULL));
 	advance(1, pos);
@@ -52,7 +52,7 @@ t_error	extract_literal(t_token *token, char *line, int *pos)
 		&& line[*pos] != '\0')
 		advance(1, pos);
 	token->type = literal;
-	token->str = ft_substr(line, start, *pos - start); // Returns "\0" for "" as input.
+	token->str = ft_substr(line, start, *pos - start);
 	if (token->str == NULL)
 		return (err_perror_alloc(critical, NULL));
 	return (success);
@@ -74,7 +74,7 @@ t_error	extract_variable_identifier(t_token *token, char *line, int *pos)
 	if (*pos - start > 0)
 	{
 		token->type = variable;
-		token->str = ft_substr(line, start, *pos - start); // Returns "\0" for "" as input.
+		token->str = ft_substr(line, start, *pos - start);
 	}
 	else
 	{

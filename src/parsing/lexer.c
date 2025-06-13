@@ -57,7 +57,6 @@ static t_error	incorrect_token_succession(
 	enum e_token_type	last_type;
 	enum e_token_type	new_type;
 
-
 	if (!*tokens_list)
 		return (success);
 	last_type = get_toklist_type(ft_dlstlast(*tokens_list));
@@ -76,7 +75,10 @@ static t_error	incorrect_token_succession(
 		return (success);
 }
 
-t_error	append_token_to_list(t_dlst **tokens_list, t_token *token, t_error *error)
+t_error	append_token_to_list(
+	t_dlst **tokens_list,
+	t_token *token,
+	t_error *error)
 {
 	t_dlst	*new_node;
 
@@ -96,10 +98,9 @@ t_error	append_token_to_list(t_dlst **tokens_list, t_token *token, t_error *erro
 	return (success);
 }
 
-// In case of error scan_line free it's memory but it's the responsibiliy of the caller to free line.
 t_dlst	*scan_line(char *line, t_error *error)
 {
-	int	pos;
+	int		pos;
 	t_token	*token;
 	t_dlst	*tokens_list;
 	t_bool	cat_prev;
@@ -109,10 +110,7 @@ t_dlst	*scan_line(char *line, t_error *error)
 	tokens_list = NULL;
 	while (1)
 	{
-		if (skip_spaces(line, &pos))
-			cat_prev = false;
-		else
-			cat_prev = true;
+		cat_prev = !skip_spaces(line, &pos);
 		if (line[pos] == '\0')
 			break ;
 		token = extract_token(line, &pos, token, error);
@@ -120,7 +118,7 @@ t_dlst	*scan_line(char *line, t_error *error)
 		{
 			free_toklist(&tokens_list);
 			g_sig = 0;
-			return(NULL);
+			return (NULL);
 		}
 		token->cat_prev = cat_prev;
 		if (append_token_to_list(&tokens_list, token, error) != success)
@@ -128,21 +126,3 @@ t_dlst	*scan_line(char *line, t_error *error)
 	}
 	return (tokens_list);
 }
-//
-//int	main(int argc, char *argv[])
-//{
-//	t_dlst	*tokens_list;
-//	t_error	error;
-//
-//	if (argc != 2)
-//		return (EXIT_FAILURE);
-//	error = success;
-//	tokens_list = scan_line(argv[1], &error);
-//	if (error == critical)
-//		return (EXIT_FAILURE); // HANDLE ERROR CORRECTLY
-//	else if (error == recoverable)
-//		return (EXIT_FAILURE); // HANDLE ERROR CORRECTLY
-//	printf("tokens_list size == %d\n", ft_dlstsize(tokens_list));
-//	print_toklist(tokens_list, 0);
-//	return (EXIT_SUCCESS);
-//}

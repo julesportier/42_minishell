@@ -6,7 +6,7 @@
 /*   By: juportie <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 14:21:17 by juportie          #+#    #+#             */
-/*   Updated: 2025/05/15 11:11:38 by juportie         ###   ########.fr       */
+/*   Updated: 2025/06/13 15:04:24 by juportie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 t_bin_tree	*alloc_tree_node(t_error *error)
 {
-	t_bin_tree	*node;
+	t_bin_tree		*node;
 	t_node_content	*content;
 
 	node = ft_calloc(1, sizeof(t_bin_tree));

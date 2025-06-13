@@ -25,14 +25,14 @@ t_bool	is_quote(char str)
 t_bool	is_operator(char *str)
 {
 	return (str[0] == '('
-			|| str[0] == ')'
-			|| str[0] == '>'
-			|| (str[0] == '>' && str[1] == '>')
-			|| str[0] == '<'
-			|| (str[0] == '<' && str[1] == '<')
-			|| str[0] == '|'
-			|| (str[0] == '|' && str[1] == '|')
-			|| (str[0] == '&' && str[1] == '&'));
+		|| str[0] == ')'
+		|| str[0] == '>'
+		|| (str[0] == '>' && str[1] == '>')
+		|| str[0] == '<'
+		|| (str[0] == '<' && str[1] == '<')
+		|| str[0] == '|'
+		|| (str[0] == '|' && str[1] == '|')
+		|| (str[0] == '&' && str[1] == '&'));
 }
 
 t_bool	is_expanding(char str)

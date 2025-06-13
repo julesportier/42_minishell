@@ -109,6 +109,7 @@ SRC_PARSING := lexer.c \
 			   token_extract_heredoc.c \
 			   token_extract_heredoc_delimiter.c \
 			   token_type_identity_check.c \
+			   tree_build_utils.c \
 			   tree_build_binary_op.c \
 			   tree_build_redirections.c \
 			   tree_build_grouping.c

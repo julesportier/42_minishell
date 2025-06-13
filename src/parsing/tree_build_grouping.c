@@ -6,7 +6,7 @@
 /*   By: juportie <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 09:44:07 by juportie          #+#    #+#             */
-/*   Updated: 2025/05/22 11:47:23 by juportie         ###   ########.fr       */
+/*   Updated: 2025/06/13 15:01:22 by juportie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ static t_bool	is_valid_grouping(t_dlst *toklist, t_error *error)
 
 static t_bool	is_grouping(t_dlst *toklist, t_error *error)
 {
-	int	nesting_level;
+	int		nesting_level;
 	t_bool	parenthesis;
 	t_dlst	*token;
 
@@ -59,7 +59,8 @@ static t_bool	is_grouping(t_dlst *toklist, t_error *error)
 		if (check_nesting_level(nesting_level, token) != success)
 		{
 			print_syntax_error(
-				"unexpected token ", get_toklist_type(token), recoverable, error);
+				"unexpected token ", get_toklist_type(token),
+				recoverable, error);
 			return (false);
 		}
 		token = token->next;
@@ -69,7 +70,10 @@ static t_bool	is_grouping(t_dlst *toklist, t_error *error)
 	return (false);
 }
 
-t_dlst	*extract_grouping_content(t_bin_tree *tree_node, t_dlst **toklist, t_error *error)
+t_dlst	*extract_grouping_content(
+	t_bin_tree *tree_node,
+	t_dlst **toklist,
+	t_error *error)
 {
 	if (!is_grouping(*toklist, error))
 		return (NULL);

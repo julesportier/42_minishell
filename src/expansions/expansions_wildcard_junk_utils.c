@@ -49,7 +49,7 @@ size_t	get_junk_end_len(char *wildcard_str)
 char	*trim_wildcard_str(char *wildcard_str, t_error *error)
 {
 	char	*str;
-	
+
 	str = ft_strdup(wildcard_str + get_junk_start_len(wildcard_str));
 	if (!str)
 		set_err_return_null(error, critical);

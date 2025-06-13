@@ -16,7 +16,7 @@
 t_bool	is_control_op(enum e_token_type type)
 {
 	return (type == or
-			|| type == and);
+		|| type == and);
 }
 
 t_bool	is_pipeline_op(enum e_token_type type)
@@ -27,21 +27,21 @@ t_bool	is_pipeline_op(enum e_token_type type)
 t_bool	is_redir_op(enum e_token_type type)
 {
 	return (type == redir_output
-			|| type == append_output
-			|| type == redir_input
-			|| type == heredoc);
+		|| type == append_output
+		|| type == redir_input
+		|| type == heredoc);
 }
 
 t_bool	is_grouping_op(enum e_token_type type)
 {
 	return (type == left_parenthesis
-			|| type == right_parenthesis);
+		|| type == right_parenthesis);
 }
 
 t_bool	is_primary(enum e_token_type type)
 {
 	return (type == literal
-			|| type == double_quotes
-			|| type == variable
-			|| type == wildcard);
+		|| type == double_quotes
+		|| type == variable
+		|| type == wildcard);
 }

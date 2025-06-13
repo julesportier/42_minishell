@@ -6,7 +6,7 @@
 /*   By: juportie <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 11:13:48 by juportie          #+#    #+#             */
-/*   Updated: 2025/05/20 11:39:36 by juportie         ###   ########.fr       */
+/*   Updated: 2025/06/13 15:03:21 by juportie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,10 @@
 #include "parsing.h"
 #include "tree_build.h"
 
-static void	move_redir_token(t_dlst **target, t_dlst **source_head, t_dlst **source)
+static void	move_redir_token(
+	t_dlst **target,
+	t_dlst **source_head,
+	t_dlst **source)
 {
 	t_dlst	*node;
 
@@ -27,19 +30,22 @@ static void	move_redir_token(t_dlst **target, t_dlst **source_head, t_dlst **sou
 	ft_dlstadd_back(target, node);
 }
 
-static t_error	set_redir_couple(t_bin_tree *tree_node, t_dlst **toklist, t_dlst **token)
+static t_error	set_redir_couple(
+	t_bin_tree *tree_node,
+	t_dlst **toklist,
+	t_dlst **token)
 {
 	t_dlst	**target;
 
 	if ((*token)->next == NULL
 		|| !is_primary(get_toklist_type((*token)->next)
-		|| (get_toklist_type(*token) == heredoc
-			&& get_toklist_type((*token)->next) != heredoc_exp
-			&& get_toklist_type((*token)->next) != heredoc_lit)))
+			|| (get_toklist_type(*token) == heredoc
+				&& get_toklist_type((*token)->next) != heredoc_exp
+				&& get_toklist_type((*token)->next) != heredoc_lit)))
 	{
 		return (print_syntax_error(
-			"ill-formed redirection, unexpected ", get_toklist_type(*token),
-			recoverable, NULL));
+				"ill-formed redirection, unexpected ", get_toklist_type(*token),
+				recoverable, NULL));
 	}
 	else if (get_toklist_type(*token) == redir_output
 		|| get_toklist_type(*token) == append_output)
@@ -57,7 +63,7 @@ static t_error	set_redir_couple(t_bin_tree *tree_node, t_dlst **toklist, t_dlst 
 
 t_error	set_redirection(t_bin_tree *tree_node, t_dlst **toklist)
 {
-	int	nesting_level;
+	int		nesting_level;
 	t_dlst	*token;
 
 	nesting_level = 0;
