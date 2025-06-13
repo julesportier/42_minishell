@@ -45,9 +45,10 @@ static void	continue_pipeline_left_process(t_bin_tree *curr_node,
 	if (curr_node->content->subshell == true)
 	{
 		expand_toklist(&curr_node->content->inputs, vars, error);
-		if (check_redir_list(curr_node->content->inputs, error) == ERROR)
+		if (*error == success
+			&& check_redir_list(curr_node->content->inputs, error) == ERROR)
 			ft_putstr_fd("minishell: syntax error: ill-formed input\n", 2);
-		if (set_input(curr_node, error) == ERROR && *error == success)
+		if (*error == success && set_input(curr_node, error) == ERROR)
 			*error = recoverable;
 	}
 	if (*error || link_pipe_to_stdout(pip) == ERROR)
