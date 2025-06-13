@@ -21,7 +21,7 @@ int	return_perror(char *err_msg, int return_value)
 	return (return_value);
 }
 
-int	return_perror_set_err(char *err_msg, t_error *error, t_error err_value)
+t_error	return_perror_set_err(char *err_msg, t_error *error, t_error err_value)
 {
 	perror(err_msg);
 	*error = err_value;
