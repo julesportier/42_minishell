@@ -13,6 +13,7 @@
 #include <fcntl.h>
 #include "../../libft/src/libft.h"
 #include "../minishell.h"
+#include "../error_handling/errors.h"
 #include "../parsing/parsing.h"
 
 static t_error	get_random_uuid(char *str, t_error *error)
@@ -21,17 +22,12 @@ static t_error	get_random_uuid(char *str, t_error *error)
 
 	fd = open("/proc/sys/kernel/random/uuid", O_RDONLY);
 	if (fd == -1)
-	{
-		// PRINT AN ERROR MESSAGE
-		*error = recoverable;
-		return (*error);
-	}
+		return (return_perror_set_err(
+				"minishell: get_random_uuid", error, recoverable));
 	str[36] = '\0';
 	if (read(fd, str, 36) == -1)
-	{
-		// PRINT AN ERROR MESSAGE
-		*error = recoverable;
-	}
+		return (return_perror_set_err(
+				"minishell: get_random_uuid", error, recoverable));
 	close(fd);
 	return (*error);
 }
