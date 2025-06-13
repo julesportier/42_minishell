@@ -78,13 +78,10 @@ static t_error	populate_parse_tree(t_bin_tree **tree_node, t_dlst **toklist, t_e
 		(*tree_node)->content->tokens_list = *toklist;
 		return (success);
 	}
-	(*tree_node)->left = alloc_tree_node(); // CHECK MALLOC;
-	(*tree_node)->right = alloc_tree_node(); // CHECK MALLOC;
-	if ((*tree_node)->left == NULL || (*tree_node)->right == NULL) 
-	{
-		*error = critical;
+	(*tree_node)->left = alloc_tree_node(error);
+	(*tree_node)->right = alloc_tree_node(error);
+	if (*error) 
 		return (free_tree_materials(toklist, tree_node, error));
-	}
 	(*tree_node)->left->parent = *tree_node;
 	(*tree_node)->right->parent = *tree_node;
 	if (divide_tokens_list(&toklist_left, &toklist_right, toklist, &pivot) != success)
@@ -105,10 +102,9 @@ t_bin_tree	*build_parse_tree(t_dlst **toklist, t_error *error)
 {
 	t_bin_tree	*parse_tree;
 
-	parse_tree = alloc_tree_node();
-	if (parse_tree == NULL)
+	parse_tree = alloc_tree_node(error);
+	if (*error)
 	{
-		*error = critical;
 		free_toklist(toklist);
 		return (NULL);
 	}

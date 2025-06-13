@@ -13,7 +13,6 @@
 #include "../../libft/src/libft.h"
 #include "../minishell.h"
 #include "../general_utils/utils.h"
-#include "../error_handling/errors.h"
 #include "../parsing/parsing.h"
 
 t_error	replace_token_content(
@@ -26,7 +25,7 @@ t_error	replace_token_content(
 	free(token->str);
 	token->str = ft_strdup(str);
 	if (token->str == NULL)
-		*error = critical;
+		return (err_perror_alloc(critical, error));
 	return (*error);
 }
 
@@ -36,9 +35,9 @@ t_error	merge_next_token(t_dlst *token, t_error *error)
 		token,
 		free_strjoin(
 			get_toklist_str(token), get_toklist_str(token->next), true, false));
-	if (get_toklist_str(token) == NULL)
-		set_err_return_err_enun(error, critical);
 	ft_dlstremove(token->next, free_token_content, free);
+	if (get_toklist_str(token) == NULL)
+		return (err_print_alloc(critical, error));
 	return (success);
 }
 

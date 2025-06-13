@@ -20,12 +20,6 @@ static t_dlst	*expand_token(
 	t_shell_vars *shell_vars,
 	t_error *error)
 {
-	//if (get_toklist_type(token) == wildcard)
-	//{
-	//	token = expand_wildcard(toklist, error);
-	//	if (token)
-	//		token = token->next;
-	//}
 	if (get_toklist_type(token) == variable)
 		token = expand_variable(token, toklist, shell_vars, error);
 	else if (get_toklist_type(token) == double_quotes

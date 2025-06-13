@@ -47,20 +47,24 @@ static char	*expand_quoted_variable(
 	{
 		if (quotes_content[*i + 1] == '?')
 		{
-			str = join_char_free(str, shell_vars->last_cmd_ext_code + '0');
+			str = join_char_free(str, shell_vars->last_cmd_ext_code + '0', NULL);
 			++*i;
 		}
 		else
-			str = join_char_free(str, quotes_content[*i]);
+			str = join_char_free(str, quotes_content[*i], NULL);
+		if (!str)
+			return (NULL);
 	}
 	else
 	{
 		var_id = ft_substr(quotes_content, *i + 1, var_id_len);
 		if (!var_id)
-			return (NULL);
+			return (null_perror_alloc(critical, NULL));
 		str = free_strjoin(
 				str, get_env_var_value(var_id, shell_vars->env), true, false);
-		free (var_id);
+		free(var_id);
+		if (!str)
+			return (null_print_alloc(critical, NULL));
 		*i += var_id_len;
 	}
 	return (str);
@@ -85,7 +89,7 @@ t_dlst	*expand_double_quotes(
 			if (inner_quotes[i] == '$' && inner_quotes[i + 1] != '\0')
 				str = expand_quoted_variable(inner_quotes, str, &i, shell_vars);
 			else
-				str = join_char_free(str, inner_quotes[i]);
+				str = join_char_free(str, inner_quotes[i], error);
 			if (!str)
 				return (set_err_return_null(error, critical));
 			++i;

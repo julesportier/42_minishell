@@ -35,7 +35,7 @@ t_error	extract_quotes(t_token *token, char *line, int *pos)
 		token->type = literal;
 	token->str = ft_substr(line, start, *pos - start); // Returns "\0" for "" as input.
 	if (token->str == NULL)
-		return (critical);
+		return (err_perror_alloc(critical, NULL));
 	advance(1, pos);
 	return (success);
 }
@@ -54,7 +54,7 @@ t_error	extract_literal(t_token *token, char *line, int *pos)
 	token->type = literal;
 	token->str = ft_substr(line, start, *pos - start); // Returns "\0" for "" as input.
 	if (token->str == NULL)
-		return (critical);
+		return (err_perror_alloc(critical, NULL));
 	return (success);
 }
 
@@ -82,7 +82,7 @@ t_error	extract_variable_identifier(t_token *token, char *line, int *pos)
 		token->str = ft_strdup("$");
 	}
 	if (token->str == NULL)
-		return (critical);
+		return (err_perror_alloc(critical, NULL));
 	return (success);
 }
 
@@ -116,7 +116,7 @@ t_error	extract_expanding(t_token *token, char *line, int *pos)
 		consume_one_char(token, wildcard, pos);
 		token->str = ft_strdup("*");
 		if (token->str == NULL)
-			return (critical);
+			return (err_perror_alloc(critical, NULL));
 	}
 	return (success);
 }
