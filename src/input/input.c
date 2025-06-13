@@ -34,17 +34,28 @@ static void	print_signal_reception(void)
 		printf("\n");
 }
 
-static t_bin_tree	*parse_command_line(char *line, t_error *error)
+static t_bin_tree	*parse_command_line(
+	char *line,
+	t_error *error,
+	t_shell_vars *vars)
 {
 	t_dlst		*toklist;
 	t_bin_tree	*parse_tree;
 
 	toklist = scan_line(line, error);
 	free(line);
-	if (*error == critical)
+	if (*error)
+	{
+		vars->last_cmd_ext_code = 2;
 		return (NULL);
+	}
 	if (toklist)
-		return (parse_tree = build_parse_tree(&toklist, error));
+	{
+		parse_tree = build_parse_tree(&toklist, error);
+		if (*error)
+			vars->last_cmd_ext_code = 2;
+		return (parse_tree);
+	}
 	else
 		return (NULL);
 }
@@ -79,7 +90,7 @@ void	input_loop(t_shell_vars *vars, t_error *error)
 		line = set_readline_and_history(vars->prompt, error, vars);
 		if (line == NULL)
 			break ;
-		parse_tree = parse_command_line(line, error);
+		parse_tree = parse_command_line(line, error, vars);
 		if (*error == critical)
 			break ;
 		if (parse_tree)
