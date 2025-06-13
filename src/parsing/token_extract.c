@@ -28,8 +28,10 @@ t_error	extract_quotes(t_token *token, char *line, int *pos)
 	while (line[*pos] != quote && line[*pos] != '\0')
 		advance(1, pos);
 	if (line[*pos] == '\0')
-		return (print_syntax_error(
-				"unclosed ", double_quotes, recoverable, NULL));
+	{
+		ft_putstr_fd("minishell: syntax error: unclosed quote\n", 2);
+		return (recoverable);
+	}
 	if (quote == '"')
 		token->type = double_quotes;
 	else
