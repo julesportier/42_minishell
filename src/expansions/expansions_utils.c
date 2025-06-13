@@ -50,12 +50,14 @@ t_error	place_expansion_result(
 		return (*error);
 }
 
-char	*join_char_free(char *str, char c)
+char	*join_char_free(char *str, char c, t_error *error)
 {
 	char	*new_str;
 	int	i;
 
 	new_str = ft_calloc(ft_strlen(str) + 2, sizeof(char));
+	if (!new_str)
+		return (null_perror_alloc(critical, error));
 	if (new_str)
 	{
 		i = 0;

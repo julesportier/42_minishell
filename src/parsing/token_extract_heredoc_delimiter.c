@@ -48,7 +48,7 @@ static t_error	set_empty(
 		{
 			token->str = ft_strdup("");
 			if (!token->str)
-				return (set_err_return_err_enun(error, critical));
+				return (err_perror_alloc(critical, error));
 		}
 		else
 			return (print_syntax_error(
@@ -100,9 +100,9 @@ t_error	extract_delimiter(
 	{
 		if (!increment_quotes(line[*pos], &d_quotes, &s_quotes, token))
 		{
-			token->str = join_char_free(token->str, line[*pos]);
+			token->str = join_char_free(token->str, line[*pos], error);
 			if (!token->str)
-				return (set_err_return_err_enun(error, critical));
+				return (*error);
 		}
 		advance(1, pos);
 	}

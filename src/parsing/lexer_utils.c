@@ -43,9 +43,6 @@ t_token	*alloc_token(t_error *error)
 
 	token = ft_calloc(1, sizeof(t_token));
 	if (token == NULL)
-	{
-		*error = critical;
-		return (NULL);
-	}
+		return (null_perror_alloc(critical, error));
 	return (token);
 }

@@ -92,7 +92,10 @@ void	free_tree(t_bin_tree **tree);
  * ****************/
 // error_print.c
 t_error	print_syntax_error(char *message, enum e_token_type type, t_error errnum, t_error *error);
-
+t_error	err_perror_alloc(t_error errnum, t_error *error);
+void	*null_perror_alloc(t_error errnum, t_error *error);
+t_error	err_print_alloc(t_error errnum, t_error *error);
+void	*null_print_alloc(t_error errnum, t_error *error);
 /************
  * PRINTING *
  * **********/
@@ -118,7 +121,7 @@ void	set_toklist_str(t_dlst *list, char *str);
 void	set_toklist_cat_prev(t_dlst *list, t_bool cat_prev);
 // tree_utils.c
 t_bin_tree	*tree_root(t_bin_tree *node);
-t_bin_tree	*alloc_tree_node(void);
+t_bin_tree	*alloc_tree_node(t_error *error);
 // parenthesis_handling_utils.c
 int	update_parenthesis_nesting_level(t_dlst *token, int nesting_level);
 t_error	check_nesting_level(int nesting_level, t_dlst *toklist);

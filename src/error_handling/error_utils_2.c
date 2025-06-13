@@ -11,7 +11,9 @@
 /* ************************************************************************** */
 
 #include <unistd.h>
+#include "../../libft/src/libft.h"
 #include "../minishell.h"
+#include "../general_utils/utils.h"
 
 void	*set_err_return_null(t_error *error, t_error err_value)
 {

@@ -23,7 +23,7 @@ t_error	place_expansion_result(
 			enum e_token_type type,
 			char *new_str,
 			t_error *error);
-char	*join_char_free(char *str, char c);
+char	*join_char_free(char *str, char c, t_error *error);
 // expansions_toklist_utils.c
 t_error	replace_token_content(
 			t_token *token,

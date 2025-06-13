@@ -27,16 +27,10 @@ static char	*join_heredoc_content(char *heredoc_content, char *new_content, t_er
 {
 	heredoc_content = free_strjoin(heredoc_content, new_content, true, true);
 	if (heredoc_content == NULL)
-	{
-		*error = critical;
-		return (NULL);
-	}
+		return (null_perror_alloc(critical, error));
 	heredoc_content = free_strjoin(heredoc_content, "\n", true, false);
 	if (heredoc_content == NULL)
-	{
-		*error = critical;
-		return (NULL);
-	}
+		return (null_perror_alloc(critical, error));
 	return (heredoc_content);
 }
 

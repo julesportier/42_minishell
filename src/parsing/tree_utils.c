@@ -12,19 +12,19 @@
 
 #include "parsing.h"
 
-t_bin_tree	*alloc_tree_node(void)
+t_bin_tree	*alloc_tree_node(t_error *error)
 {
 	t_bin_tree	*node;
 	t_node_content	*content;
 
 	node = ft_calloc(1, sizeof(t_bin_tree));
 	if (node == NULL)
-		return (NULL);
+		return (null_perror_alloc(critical, error));
 	content = ft_calloc(1, sizeof(t_node_content));
 	if (content == NULL)
 	{
 		free(node);
-		return (NULL);
+		return (null_print_alloc(critical, error));
 	}
 	node->content = content;
 	return (node);

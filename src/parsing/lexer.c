@@ -19,7 +19,11 @@
 #include "tree_build.h"
 #include "lexer.h"
 
-static t_token	*extract_token(char *line, int *pos, t_token *prev_token, t_error *error)
+static t_token	*extract_token(
+	char *line,
+	int *pos,
+	t_token *prev_token,
+	t_error *error)
 {
 	t_token	*token;
 
@@ -40,7 +44,7 @@ static t_token	*extract_token(char *line, int *pos, t_token *prev_token, t_error
 	{
 		free(token->str);
 		free(token);
-		return (NULL);
+		return (null_print_alloc(critical, error));
 	}
 	return (token);
 }
@@ -86,8 +90,7 @@ t_error	append_token_to_list(t_dlst **tokens_list, t_token *token, t_error *erro
 		free_token_content(token);
 		free(token);
 		free_toklist(tokens_list);
-		*error = critical;
-		return (critical); // ERROR MESSAGE + FREE;
+		return (err_print_alloc(critical, error));
 	}
 	ft_dlstadd_back(tokens_list, new_node);
 	return (success);
