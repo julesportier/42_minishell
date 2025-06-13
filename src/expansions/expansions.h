@@ -78,6 +78,6 @@ t_dlst	*expand_wildcards(t_dlst **toklist, t_error *error);
 // heredoc_to_file.c
 t_error	populate_heredocs_files(t_dlst *toklist, t_error *error);
 // expansions.c
-t_error	expand_toklist(t_dlst **toklist, t_shell_vars *shell_vars);
+t_error	expand_toklist(t_dlst **toklist, t_shell_vars *shell_vars, t_error *error);
 
 #endif
