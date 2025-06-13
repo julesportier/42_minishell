@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipeline_handling.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ecasalin <ecasalin@42.fr>                  +#+  +:+       +#+        */
+/*   By: ecasalin <ecasalin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/21 14:19:24 by ecasalin          #+#    #+#             */
-/*   Updated: 2025/06/09 10:01:19 by ecasalin         ###   ########.fr       */
+/*   Updated: 2025/06/13 11:32:59 by ecasalin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,10 +44,11 @@ static void	continue_pipeline_left_process(t_bin_tree *curr_node,
 {
 	if (curr_node->content->subshell == true)
 	{
-		expand_toklist(&curr_node->content->inputs, vars);
-		if (check_redir_list(curr_node->content->inputs, error) == ERROR)
+		expand_toklist(&curr_node->content->inputs, vars, error);
+		if (*error == success
+			&& check_redir_list(curr_node->content->inputs, error) == ERROR)
 			ft_putstr_fd("minishell: syntax error: illformed input\n", 2);
-		if (set_input(curr_node, error) == ERROR && *error == success)
+		if (*error == success && set_input(curr_node, error) == ERROR)
 			*error = recoverable;
 	}
 	if (*error || link_pipe_to_stdout(pip) == ERROR)
@@ -71,10 +72,11 @@ static void	continue_pipeline_right_process(t_bin_tree *curr_node,
 {
 	if (curr_node->content->subshell == true)
 	{
-		expand_toklist(&curr_node->content->outputs, vars);
-		if (check_redir_list(curr_node->content->outputs, error) == ERROR)
+		expand_toklist(&curr_node->content->outputs, vars, error);
+		if (*error == success
+			&& check_redir_list(curr_node->content->outputs, error) == ERROR)
 			ft_putstr_fd("minishell: syntax error: ill-formed output\n", 2);
-		if (set_output(curr_node, error) == ERROR && *error == success)
+		if (*error == success && set_output(curr_node, error) == ERROR)
 			*error = recoverable;
 	}
 	if (*error || link_pipe_to_stdin(pip) == ERROR)
