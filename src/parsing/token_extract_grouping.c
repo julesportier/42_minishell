@@ -6,7 +6,7 @@
 /*   By: juportie <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 11:16:56 by juportie          #+#    #+#             */
-/*   Updated: 2025/05/14 12:49:45 by juportie         ###   ########.fr       */
+/*   Updated: 2025/06/16 14:41:57 by juportie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,9 +18,9 @@ static t_error	check_nesting(
 		char next_char,
 		enum e_token_type token_type)
 {
-	if (next_char == '\0' && nesting_level != 0)
-		return (print_syntax_error(
-				"missing ", right_parenthesis, recoverable, NULL));
+	if (next_char == '\0' && nesting_level > 0)
+			return (print_syntax_error(
+					"missing ", right_parenthesis, recoverable, NULL));
 	else if (nesting_level < 0)
 		return (print_syntax_error(
 				"unexpected ", token_type, recoverable, NULL));
