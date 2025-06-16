@@ -6,7 +6,7 @@
 /*   By: juportie <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 10:25:15 by juportie          #+#    #+#             */
-/*   Updated: 2025/05/30 17:06:39 by juportie         ###   ########.fr       */
+/*   Updated: 2025/06/16 11:15:05 by juportie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 #include "../minishell.h"
 #include "expansions.h"
 #include "../parsing/lexer.h"
+#include <errno.h>
 
 static t_dlst	*insert_expanded_token(t_dlst *token, char *str, t_error *error)
 {
@@ -57,7 +58,10 @@ char	*join_char_free(char *str, char c, t_error *error)
 
 	new_str = ft_calloc(ft_strlen(str) + 2, sizeof(char));
 	if (!new_str)
+	{
+		free(str);
 		return (null_perror_alloc(critical, error));
+	}
 	if (new_str)
 	{
 		i = 0;
