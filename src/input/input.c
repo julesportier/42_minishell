@@ -6,7 +6,7 @@
 /*   By: ecasalin <ecasalin@42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 14:50:31 by juportie          #+#    #+#             */
-/*   Updated: 2025/06/16 12:25:46 by juportie         ###   ########.fr       */
+/*   Updated: 2025/06/16 13:44:25 by juportie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ static t_bin_tree	*parse_command_line(
 
 	toklist = scan_line(line, vars, error);
 	free(line);
-	if (*error)
+	if (*error == recoverable)
 	{
 		vars->last_cmd_ext_code = 2;
 		return (NULL);
@@ -52,7 +52,7 @@ static t_bin_tree	*parse_command_line(
 	if (toklist)
 	{
 		parse_tree = build_parse_tree(&toklist, error);
-		if (*error)
+		if (*error == recoverable)
 			vars->last_cmd_ext_code = 2;
 		return (parse_tree);
 	}
