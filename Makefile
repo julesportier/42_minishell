@@ -50,7 +50,8 @@ SRC_BUILTINS := cd.c \
 					exit.c
 SRC_CLEANING_UTILS := cleaning_utils_1.c
 SRC_ERROR_HANDLING := error_utils_1.c \
-						error_utils_2.c
+						error_utils_2.c \
+						error_utils_3.c
 SRC_EXEC := exec_command.c \
 				exec_clean_utils.c \
 				exec_command_tree.c \
