@@ -13,7 +13,6 @@
 #include <stdio.h>
 #include "../../libft/src/libft.h"
 #include "../general_utils/utils.h"
-#include "../error_handling/errors.h"
 #include "parsing.h"
 
 t_error	print_syntax_error(
@@ -26,22 +25,16 @@ t_error	print_syntax_error(
 
 	if (error)
 		*error = errnum;
-	error_str = ft_strjoin("minishell: syntax error: ", message);
+	error_str = ft_strjoin("minishell: syntax error: `", message);
 	if (error_str == NULL)
-		return (set_err_return_err_enun(error, critical));
-	error_str = free_strjoin(error_str, "`", true, false);
-	if (error_str == NULL)
-		return (set_err_return_err_enun(error, critical));
+		return (err_print_alloc(critical, error));
 	error_str = free_strjoin(
 			error_str, (char *)token_type_to_str(type), true, false);
 	if (error_str == NULL)
-		return (set_err_return_err_enun(error, critical));
-	error_str = free_strjoin(error_str, "'", true, false);
+		return (err_print_alloc(critical, error));
+	error_str = free_strjoin(error_str, "'\n", true, false);
 	if (error_str == NULL)
-		return (set_err_return_err_enun(error, critical));
-	error_str = free_strjoin(error_str, "\n", true, false);
-	if (error_str == NULL)
-		return (set_err_return_err_enun(error, critical));
+		return (err_print_alloc(critical, error));
 	ft_putstr_fd(error_str, 2);
 	free(error_str);
 	return (errnum);
