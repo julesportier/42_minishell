@@ -6,7 +6,7 @@
 /*   By: ecasalin <ecasalin@42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/25 16:35:53 by ecasalin          #+#    #+#             */
-/*   Updated: 2025/06/16 10:15:20 by juportie         ###   ########.fr       */
+/*   Updated: 2025/06/16 12:29:08 by juportie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,10 @@ t_error	return_perror_set_err(char *err_msg, t_error *error, t_error err_value)
 	return (err_value);
 }
 
-void	*return_perror_set_err_null(char *err_msg, t_error *error, t_error err_value)
+void	*return_perror_set_err_null(
+	char *err_msg,
+	t_error *error,
+	t_error err_value)
 {
 	perror(err_msg);
 	if (error)
