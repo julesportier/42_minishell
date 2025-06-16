@@ -6,7 +6,7 @@
 /*   By: juportie <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 10:22:36 by juportie          #+#    #+#             */
-/*   Updated: 2025/06/11 08:58:18 by juportie         ###   ########.fr       */
+/*   Updated: 2025/06/16 11:11:08 by juportie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ static t_token	*extract_token(
 		free(token);
 		token = NULL;
 		if (*error == critical)
-			return (null_print_alloc(critical, error));
+			return (NULL);
 	}
 	return (token);
 }
