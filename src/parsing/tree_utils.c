@@ -6,7 +6,7 @@
 /*   By: juportie <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 14:21:17 by juportie          #+#    #+#             */
-/*   Updated: 2025/06/13 15:04:24 by juportie         ###   ########.fr       */
+/*   Updated: 2025/06/16 14:00:12 by juportie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ t_bin_tree	*alloc_tree_node(t_error *error)
 	if (content == NULL)
 	{
 		free(node);
-		return (null_print_alloc(critical, error));
+		return (null_perror_alloc(critical, error));
 	}
 	node->content = content;
 	return (node);
