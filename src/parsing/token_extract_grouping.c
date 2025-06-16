@@ -19,8 +19,8 @@ static t_error	check_nesting(
 		enum e_token_type token_type)
 {
 	if (next_char == '\0' && nesting_level > 0)
-			return (print_syntax_error(
-					"missing ", right_parenthesis, recoverable, NULL));
+		return (print_syntax_error(
+				"missing ", right_parenthesis, recoverable, NULL));
 	else if (nesting_level < 0)
 		return (print_syntax_error(
 				"unexpected ", token_type, recoverable, NULL));
