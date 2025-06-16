@@ -6,7 +6,7 @@
 /*   By: ecasalin <ecasalin@42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 08:01:52 by ecasalin          #+#    #+#             */
-/*   Updated: 2025/06/16 10:05:51 by juportie         ###   ########.fr       */
+/*   Updated: 2025/06/16 10:21:09 by juportie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,17 +53,18 @@ char	*init_cwd_backup(void)
 {
 	char		*cwd;
 
+	errno = SUCCESS;
 	cwd = getcwd(NULL, 0);
 	if (errno == ENOMEM)
-		return (NULL);
+		return (return_perror_set_err_null("minishell: getcwd", NULL, critical));
 	if (cwd == NULL)
 	{
 		cwd = ft_strdup_s("/");
 		if (cwd == NULL)
-			return (NULL);
+			return (null_print_alloc_err(critical, NULL));
 		ft_putstr_fd("minishell: current working directory is unlinked: "
 			"setting internal backup cwd to /\n", 2);
-		errno = 0;
+		errno = SUCCESS;
 	}
 	return (cwd);
 }
