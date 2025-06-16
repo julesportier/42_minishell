@@ -6,7 +6,7 @@
 /*   By: ecasalin <ecasalin@42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 08:01:52 by ecasalin          #+#    #+#             */
-/*   Updated: 2025/06/09 09:53:42 by ecasalin         ###   ########.fr       */
+/*   Updated: 2025/06/16 10:05:51 by juportie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,25 +25,26 @@ char	**init_env_array(char **env, t_error *error)
 {
 	char	**env_array;
 	int		i;
+	int		env_array_len;
 
 	*error = success;
-	i = count_array_len(env);
 	if (env == NULL)
 		return (NULL);
-	env_array = malloc((i + 1) * sizeof(char *));
+	env_array_len = count_array_len(env);
+	env_array = malloc((env_array_len + 1) * sizeof(char *));
 	if (env_array == NULL)
-		return (set_err_return_null(error, critical));
-	env_array[i] = NULL;
-	i--;
-	while (i >= 0)
+		return (null_print_alloc_err(critical, error));
+	env_array[env_array_len] = NULL;
+	i = 0;
+	while (i < env_array_len)
 	{
 		env_array[i] = ft_strdup_s(env[i]);
 		if (env_array[i] == NULL)
 		{
 			free_array(env_array);
-			return (set_err_return_null(error, critical));
+			return (null_print_alloc_err(critical, error));
 		}
-		i--;
+		i++;
 	}
 	return (env_array);
 }
