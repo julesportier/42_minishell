@@ -6,7 +6,7 @@
 /*   By: ecasalin <ecasalin@42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 14:50:31 by juportie          #+#    #+#             */
-/*   Updated: 2025/06/12 09:57:20 by ecasalin         ###   ########.fr       */
+/*   Updated: 2025/06/16 12:25:46 by juportie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ static t_bin_tree	*parse_command_line(
 	t_dlst		*toklist;
 	t_bin_tree	*parse_tree;
 
-	toklist = scan_line(line, error);
+	toklist = scan_line(line, vars, error);
 	free(line);
 	if (*error)
 	{

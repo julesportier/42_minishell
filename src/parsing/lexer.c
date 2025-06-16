@@ -6,7 +6,7 @@
 /*   By: juportie <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 10:22:36 by juportie          #+#    #+#             */
-/*   Updated: 2025/06/16 11:31:43 by juportie         ###   ########.fr       */
+/*   Updated: 2025/06/16 12:32:05 by juportie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,7 +100,13 @@ t_error	append_token_to_list(
 	return (success);
 }
 
-t_dlst	*scan_line(char *line, t_error *error)
+static void	reinit_sig(t_shell_vars *vars)
+{
+	vars->last_cmd_ext_code = 130;
+	g_sig = 0;
+}
+
+t_dlst	*scan_line(char *line, t_shell_vars *vars, t_error *error)
 {
 	int		pos;
 	t_token	*token;
@@ -119,7 +125,7 @@ t_dlst	*scan_line(char *line, t_error *error)
 		if (g_sig || !token)
 		{
 			free_toklist(&tokens_list);
-			g_sig = 0;
+			reinit_sig(vars);
 			return (NULL);
 		}
 		token->cat_prev = cat_prev;
