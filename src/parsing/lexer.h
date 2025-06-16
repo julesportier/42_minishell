@@ -6,7 +6,7 @@
 /*   By: juportie <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/25 09:47:43 by juportie          #+#    #+#             */
-/*   Updated: 2025/05/14 12:57:21 by juportie         ###   ########.fr       */
+/*   Updated: 2025/06/16 11:30:47 by juportie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ t_error	extract_expanding(t_token *token, char *line, int *pos);
 // token_extract_grouping.c
 t_error	extract_grouping(t_token *token, char *line, int *pos);
 // token_extract_heredoc.c
-t_error	extract_heredoc(t_token *token, char *line, int *pos);
+t_error	extract_heredoc(t_token **token, char *line, int *pos);
 // token_extract_heredoc_delimiter.c
 t_error	extract_delimiter(t_token *token, char *line, int *pos, t_error *error);
 

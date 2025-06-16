@@ -6,7 +6,7 @@
 /*   By: juportie <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 10:22:36 by juportie          #+#    #+#             */
-/*   Updated: 2025/06/16 11:11:08 by juportie         ###   ########.fr       */
+/*   Updated: 2025/06/16 11:31:43 by juportie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ static t_token	*extract_token(
 	if (*error)
 		return (NULL);
 	if (prev_token != NULL && prev_token->type == heredoc)
-		*error = extract_heredoc(token, line, pos);
+		*error = extract_heredoc(&token, line, pos);
 	else if (is_quote(line[*pos]))
 		*error = extract_quotes(token, line, pos);
 	else if (is_operator(&line[*pos]))
