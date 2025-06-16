@@ -6,7 +6,7 @@
 /*   By: ecasalin <ecasalin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/25 16:47:33 by ecasalin          #+#    #+#             */
-/*   Updated: 2025/06/16 09:49:18 by juportie         ###   ########.fr       */
+/*   Updated: 2025/06/16 10:13:28 by juportie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ int		exit_perror(char *err_msg, int exit_value);
 int		set_err_return_err(t_error *error, t_error err_value);
 t_error	set_err_return_err_enun(t_error *error, t_error err_value);
 t_error	return_perror_set_err(char *err_msg, t_error *error, t_error err_value);
+void	*return_perror_set_err_null(char *err_msg, t_error *error, t_error err_value);
 void	*null_print_alloc_err(t_error errnum, t_error *error);
 
 #endif
