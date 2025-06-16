@@ -6,7 +6,7 @@
 /*   By: ecasalin <ecasalin@42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 08:01:52 by ecasalin          #+#    #+#             */
-/*   Updated: 2025/06/16 10:21:09 by juportie         ###   ########.fr       */
+/*   Updated: 2025/06/16 12:30:03 by juportie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,8 @@ char	*init_cwd_backup(void)
 	errno = SUCCESS;
 	cwd = getcwd(NULL, 0);
 	if (errno == ENOMEM)
-		return (return_perror_set_err_null("minishell: getcwd", NULL, critical));
+		return (return_perror_set_err_null(
+				"minishell: getcwd", NULL, critical));
 	if (cwd == NULL)
 	{
 		cwd = ft_strdup_s("/");
