@@ -6,7 +6,7 @@
 /*   By: juportie <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 10:22:36 by juportie          #+#    #+#             */
-/*   Updated: 2025/06/16 12:32:05 by juportie         ###   ########.fr       */
+/*   Updated: 2025/06/16 13:06:52 by juportie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,7 +92,6 @@ t_error	append_token_to_list(
 	if (new_node == NULL)
 	{
 		free_token_content(token);
-		free(token);
 		free_toklist(tokens_list);
 		return (err_print_alloc(critical, error));
 	}
