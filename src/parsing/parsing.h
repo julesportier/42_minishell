@@ -6,7 +6,7 @@
 /*   By: juportie <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 10:24:06 by juportie          #+#    #+#             */
-/*   Updated: 2025/05/26 14:43:04 by juportie         ###   ########.fr       */
+/*   Updated: 2025/06/16 12:25:32 by juportie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ t_error				append_token_to_list(
 						t_dlst **tokens_list,
 						t_token *token,
 						t_error *error);
-t_dlst				*scan_line(char *line, t_error *error);
+t_dlst				*scan_line(char *line, t_shell_vars *vars, t_error *error);
 
 /***********
  * PARSING *
