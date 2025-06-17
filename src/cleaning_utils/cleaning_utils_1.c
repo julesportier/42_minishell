@@ -6,7 +6,7 @@
 /*   By: ecasalin <ecasalin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/25 17:57:36 by ecasalin          #+#    #+#             */
-/*   Updated: 2025/06/17 14:20:33 by ecasalin         ###   ########.fr       */
+/*   Updated: 2025/06/17 15:32:36 by ecasalin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 #include "../minishell.h"
 #include "../exec/exec.h"
 #include "../error_handling/errors.h"
+#include <readline/readline.h>
 
 void	free_array_content(char **array)
 {
@@ -43,6 +44,7 @@ void	free_tree_and_vars(t_bin_tree *tree_root, t_shell_vars *vars)
 	free_array(vars->env);
 	free(vars->cwd_backup);
 	free(vars->prompt);
+	rl_clear_history();
 }
 
 int return_close_pipe_perror(char *err_msg, int pip[2], t_error *error, t_error err_val)
