@@ -29,13 +29,14 @@ void	free_arrays_tree_and_vars(char **paths_array,
 			char **cmd_array, t_bin_tree *curr_node, t_shell_vars *vars);
 void	free_all_exit_err(char **paths_array,
 			char **cmd_array, t_bin_tree *curr_node, t_shell_vars *vars);
-int		free_array_set_err(t_error *error, t_error err_value, char **array);
-int		wait_perror_set_err(char *err_msg, t_error *error, t_error err_value);
+void	safe_free_cmd_path(char **paths_array, int index);
 
-/*ERROR UTILS*/
+			/*ERROR UTILS*/
 int		print_joined_cmd_error(char *cmd_name,
 			char *arg, char *msg, t_error *error);
 int		print_exec_error(char *cmd_name, int exit_value, t_error *error);
+int		wait_perror_set_err(char *err_msg, t_error *error, t_error err_value);
+int		free_array_set_err(t_error *error, t_error err_value, char **array);
 
 /*ENV UTILS*/
 char	**create_paths_array(t_shell_vars *vars, t_error *error);

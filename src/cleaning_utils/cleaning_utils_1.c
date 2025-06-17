@@ -6,17 +6,15 @@
 /*   By: ecasalin <ecasalin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/25 17:57:36 by ecasalin          #+#    #+#             */
-/*   Updated: 2025/05/26 13:42:04 by ecasalin         ###   ########.fr       */
+/*   Updated: 2025/06/17 11:24:04 by ecasalin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdlib.h>
-// #include <stdio.h>
 #include <unistd.h>
 #include "../parsing/parsing.h"
-// #include "../minishell.h"
 
-void	free_array(char **array)
+void	free_array_content(char **array)
 {
 	int	i;
 
@@ -28,6 +26,11 @@ void	free_array(char **array)
 		free(array[i]);
 		i++;
 	}
+}
+
+void	free_array(char **array)
+{
+	free_array_content(array);
 	free(array);
 }
 

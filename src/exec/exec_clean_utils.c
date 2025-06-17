@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_clean_utils.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ecasalin <ecasalin@42.fr>                  +#+  +:+       +#+        */
+/*   By: ecasalin <ecasalin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/24 09:30:22 by erik              #+#    #+#             */
-/*   Updated: 2025/06/09 09:33:42 by ecasalin         ###   ########.fr       */
+/*   Updated: 2025/06/17 11:20:21 by ecasalin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,8 @@
 #include "exec.h"
 #include "../minishell.h"
 #include <sys/wait.h>
+#include <readline/history.h>
+#include <readline/readline.h>
 
 int	close_pipe(int *pipe)
 {
@@ -55,11 +57,18 @@ void	free_all_exit_err(char **paths_array,
 	free_array(paths_array);
 	free_array(cmd_array);
 	free_tree_and_vars(tree_root(curr_node), vars);
-	exit(ERROR);
+	rl_clear_history();
+	exit(EXIT_FAILURE);
 }
 
-int	wait_perror_set_err(char *err_msg, t_error *error, t_error err_value)
+void	safe_free_cmd_path(char **paths_array, int index)
 {
-	wait(NULL);
-	return (return_perror_set_err(err_msg, error, err_value));
+	perror("minishell: execution: critical error");
+	if (index != 0)
+	{
+		paths_array[index - 1] = NULL;
+		free_array_content(paths_array);
+	}
+	free_array_content(&paths_array[index]);
+	free(paths_array);
 }
