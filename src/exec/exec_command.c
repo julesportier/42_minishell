@@ -6,7 +6,7 @@
 /*   By: ecasalin <ecasalin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 11:23:07 by ecasalin          #+#    #+#             */
-/*   Updated: 2025/06/17 11:22:32 by ecasalin         ###   ########.fr       */
+/*   Updated: 2025/06/17 12:15:03 by ecasalin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,10 +81,10 @@ int	create_exec_setup(t_bin_tree *curr_node, t_shell_vars *vars, t_error *error)
 	return (ERROR);
 }
 
-static int	exec_command(char *cmd_name, char **array2, t_shell_vars *vars)
+static int	exec_command(char *cmd_name, char **args, t_shell_vars *vars)
 {
 	if (cmd_name != NULL)
-		execve(cmd_name, array2, vars->env);
+		execve(cmd_name, args, vars->env);
 	else
 		return (SUCCESS);
 	if (errno == ENOEXEC || errno == EACCES)
