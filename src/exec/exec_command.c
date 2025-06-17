@@ -6,7 +6,7 @@
 /*   By: ecasalin <ecasalin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 11:23:07 by ecasalin          #+#    #+#             */
-/*   Updated: 2025/06/17 08:04:40 by ecasalin         ###   ########.fr       */
+/*   Updated: 2025/06/17 11:22:32 by ecasalin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ int	create_exec_setup(t_bin_tree *curr_node, t_shell_vars *vars, t_error *error)
 	child_pid = fork();
 	if (child_pid == FAILURE)
 		return_perror_set_err(
-				"minishell: execution: fork", error, recoverable);
+			"minishell: execution: fork", error, recoverable);
 	if (child_pid == CHILD)
 		prepare_to_exec(curr_node, paths_array, vars, error);
 	free_array(paths_array);
@@ -101,6 +101,7 @@ int	exec_relative_path_cmd(char **paths_array,
 	int		i;
 	char	*temp_line;
 	t_error	error;
+	int		temp;
 
 	error = success;
 	i = -1;
@@ -109,19 +110,18 @@ int	exec_relative_path_cmd(char **paths_array,
 		temp_line = free_strjoin(paths_array[i], cmd_array[0], true, false);
 		if (temp_line == NULL)
 		{
-			perror("minishell: execution: critical error");
-			free_all_exit_err(paths_array, cmd_array, curr_node, vars);
+			safe_free_cmd_path(paths_array, i + 1);
+			free_all_exit_err(NULL, cmd_array, curr_node, vars);
 		}
 		paths_array[i] = temp_line;
 		if (access(paths_array[i], F_OK) == SUCCESS)
 			return (exec_command(paths_array[i], cmd_array, vars));
 	}
-	if (print_joined_cmd_error(cmd_array[0], NULL,
-			": command not found\n", &error) == ERROR)
-		exit (EXIT_FAILURE);
+	temp = print_joined_cmd_error(
+			cmd_array[0], NULL, ": command not found\n", &error);
 	free_arrays_tree_and_vars(paths_array, cmd_array, curr_node, vars);
-	if (error)
-		exit_perror("minishell: execution: critical error", ERROR);
+	if (temp == ERROR)
+		exit (EXIT_FAILURE);
 	exit(127);
 }
 
