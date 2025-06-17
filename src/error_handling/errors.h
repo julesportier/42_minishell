@@ -6,7 +6,7 @@
 /*   By: ecasalin <ecasalin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/25 16:47:33 by ecasalin          #+#    #+#             */
-/*   Updated: 2025/06/16 12:29:34 by juportie         ###   ########.fr       */
+/*   Updated: 2025/06/17 08:33:23 by ecasalin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,5 +27,6 @@ void	*return_perror_set_err_null(
 			t_error *error,
 			t_error err_value);
 void	*null_print_alloc_err(t_error errnum, t_error *error);
+int		perror_set_err(char *err_msg, t_error *error, t_error err_value);
 
 #endif

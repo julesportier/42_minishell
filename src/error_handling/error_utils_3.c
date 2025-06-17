@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   error_utils_3.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ecasalin <ecasalin@42.fr>                  +#+  +:+       +#+        */
+/*   By: ecasalin <ecasalin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/25 16:35:53 by ecasalin          #+#    #+#             */
-/*   Updated: 2025/06/16 09:49:03 by juportie         ###   ########.fr       */
+/*   Updated: 2025/06/17 08:33:14 by ecasalin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,4 +21,12 @@ void	*null_print_alloc_err(t_error errnum, t_error *error)
 		*error = errnum;
 	ft_putstr_fd("minishell: critical error: alloc failed\n", 2);
 	return (NULL);
+}
+
+int	perror_set_err(char *err_msg, t_error *error, t_error err_value)
+{
+	perror(err_msg);
+	if (error)
+		*error = err_value;
+	return (ERROR);
 }
