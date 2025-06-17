@@ -32,11 +32,13 @@ char	**create_paths_array(t_shell_vars *vars, t_error *error)
 		return (NULL);
 	paths_array = ft_split(path_var, ':');
 	if (paths_array == NULL)
-		return (set_err_return_null(error, critical));
+		return (return_perror_set_err_null(
+			"minishell: execution: critical error", error, critical));
 	if (add_slash_to_paths(paths_array) == CRIT_ERROR)
 	{
 		free_array(paths_array);
-		return (set_err_return_null(error, critical));
+		return (return_perror_set_err_null(
+			"minishell: execution: critical error", error, critical));
 	}
 	return (paths_array);
 }
