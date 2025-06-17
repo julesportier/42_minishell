@@ -6,7 +6,7 @@
 /*   By: ecasalin <ecasalin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/21 14:19:24 by ecasalin          #+#    #+#             */
-/*   Updated: 2025/06/13 11:32:59 by ecasalin         ###   ########.fr       */
+/*   Updated: 2025/06/17 14:24:42 by ecasalin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,18 +102,18 @@ int	fork_pipeline_sides(t_bin_tree *curr_node,
 	pid_t	child_pid;
 
 	if (pipe(pip) == FAILURE)
-		return (return_perror_set_err("minishell: execution: "
+		return (perror_set_err("minishell: execution: "
 				"pipe error", error, recoverable));
 	child_pid = fork();
 	if (child_pid == FAILURE)
-		return (return_perror_set_err("minishell: execution: "
-				"fork error", error, recoverable));
+		return (return_close_pipe_perror("minishell: execution: "
+				"fork error", pip, error, recoverable));
 	if (child_pid == CHILD)
 		continue_pipeline_left_process(curr_node, pip, vars, error);
 	child_pid = fork();
 	if (child_pid == FAILURE)
-		return (wait_perror_set_err("minishell: execution: "
-				"fork error", error, recoverable));
+		return (wait_close_pipe_perror("minishell: execution: "
+				"fork error", pip, error, recoverable));
 	if (child_pid == CHILD)
 		continue_pipeline_right_process(curr_node, pip, vars, error);
 	if (close_pipe(pip) == ERROR)

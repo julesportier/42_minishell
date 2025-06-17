@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_command_tree.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ecasalin <ecasalin@42.fr>                  +#+  +:+       +#+        */
+/*   By: ecasalin <ecasalin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 06:55:11 by ecasalin          #+#    #+#             */
-/*   Updated: 2025/06/09 09:16:44 by ecasalin         ###   ########.fr       */
+/*   Updated: 2025/06/17 13:14:17 by ecasalin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,8 +54,8 @@ int	exec_command_tree(t_bin_tree *curr_node,
 	if (*error)
 		return (ERROR);
 	if (curr_node->operator == pipeline)
-		return (fork_pipeline_sides(curr_node, vars, error));
-	if (curr_node->content->subshell == true)
+		vars->last_cmd_ext_code = fork_pipeline_sides(curr_node, vars, error);
+	else if (curr_node->content->subshell == true)
 		vars->last_cmd_ext_code = fork_subshell(curr_node, vars, error);
 	else
 	{

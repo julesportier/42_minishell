@@ -35,7 +35,7 @@ void	safe_free_cmd_path(char **paths_array, int index);
 int		print_joined_cmd_error(char *cmd_name,
 			char *arg, char *msg, t_error *error);
 int		print_exec_error(char *cmd_name, int exit_value, t_error *error);
-int		wait_perror_set_err(char *err_msg, t_error *error, t_error err_value);
+int		wait_close_pipe_perror(char *err_msg, int pip[2], t_error *error, t_error err_value);
 int		free_array_set_err(t_error *error, t_error err_value, char **array);
 
 /*ENV UTILS*/

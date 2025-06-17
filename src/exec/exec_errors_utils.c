@@ -6,7 +6,7 @@
 /*   By: ecasalin <ecasalin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/30 23:42:30 by ecasalin          #+#    #+#             */
-/*   Updated: 2025/06/17 11:08:30 by ecasalin         ###   ########.fr       */
+/*   Updated: 2025/06/17 14:21:14 by ecasalin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@
 #include "../../libft/src/libft.h"
 #include "../minishell.h"
 #include <sys/wait.h>
+#include "../exec/exec.h"
 
 int	free_array_set_err(t_error *error, t_error err_value, char **array)
 {
@@ -95,8 +96,10 @@ int	print_exec_error(char *cmd_name, int return_value, t_error *error)
 	}
 }
 
-int	wait_perror_set_err(char *err_msg, t_error *error, t_error err_value)
+int	wait_close_pipe_perror(char *err_msg, int pip[2], t_error *error, t_error err_value)
 {
 	wait(NULL);
-	return (return_perror_set_err(err_msg, error, err_value));
+	close(pip[READ]);
+	close(pip[WRITE]);
+	return (perror_set_err(err_msg, error, err_value));
 }
