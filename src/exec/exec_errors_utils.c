@@ -33,22 +33,22 @@ int	print_joined_cmd_error(char *cmd_name, char *arg, char *msg, t_error *error)
 
 	error_msg = ft_strdup("minishell: ");
 	if (error_msg == NULL)
-		return (perror_set_err("mininshell: execution: critical error",
+		return (perror_set_err("minishell: execution: critical error",
 				error, critical));
 	error_msg = free_strjoin(error_msg, cmd_name, true, false);
 	if (error_msg == NULL)
-		return (perror_set_err("mininshell: execution: critical error",
+		return (perror_set_err("minishell: execution: critical error",
 				error, critical));
 	if (arg != NULL)
 	{
 		error_msg = free_strjoin(error_msg, arg, true, false);
 		if (error_msg == NULL)
-			return (perror_set_err("mininshell: execution: critical error",
+			return (perror_set_err("minishell: execution: critical error",
 					error, critical));
 	}
 	error_msg = free_strjoin(error_msg, msg, true, false);
 	if (error_msg == NULL)
-		return (perror_set_err("mininshell: execution: critical error",
+		return (perror_set_err("minishell: execution: critical error",
 				error, critical));
 	ft_putstr_fd(error_msg, 2);
 	free(error_msg);

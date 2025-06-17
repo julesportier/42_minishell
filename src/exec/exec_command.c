@@ -71,7 +71,8 @@ int	create_exec_setup(t_bin_tree *curr_node, t_shell_vars *vars, t_error *error)
 		prepare_to_exec(curr_node, paths_array, vars, error);
 	child_pid = fork();
 	if (child_pid == FAILURE)
-		*error = recoverable;
+		return_perror_set_err(
+				"minishell: execution: fork", error, recoverable);
 	if (child_pid == CHILD)
 		prepare_to_exec(curr_node, paths_array, vars, error);
 	free_array(paths_array);

@@ -48,7 +48,8 @@ int	set_output(t_bin_tree *curr_node, t_error *error)
 			return (print_exec_error(file_name, ERROR, error));
 		if (dup2(fd, STDOUT_FILENO) == FAILURE)
 			return (close_return_perror(fd));
-		close(fd);
+		if (close(fd) == FAILURE)
+			perror("minishell: warning: close");
 		errno = SUCCESS;
 		temp_head = temp_head->next;
 	}
@@ -71,12 +72,13 @@ int	set_input(t_bin_tree *curr_node, t_error *error)
 		fd = open(file_name, O_RDONLY);
 		if (fd == FAILURE)
 			return (print_exec_error(file_name, ERROR, error));
-		if (dup2(fd, STDIN_FILENO == FAILURE))
+		if (dup2(fd, STDIN_FILENO) == FAILURE)
 			return (close_return_perror(fd));
 		if (get_toklist_type(temp_head->prev) == heredoc)
 			if (unlink(file_name) == FAILURE)
 				perror("minishell: warning: heredoc unlink");
-		close(fd);
+		if (close(fd) == FAILURE)
+			perror("minishell: warning: close");
 		errno = SUCCESS;
 		temp_head = temp_head->next;
 	}
