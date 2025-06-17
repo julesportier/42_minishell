@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_command.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ecasalin <ecasalin@42.fr>                  +#+  +:+       +#+        */
+/*   By: ecasalin <ecasalin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 11:23:07 by ecasalin          #+#    #+#             */
-/*   Updated: 2025/06/09 09:42:03 by ecasalin         ###   ########.fr       */
+/*   Updated: 2025/06/17 08:04:40 by ecasalin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,8 +102,8 @@ int	exec_relative_path_cmd(char **paths_array,
 	t_error	error;
 
 	error = success;
-	i = 0;
-	while (paths_array[i] != NULL)
+	i = -1;
+	while (paths_array[++i] != NULL)
 	{
 		temp_line = free_strjoin(paths_array[i], cmd_array[0], true, false);
 		if (temp_line == NULL)
@@ -114,9 +114,10 @@ int	exec_relative_path_cmd(char **paths_array,
 		paths_array[i] = temp_line;
 		if (access(paths_array[i], F_OK) == SUCCESS)
 			return (exec_command(paths_array[i], cmd_array, vars));
-		i++;
 	}
-	print_joined_cmd_error(cmd_array[0], NULL, ": command not found\n", &error);
+	if (print_joined_cmd_error(cmd_array[0], NULL,
+			": command not found\n", &error) == ERROR)
+		exit (EXIT_FAILURE);
 	free_arrays_tree_and_vars(paths_array, cmd_array, curr_node, vars);
 	if (error)
 		exit_perror("minishell: execution: critical error", ERROR);
