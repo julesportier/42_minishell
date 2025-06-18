@@ -6,7 +6,7 @@
 /*   By: ecasalin <ecasalin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 19:04:53 by ecasalin          #+#    #+#             */
-/*   Updated: 2025/05/15 14:34:12 by ecasalin         ###   ########.fr       */
+/*   Updated: 2025/06/18 08:36:14 by ecasalin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,9 +24,14 @@ int	print_var_name_error(char *var)
 
 	var_name_len = get_var_name_len(var);
 	var_name = ft_calloc(var_name_len + 1, 1);
-	error_msg = ft_strdup("minishell: export: `");
-	if (var_name == NULL || error_msg == NULL)
+	if (var_name == NULL)
 		return (CRIT_ERROR);
+	error_msg = ft_strdup("minishell: export: `");
+	if (error_msg == NULL)
+	{
+		free(var_name);
+		return (CRIT_ERROR);
+	}
 	ft_memcpy(var_name, var, var_name_len);
 	error_msg = free_strjoin(error_msg, var_name, true, true);
 	if (error_msg == NULL)

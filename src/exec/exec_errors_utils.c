@@ -6,7 +6,7 @@
 /*   By: ecasalin <ecasalin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/30 23:42:30 by ecasalin          #+#    #+#             */
-/*   Updated: 2025/06/17 14:21:14 by ecasalin         ###   ########.fr       */
+/*   Updated: 2025/06/18 13:12:09 by ecasalin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,7 +96,8 @@ int	print_exec_error(char *cmd_name, int return_value, t_error *error)
 	}
 }
 
-int	wait_close_pipe_perror(char *err_msg, int pip[2], t_error *error, t_error err_value)
+int	wait_close_pipe_perror(char *err_msg, int pip[2],
+		t_error *error, t_error err_value)
 {
 	wait(NULL);
 	close(pip[READ]);
