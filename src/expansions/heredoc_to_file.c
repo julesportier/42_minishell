@@ -26,8 +26,10 @@ static t_error	get_random_uuid(char *str, t_error *error)
 				"minishell: get_random_uuid", error, recoverable));
 	str[36] = '\0';
 	if (read(fd, str, 36) == -1)
-		return (return_perror_set_err(
-				"minishell: get_random_uuid", error, recoverable));
+	{
+		return_perror_set_err(
+			"minishell: get_random_uuid", error, recoverable);
+	}
 	close(fd);
 	return (*error);
 }
