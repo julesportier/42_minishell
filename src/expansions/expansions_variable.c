@@ -23,16 +23,16 @@ static t_dlst	*expand_value(t_dlst *token, char *value, t_error *error)
 
 	splits = ft_split(value, ' ');
 	if (!splits)
-	{
-		*error = critical;
-		return (NULL);
-	}
+		return (null_perror_alloc(critical, error));
 	i = 0;
 	while (splits[i])
 	{
 		if (place_expansion_result(
 				&token, variable, splits[i], error) != success)
+		{
+			free_array(splits);
 			return (NULL);
+		}
 		++i;
 	}
 	free_array(splits);
@@ -65,10 +65,7 @@ t_dlst	*expand_variable(
 	{
 		var_value = ft_itoa(shell_vars->last_cmd_ext_code);
 		if (!var_value)
-		{
-			*error = critical;
-			return (NULL);
-		}
+			return (null_perror_alloc(critical, error));
 		token = expand_value(token, var_value, error);
 		free(var_value);
 	}
