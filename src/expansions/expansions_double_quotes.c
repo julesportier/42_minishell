@@ -69,7 +69,10 @@ static char	*expand_quoted_variable(
 	{
 		var_id = ft_substr(quotes_content, *i + 1, var_id_len);
 		if (!var_id)
+		{
+			free(str);
 			return (null_perror_alloc(critical, NULL));
+		}
 		str = free_strjoin(
 				str, get_env_var_value(var_id, shell_vars->env), true, false);
 		free(var_id);
