@@ -24,12 +24,16 @@ static t_dlst	*insert_expanded_token(t_dlst *token, char *str, t_error *error)
 	if (*error)
 		return (NULL);
 	if (replace_token_content(new_token, literal, str, error))
+	{
+		free(new_token);
 		return (NULL);
+	}
 	new_node = ft_dlstnew(new_token);
 	if (!new_node)
 	{
-		*error = critical;
-		return (NULL);
+		free(new_token->str);
+		free(new_token);
+		return (null_perror_alloc(critical, error));
 	}
 	ft_dlstinsert_next(&token, new_node);
 	return (token->next);
