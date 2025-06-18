@@ -65,13 +65,3 @@ void	print_toklist(t_dlst *list, int indent)
 		++i;
 	}
 }
-//
-//int main(void)
-//{
-//	t_dlst	*tokens_list;
-//	t_error	error;
-//
-//	tokens_list = scan_line("echo $var | \"cat\" \'", &error);
-//	print_toklist(tokens_list, 1);
-//	return (SUCCESS);
-//}
