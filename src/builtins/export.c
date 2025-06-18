@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ecasalin <ecasalin@42.fr>                  +#+  +:+       +#+        */
+/*   By: ecasalin <ecasalin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/25 15:41:16 by ecasalin          #+#    #+#             */
-/*   Updated: 2025/06/09 08:46:27 by ecasalin         ###   ########.fr       */
+/*   Updated: 2025/06/18 10:32:16 by ecasalin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,21 +44,22 @@ char	**add_var_to_env(char *var, char **env)
 	i = count_array_len(env);
 	new_env_array = malloc((i + 2) * sizeof(char *));
 	if (new_env_array == NULL)
-		return (NULL);
-	i = 0;
-	while (env[i])
 	{
-		new_env_array[i] = env[i];
-		i++;
+		free_array(env);
+		return (NULL);
 	}
+	i = -1;
+	while (env[++i])
+		new_env_array[i] = env[i];
 	new_env_array[i] = ft_strdup_s(var);
 	if (new_env_array[i] == NULL)
 	{
+		free_array(env);
 		free(new_env_array);
 		return (NULL);
 	}
-	new_env_array[i + 1] = NULL;
 	free(env);
+	new_env_array[i + 1] = NULL;
 	return (new_env_array);
 }
 

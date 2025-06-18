@@ -6,7 +6,7 @@
 /*   By: ecasalin <ecasalin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/25 17:57:36 by ecasalin          #+#    #+#             */
-/*   Updated: 2025/06/17 15:32:36 by ecasalin         ###   ########.fr       */
+/*   Updated: 2025/06/18 13:13:07 by ecasalin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,8 @@ void	free_tree_and_vars(t_bin_tree *tree_root, t_shell_vars *vars)
 	rl_clear_history();
 }
 
-int return_close_pipe_perror(char *err_msg, int pip[2], t_error *error, t_error err_val)
+int	return_close_pipe_perror(char *err_msg, int pip[2],
+	t_error *error, t_error err_val)
 {
 	close(pip[READ]);
 	close(pip[WRITE]);

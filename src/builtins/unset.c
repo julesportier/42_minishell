@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   unset.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ecasalin <ecasalin@42.fr>                  +#+  +:+       +#+        */
+/*   By: ecasalin <ecasalin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 07:54:32 by ecasalin          #+#    #+#             */
-/*   Updated: 2025/06/09 09:11:29 by ecasalin         ###   ########.fr       */
+/*   Updated: 2025/06/18 11:32:36 by ecasalin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 #include "../../libft/src/libft.h"
 #include "../general_utils/utils.h"
 #include "builtins.h"
+#include "../cleaning_utils/cleaning.h"
 
 static int	get_env_var_index(char *var_name, char **env, int env_len)
 {
@@ -56,7 +57,10 @@ static char	**update_env(t_shell_vars *vars, int old_env_len, int removed_vars)
 	y = 0;
 	new_env = ft_calloc(old_env_len - removed_vars + 1, sizeof(char *));
 	if (new_env == NULL)
+	{
+		free_array(vars->env);
 		return (NULL);
+	}
 	while (old_env_len >= 0)
 	{
 		if (vars->env[i] != NULL)
