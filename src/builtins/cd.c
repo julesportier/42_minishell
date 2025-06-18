@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ecasalin <ecasalin@42.fr>                  +#+  +:+       +#+        */
+/*   By: ecasalin <ecasalin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 07:21:49 by ecasalin          #+#    #+#             */
-/*   Updated: 2025/06/09 08:45:27 by ecasalin         ###   ########.fr       */
+/*   Updated: 2025/06/18 14:47:39 by ecasalin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,19 +30,19 @@ static int	return_print_no_path_err(char *path)
 
 	err_msg = ft_strdup_s("minishell: cd: ");
 	if (err_msg == NULL)
-		return (CRIT_ERROR);
+		return (return_perror("minishell: cd: critical error", CRIT_ERROR));
 	err_msg = free_strjoin(err_msg, path, true, false);
 	if (err_msg == NULL)
-		return (CRIT_ERROR);
+		return (return_perror("minishell: cd: critical error", CRIT_ERROR));
 	err_msg = free_strjoin(err_msg, ": ", true, false);
 	if (err_msg == NULL)
-		return (CRIT_ERROR);
+		return (return_perror("minishell: cd: critical error", CRIT_ERROR));
 	err_msg = free_strjoin(err_msg, strerror(errno), true, false);
 	if (err_msg == NULL)
-		return (CRIT_ERROR);
+		return (return_perror("minishell: cd: critical error", CRIT_ERROR));
 	err_msg = free_strjoin(err_msg, "\n", true, false);
 	if (err_msg == NULL)
-		return (CRIT_ERROR);
+		return (return_perror("minishell: cd: critical error", CRIT_ERROR));
 	ft_putstr_fd(err_msg, 2);
 	free(err_msg);
 	return (ERROR);
