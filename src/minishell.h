@@ -40,4 +40,4 @@ typedef struct s_shell_vars
 	char	*prompt;
 }				t_shell_vars;
 
-#endif // MINISHEL_H
+#endif
