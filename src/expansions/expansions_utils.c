@@ -15,7 +15,11 @@
 #include "expansions.h"
 #include "../parsing/lexer.h"
 
-static t_dlst	*insert_expanded_token(t_dlst *token, char *str, t_error *error)
+static t_dlst	*insert_expanded_token(
+	t_dlst *token,
+	char *str,
+	enum e_token_type type,
+	t_error *error)
 {
 	t_token	*new_token;
 	t_dlst	*new_node;
@@ -23,7 +27,7 @@ static t_dlst	*insert_expanded_token(t_dlst *token, char *str, t_error *error)
 	new_token = alloc_token(error);
 	if (*error)
 		return (NULL);
-	if (replace_token_content(new_token, literal, str, error))
+	if (replace_token_content(new_token, type, str, error))
 	{
 		free(new_token);
 		return (NULL);
@@ -39,18 +43,38 @@ static t_dlst	*insert_expanded_token(t_dlst *token, char *str, t_error *error)
 	return (token->next);
 }
 
+static t_bool	contains_wildcard(char *str)
+{
+	int	i;
+
+	i = 0;
+	while (str[i])
+	{
+		if (str[i] == '*')
+			return (true);
+		++i;
+	}
+	return (false);
+}
+
 t_error	place_expansion_result(
 	t_dlst **token,
 	enum e_token_type type,
 	char *new_str,
 	t_error *error)
 {
+	enum e_token_type	new_type;
+
+	if (contains_wildcard(new_str))
+		new_type = wildcard;
+	else
+		new_type = literal;
 	if (get_toklist_type(*token) == type)
 		replace_token_content(
 			(*token)->content,
-			literal, new_str, error);
+			new_type, new_str, error);
 	else
-		*token = insert_expanded_token(*token, new_str, error);
+		*token = insert_expanded_token(*token, new_str, new_type, error);
 	return (*error);
 }
 
