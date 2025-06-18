@@ -33,7 +33,7 @@ static t_error	append_entry_to_list(
 	if (!token->str)
 	{
 		free(token);
-		return (set_err_return_err_enun(error, critical));
+		return (err_perror_alloc(critical, error));
 	}
 	token->type = literal;
 	append_token_to_list(cwd_content, token, error);
