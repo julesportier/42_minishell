@@ -16,13 +16,6 @@
 # include "../minishell.h"
 # include "parsing.h"
 
-//typedef	enum	e_expansion
-//{
-//	normal,
-//	double_quotes,
-//	single_quotes,
-//}	t_expansion;
-
 // char_identity_check.c
 t_bool	is_blank(char c);
 t_bool	is_quote(char str);
