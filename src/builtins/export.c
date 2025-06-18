@@ -6,7 +6,7 @@
 /*   By: ecasalin <ecasalin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/25 15:41:16 by ecasalin          #+#    #+#             */
-/*   Updated: 2025/06/18 10:32:16 by ecasalin         ###   ########.fr       */
+/*   Updated: 2025/06/18 14:37:31 by ecasalin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,6 @@ char	**add_var_to_env(char *var, char **env)
 	new_env_array[i] = ft_strdup_s(var);
 	if (new_env_array[i] == NULL)
 	{
-		free_array(env);
 		free(new_env_array);
 		return (NULL);
 	}
@@ -83,6 +82,7 @@ static int	add_or_update_var(char *var, t_shell_vars *vars)
 {
 	int		return_value;
 	char	*temp_var;
+	char	**temp_env;
 
 	return_value = is_valid_var_name(var);
 	if (return_value == CRIT_ERROR)
@@ -92,9 +92,10 @@ static int	add_or_update_var(char *var, t_shell_vars *vars)
 		temp_var = get_env_var(var, vars->env);
 		if (temp_var == NULL)
 		{
-			vars->env = add_var_to_env(var, vars->env);
-			if (vars->env == NULL)
+			temp_env = add_var_to_env(var, vars->env);
+			if (temp_env == NULL)
 				return (CRIT_ERROR);
+			vars->env = temp_env;
 		}
 		else
 			if (update_var(temp_var, var, vars->env) == CRIT_ERROR)

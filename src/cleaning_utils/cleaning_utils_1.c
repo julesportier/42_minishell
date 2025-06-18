@@ -6,7 +6,7 @@
 /*   By: ecasalin <ecasalin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/25 17:57:36 by ecasalin          #+#    #+#             */
-/*   Updated: 2025/06/18 13:13:07 by ecasalin         ###   ########.fr       */
+/*   Updated: 2025/06/18 15:50:32 by ecasalin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,8 @@ void	free_array_content(char **array)
 
 void	free_array(char **array)
 {
+	if (array == NULL)
+		return ;
 	free_array_content(array);
 	free(array);
 }

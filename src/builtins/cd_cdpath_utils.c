@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd_cdpath_utils.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ecasalin <ecasalin@42.fr>                  +#+  +:+       +#+        */
+/*   By: ecasalin <ecasalin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 10:50:49 by ecasalin          #+#    #+#             */
-/*   Updated: 2025/06/09 08:43:13 by ecasalin         ###   ########.fr       */
+/*   Updated: 2025/06/18 14:54:31 by ecasalin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,6 @@ static char	**create_cdpath_array(char *cdpath)
 	return (cdpath_array);
 }
 
-/* cdpath can't be NULL and cdpath[0] will never be '\0' */
 static int	iter_cdpath(char *path, char *cdpath, t_shell_vars *vars)
 {
 	char	**cdpath_array;

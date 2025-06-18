@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd_utils.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ecasalin <ecasalin@42.fr>                  +#+  +:+       +#+        */
+/*   By: ecasalin <ecasalin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 10:49:58 by ecasalin          #+#    #+#             */
-/*   Updated: 2025/06/09 09:10:42 by ecasalin         ###   ########.fr       */
+/*   Updated: 2025/06/18 15:04:33 by ecasalin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,6 @@ int	is_path_syntax_valid(char *path)
 	return (ERROR);
 }
 
-/*cwd_backup will never be NULL or empty*/
 static int	is_valid_relative_path(char *path)
 {
 	int	i;
@@ -79,7 +78,6 @@ static t_bool	is_dir_unlinked(char *path)
 	return (false);
 }
 
-/*Path is not a mallocked var --> no leaks*/
 int	chdir_unlinked_cwd(char *path, t_shell_vars *vars)
 {
 	int	return_value;
