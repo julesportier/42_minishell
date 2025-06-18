@@ -12,7 +12,7 @@
 
 #include "../../libft/src/libft.h"
 #include "../minishell.h"
-#include "../error_handling/errors.h"
+#include "../parsing/parsing.h"
 
 size_t	get_junk_start_len(char *wildcard_str)
 {
@@ -52,7 +52,7 @@ char	*trim_wildcard_str(char *wildcard_str, t_error *error)
 
 	str = ft_strdup(wildcard_str + get_junk_start_len(wildcard_str));
 	if (!str)
-		set_err_return_null(error, critical);
+		return (null_perror_alloc(critical, error));
 	str[ft_strlen(str) - get_junk_end_len(str)] = '\0';
 	return (str);
 }

@@ -25,7 +25,7 @@ static char	*set_prefix(char *wildcard_str, t_error *error)
 	{
 		prefix = ft_substr(wildcard_str, 0, prefix_len);
 		if (!prefix)
-			return (set_err_return_null(error, critical));
+			return (null_perror_alloc(critical, error));
 		return (prefix);
 	}
 	else
@@ -40,7 +40,7 @@ static char	*set_suffix(char *wildcard_str, t_error *error)
 	{
 		suffix = ft_strdup("/");
 		if (!suffix)
-			return (set_err_return_null(error, critical));
+			return (null_perror_alloc(critical, error));
 		return (suffix);
 	}
 	else
@@ -58,26 +58,26 @@ static t_error	set_prefix_and_suffix(
 		return (*error);
 	*suffix = set_suffix(wildcard_str, error);
 	if (*error)
-		free(prefix);
+		free(*prefix);
 	return (*error);
 }
 
-static t_error	append_junk_to_item(
-	t_dlst	*item,
+static t_error	append_junk_to_token(
+	t_dlst	*token,
 	char	*prefix,
 	char	*suffix,
 	t_error *error)
 {
 	set_toklist_str(
-		item,
-		free_strjoin(prefix, get_toklist_str(item), false, true));
-	if (!get_toklist_str(item))
-		set_err_return_err_enun(error, critical);
+		token,
+		free_strjoin(prefix, get_toklist_str(token), false, true));
+	if (!get_toklist_str(token))
+		return (err_perror_alloc(critical, error));
 	set_toklist_str(
-		item,
-		free_strjoin(get_toklist_str(item), suffix, true, false));
-	if (!get_toklist_str(item))
-		set_err_return_err_enun(error, critical);
+		token,
+		free_strjoin(get_toklist_str(token), suffix, true, false));
+	if (!get_toklist_str(token))
+		return (err_perror_alloc(critical, error));
 	return (*error);
 }
 
@@ -93,7 +93,7 @@ t_error	append_junk_to_cwd_list(
 		return (*error);
 	while (cwd_content_list)
 	{
-		if (append_junk_to_item(
+		if (append_junk_to_token(
 				cwd_content_list, prefix, suffix, error) != success)
 			break ;
 		cwd_content_list = cwd_content_list->next;

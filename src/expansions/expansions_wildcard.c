@@ -27,7 +27,10 @@ static t_dlst	*match_cwd_content_list(
 	head = cwd_content_list;
 	trimmed_wildcard_str = trim_wildcard_str(wildcard_str, error);
 	if (*error)
+	{
+		free_toklist(&cwd_content_list);
 		return (NULL);
+	}
 	while (cwd_content_list)
 	{
 		next = cwd_content_list->next;
