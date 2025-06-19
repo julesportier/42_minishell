@@ -53,6 +53,7 @@ SRC_ERROR_HANDLING := error_utils_1.c \
 						error_utils_2.c \
 						error_utils_3.c
 SRC_EXEC := exec_command.c \
+				exec_command_utils.c \
 				exec_clean_utils.c \
 				exec_command_tree.c \
 				exec_errors_utils.c \
