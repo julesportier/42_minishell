@@ -6,7 +6,7 @@
 /*   By: ecasalin <ecasalin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/19 07:30:51 by ecasalin          #+#    #+#             */
-/*   Updated: 2025/06/19 07:45:05 by ecasalin         ###   ########.fr       */
+/*   Updated: 2025/06/19 07:59:57 by ecasalin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,9 +26,9 @@ int	is_invalid_command_name(char *cmd_name)
 void	exit_command_not_found(char **cmd_array, char **paths_array,
 			t_bin_tree *curr_node, t_shell_vars *vars)
 {
-	int 	temp;
+	int		temp;
 	t_error	error;
-	
+
 	temp = print_joined_cmd_error(
 			cmd_array[0], NULL, ": command not found\n", &error);
 	free_arrays_tree_and_vars(paths_array, cmd_array, curr_node, vars);
