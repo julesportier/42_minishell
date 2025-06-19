@@ -50,6 +50,9 @@ int		exec_command_tree(t_bin_tree *curr_node,
 			t_shell_vars *vars, t_error *error);
 int		create_exec_setup(t_bin_tree *curr_node,
 			t_shell_vars *vars, t_error *error);
+int		is_invalid_command_name(char *cmd_name);
+void	exit_command_not_found(char **cmd_array, char **paths_array,
+			t_bin_tree *curr_node, t_shell_vars *vars);
 
 /*PIPELINE HANDLING*/
 int		fork_pipeline_sides(t_bin_tree *curr_node,

@@ -6,7 +6,7 @@
 /*   By: ecasalin <ecasalin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 11:23:07 by ecasalin          #+#    #+#             */
-/*   Updated: 2025/06/17 12:15:03 by ecasalin         ###   ########.fr       */
+/*   Updated: 2025/06/19 07:42:19 by ecasalin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -140,8 +140,12 @@ void	prepare_to_exec(t_bin_tree *curr_node,
 	if (paths_array != NULL && paths_array[0] != NULL
 		&& cmd_array[0] != NULL
 		&& ft_strnstr(cmd_array[0], "/", ft_strlen(cmd_array[0])) == NULL)
+	{
+		if (is_invalid_command_name(cmd_array[0]))
+			exit_command_not_found(cmd_array, paths_array, curr_node, vars);
 		exit_value = exec_relative_path_cmd(paths_array,
 				cmd_array, vars, curr_node);
+	}
 	else
 		exit_value = exec_command(cmd_array[0], cmd_array, vars);
 	exit_value = print_exec_error(cmd_array[0], exit_value, error);

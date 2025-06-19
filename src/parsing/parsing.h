@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: juportie <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: ecasalin <ecasalin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 10:24:06 by juportie          #+#    #+#             */
-/*   Updated: 2025/06/16 12:25:32 by juportie         ###   ########.fr       */
+/*   Updated: 2025/06/19 07:46:53 by ecasalin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,6 @@
 
 # include "../../libft/src/libft.h"
 # include "../minishell.h"
-
-# define DEBUG 1
 
 enum	e_token_type
 {
